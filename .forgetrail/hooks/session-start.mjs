@@ -54,7 +54,6 @@ function main() {
     lines.push("Project record: appledger/");
     lines.push("Read appledger/profiles/forgetrail.yaml for the current phase.");
     lines.push("Read the latest session record for left_off and next_steps.");
-    lines.push("Do not update workflow_tracking.json.");
   }
 
   if (trackingPath) {

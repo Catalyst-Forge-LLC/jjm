@@ -5,7 +5,7 @@ alwaysApply: true
 
 # ForgeTrail phase awareness
 
-This repo uses **ForgeTrail**. **Source of truth:** `appledger/profiles/forgetrail.yaml` and the latest session record. Do **not** read or write `.forgetrail/workflow_tracking.json`. If that file exists and is not a pointer, it is a legacy conflict: run `appledger migrate preview`, then apply.
+This repo uses **ForgeTrail**. **Source of truth:** `appledger/profiles/forgetrail.yaml` and the latest session record. If a legacy `.forgetrail/workflow_tracking.json` exists and is not a pointer, it is a legacy conflict: run `appledger migrate preview`, then apply.
 
 ## When to surface status
 
@@ -13,13 +13,13 @@ Include a short **ForgeTrail** footer in replies when it helps orientation—esp
 
 - User asks **what’s next**, **status**, **phase**, or **milestone**
 - **Start** of a multi-step / multi-file task block
-- **End** of a task block, PR-sized change, or session wrap-up
+- **End** of a task block, PR-sized change, or session wrap-up  
 
 **Lessons gate:** For substantial work (see **`forgetrail-lessons-gate.mdc`**), run **`getAntiPatterns`** + **`searchLessons`** before deep implementation; the phase footer can still appear at start/end without repeating full lesson text.
 
 Skip the footer for trivial one-line answers (typos, single-token replies) unless the user asked for status.
 
-**Product-facing / non-technical users:** Do **not** show ForgeTrail footers, phase IDs, MCP/tool names, or internal checklists unless they ask how the workflow is wired up. Plain language only. For phase progress without an agent, point them to **`docs/FORGETRAIL_PROGRESS.md`**. The durable phase is `appledger/profiles/forgetrail.yaml`, not `.forgetrail/workflow_tracking.json`.
+**Product-facing / non-technical users:** Do **not** show ForgeTrail footers, phase IDs, MCP/tool names, or internal checklists unless they ask how the workflow is wired up. Plain language only. For phase progress without an agent, point them to **`docs/FORGETRAIL_PROGRESS.md`**. The durable phase is `appledger/profiles/forgetrail.yaml`.
 
 **Right after bootstrap:** **Omit** the footer entirely—user should get a simple “what’s done + what I need from you next,” not methodology. If you already followed **`getPostBootstrapUserMessage`** in the same turn, do not duplicate status blocks.
 
@@ -57,4 +57,4 @@ Do **not** bury three or more paths in a single long sentence—**list them**, t
 
 ## Phase transitions
 
-Do **not** advance `current_phase_instance` or mark a phase completed without **explicit user confirmation**. If criteria look satisfied, say so and ask before updating the profile. Do not write `workflow_tracking.json`.
+Do **not** advance `current_phase_instance` or mark a phase completed without **explicit user confirmation**. If criteria look satisfied, say so and ask before updating the profile.

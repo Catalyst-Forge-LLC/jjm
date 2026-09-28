@@ -9,7 +9,7 @@ Enforces ForgeTrail rules and guards at the host tool level, rather than relying
 - `session-start.mjs`: on session start, points the session at `appledger/`. A writable `workflow_tracking.json` is reported as a legacy conflict, not the live phase.
 - `validate-tracking.mjs`: after editing `workflow_tracking.json`, runs structural validation. A pointer is accepted. A legacy writable document is a conflict.
 - `validate-tracking-core.mjs`: standalone zero-dependency tracking validator.
-- `session-stop.mjs`: on session stop, reminds the agent to update the appledger session record. It does not ask for a new JSON session entry.
+- `session-stop.mjs`: when a turn ends, reminds the agent to update the appledger session record if project files changed after that record was last written. It stays quiet on follow-up turns, on read-only turns, and when only `appledger/`, `.forgetrail/`, `.cursor/`, or `.claude/` changed. It names `workflow_tracking.json` only when a legacy copy is present.
 - `cursor-hooks.json`: standard Cursor hooks configuration.
 - `claude-settings-hooks.json`: standard Claude Code configuration fragment.
 
