@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:jjm:criterion:0.1",
+  "title": "JJM proposed criterion 0.1",
+  "$ref": "urn:jjm:definitions:0.1#/$defs/criterion"
+}

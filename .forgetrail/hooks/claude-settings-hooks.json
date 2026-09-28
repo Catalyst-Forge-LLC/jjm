@@ -1,0 +1,20 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|shell",
+        "command": "node .forgetrail/hooks/guard-shell.mjs"
+      },
+      {
+        "matcher": "Write|Edit|StrReplace",
+        "command": "node .forgetrail/hooks/guard-edit.mjs"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|StrReplace",
+        "command": "node .forgetrail/hooks/validate-tracking.mjs"
+      }
+    ]
+  }
+}

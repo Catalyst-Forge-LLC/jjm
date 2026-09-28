@@ -1,0 +1,30 @@
+---
+description: Before substantial feature work, run ForgeTrail lessons + anti-patterns (MCP) and fold findings into the plan
+alwaysApply: true
+---
+
+# ForgeTrail lessons gate (when + how)
+
+This complements **`forgetrail-lessons-mcp.mdc`** (tool details + code-path globs) and **`forgetrail-phase-status.mdc`** (phase footer). **Automation:** the IDE cannot invoke MCP tools without the agent doing it—this rule makes that **routine** for the right tasks.
+
+## When to run the gate (do it early, before large edits)
+
+Run **`getAntiPatterns`** once and **`searchLessons`** (one or more queries) when **any** of these is true:
+
+- You expect to touch **≥3 files**, or **≥2** top-level areas (e.g. UI routes + server API + persistence).
+- **New or changed** user-facing flow, export/document pipeline, LLM prompt or response schema, or API route behavior.
+- The user asks for a **plan**, **feature**, **refactor**, or **milestone** that clearly spans multiple files.
+- **Schema / persistence** changes (validation shapes, database fields, migration scripts).
+
+**Skip the gate** for: single-file typos; renames with no behavior change; dependency version bumps with no UX/API impact; or when the user explicitly asks to skip or needs an emergency one-file hotfix.
+
+## How to run it (order)
+
+1. If the client exposes tool schemas, use them for **`searchLessons`** (query + optional limit) and **`getAntiPatterns`** (no arguments). In Cursor, descriptors may appear under the project’s `mcps/` folder for the configured ForgeTrail server.
+2. Call **`getAntiPatterns`** (no args). Skim for items that apply to this task (structured docs vs LLM, vague errors, testing after refactor, schema drift, vague UI specs).
+3. Call **`searchLessons`** with **2–4 short keyword queries** derived from the work (e.g. `wizard progress staged`, `Svelte $effect untrack`, `PPTX export`, `LLM JSON validate`). Use **keywords**, not full sentences; optional `limit` 8–12 if results are thin.
+4. **Fold in before coding:** Add 3–6 bullet points to your plan or first implementation message—what you will **do** or **avoid** (e.g. staged progress for &gt;3s flows, code-owned document structure, plain-language errors). Do **not** paste full MCP dumps unless the user asks for raw excerpts.
+
+## Product-facing users
+
+Do not mention MCP, tool names, or “lessons gate” in UI copy or user-facing summaries unless they ask how the workflow is wired up.

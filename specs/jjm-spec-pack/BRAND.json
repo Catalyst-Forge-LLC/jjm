@@ -1,0 +1,49 @@
+{
+  "spec_pack_version": "0.2",
+  "contract_version": "0.1",
+  "name": "JJM",
+  "expanded_name": "Just Judgment Model",
+  "name_status": "selected",
+  "descriptor": "An open-source judgment runtime.",
+  "positioning": "A programmable judgment layer for applications and agents.",
+  "tagline": "Just judgment. Your application makes the decision.",
+  "spelling": "judgment",
+  "domain": {
+    "display": "JJM.dev",
+    "canonical_host": "jjm.dev",
+    "canonical_origin": "https://jjm.dev",
+    "registration_status": "acquired",
+    "registration_basis": "user_report",
+    "recorded_on": "2026-09-25",
+    "deployment_status": "not_verified"
+  },
+  "website": {
+    "stage": "spec_only",
+    "routes_status": "planned",
+    "public_inference_api": false,
+    "online_inference_demo": false,
+    "runtime_requires_site": false,
+    "routes": {
+      "home": "/",
+      "quickstart": "/docs/quickstart",
+      "concepts": "/docs/concepts",
+      "contract": "/docs/contract",
+      "methods": "/docs/methods",
+      "limitations": "/docs/limitations",
+      "about": "/about",
+      "changelog": "/changelog",
+      "schemas": "/schemas/0.1"
+    }
+  },
+  "distribution": {
+    "python_candidate": "jjm-engine",
+    "python_status": "unverified",
+    "npm_package": null,
+    "npm_status": "unverified",
+    "repository_url": null,
+    "repository_status": "unverified",
+    "cli": "jjm",
+    "cli_status": "proposed",
+    "trademark_clearance": "not_performed"
+  }
+}

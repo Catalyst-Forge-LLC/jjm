@@ -1,0 +1,1270 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:jjm:definitions:0.1",
+  "title": "JJM proposed contract definitions 0.1",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]*$"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "json": {
+      "anyOf": [
+        {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null"
+          ]
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/json"
+          },
+          "minItems": 0
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/json"
+          }
+        }
+      ]
+    },
+    "evidenceItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "kind": {
+          "enum": [
+            "document",
+            "tool_receipt",
+            "test_result",
+            "observation",
+            "assertion"
+          ]
+        },
+        "content": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/json"
+        },
+        "observed_at": {
+          "anyOf": [
+            {
+              "$ref": "urn:jjm:definitions:0.1#/$defs/time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "content",
+        "observed_at"
+      ],
+      "additionalProperties": false
+    },
+    "state": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "revision": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "observed_at": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/time"
+        },
+        "content": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/json"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/evidenceItem"
+          },
+          "minItems": 0,
+          "maxItems": 64
+        }
+      },
+      "required": [
+        "id",
+        "revision",
+        "observed_at",
+        "content",
+        "evidence"
+      ],
+      "additionalProperties": false
+    },
+    "option": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "description"
+      ],
+      "additionalProperties": false
+    },
+    "scoreLevel": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9
+        }
+      },
+      "required": [
+        "id",
+        "description",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "choice": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "version": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "required_evidence_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "accept_outcomes": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "kind": {
+          "const": "choice"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/option"
+          },
+          "minItems": 2,
+          "maxItems": 26
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "question",
+        "required_evidence_ids",
+        "accept_outcomes",
+        "kind",
+        "options"
+      ],
+      "additionalProperties": false
+    },
+    "assertion": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "version": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "required_evidence_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "accept_outcomes": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "kind": {
+          "const": "assertion"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "question",
+        "required_evidence_ids",
+        "accept_outcomes",
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "score": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "version": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "required_evidence_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "accept_outcomes": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "kind": {
+          "const": "score"
+        },
+        "levels": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/scoreLevel"
+          },
+          "minItems": 2,
+          "maxItems": 10
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "question",
+        "required_evidence_ids",
+        "accept_outcomes",
+        "kind",
+        "levels"
+      ],
+      "additionalProperties": false
+    },
+    "criterion": {
+      "oneOf": [
+        {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/choice"
+        },
+        {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/assertion"
+        },
+        {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/score"
+        }
+      ]
+    },
+    "requirements": {
+      "type": "object",
+      "properties": {
+        "calibration": {
+          "enum": [
+            "not_required",
+            "validated_in_scope"
+          ]
+        },
+        "allowed_methods": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "min_top_mass": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "min_margin": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "require_verified_model_revision": {
+          "type": "boolean"
+        },
+        "max_state_age_seconds": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "calibration",
+        "allowed_methods",
+        "min_top_mass",
+        "min_margin",
+        "require_verified_model_revision",
+        "max_state_age_seconds"
+      ],
+      "additionalProperties": false
+    },
+    "request": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "0.1"
+        },
+        "request_id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "scope_id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "profile_id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "state": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/state"
+        },
+        "criteria": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/criterion"
+          },
+          "minItems": 1,
+          "maxItems": 32
+        },
+        "requirements": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/requirements"
+        },
+        "timeout_ms": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 300000
+        }
+      },
+      "required": [
+        "schema_version",
+        "request_id",
+        "scope_id",
+        "profile_id",
+        "state",
+        "criteria",
+        "requirements",
+        "timeout_ms"
+      ],
+      "additionalProperties": false
+    },
+    "prediction": {
+      "type": "object",
+      "properties": {
+        "weights": {
+          "type": "object",
+          "minProperties": 2,
+          "maxProperties": 26,
+          "propertyNames": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+          },
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "semantics": {
+          "enum": [
+            "normalized_readout",
+            "calibrated_estimate",
+            "provider_reported"
+          ]
+        },
+        "selected": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "top_mass": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "margin": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "normalized_entropy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "weights",
+        "semantics",
+        "selected",
+        "value",
+        "top_mass",
+        "margin",
+        "normalized_entropy"
+      ],
+      "additionalProperties": false
+    },
+    "check": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "mandatory": {
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [
+            "pass",
+            "fail",
+            "unknown"
+          ]
+        },
+        "code": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        }
+      },
+      "required": [
+        "id",
+        "mandatory",
+        "status",
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "acceptance": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "pass",
+            "hold",
+            "reject"
+          ]
+        },
+        "reason_codes": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/check"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "status",
+        "reason_codes",
+        "checks"
+      ],
+      "additionalProperties": false
+    },
+    "evidenceResult": {
+      "type": "object",
+      "properties": {
+        "considered_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "selected_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "missing_required_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "selection_method": {
+          "enum": [
+            "none",
+            "bounded_candidate_selection"
+          ]
+        },
+        "verification": {
+          "const": "not_performed"
+        }
+      },
+      "required": [
+        "considered_ids",
+        "selected_ids",
+        "missing_required_ids",
+        "selection_method",
+        "verification"
+      ],
+      "additionalProperties": false
+    },
+    "calibration": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "not_fitted",
+            "fitted_unvalidated",
+            "validated_in_scope",
+            "out_of_scope",
+            "unknown"
+          ]
+        },
+        "artifact_id": {
+          "anyOf": [
+            {
+              "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "validation_report_id": {
+          "anyOf": [
+            {
+              "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scope_match": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "status",
+        "artifact_id",
+        "validation_report_id",
+        "scope_match"
+      ],
+      "additionalProperties": false
+    },
+    "model": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "revision": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "revision_status": {
+          "enum": [
+            "verified",
+            "operator_attested",
+            "unknown"
+          ]
+        },
+        "tokenizer_revision": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "revision",
+        "revision_status",
+        "tokenizer_revision"
+      ],
+      "additionalProperties": false
+    },
+    "runtime": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dtype": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "numeric_path": {
+          "enum": [
+            "none",
+            "synthetic",
+            "logit_readout",
+            "single_token_readout",
+            "hidden_state_head",
+            "provider_native"
+          ]
+        },
+        "prompt_evaluations": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "adapter_calls": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "prefix_reuse": {
+          "enum": [
+            "used",
+            "not_used",
+            "unknown"
+          ]
+        },
+        "early_exit": {
+          "enum": [
+            "used",
+            "not_used",
+            "unknown"
+          ]
+        },
+        "elapsed_ms": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "dtype",
+        "numeric_path",
+        "prompt_evaluations",
+        "adapter_calls",
+        "prefix_reuse",
+        "early_exit",
+        "elapsed_ms"
+      ],
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "execution_mode": {
+          "enum": [
+            "synthetic",
+            "real"
+          ]
+        },
+        "engine_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "upstream_commit": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "adapter_id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "adapter_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "profile_id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "profile_generation": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "state_id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "state_revision": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "state_digest": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/digest"
+        },
+        "criterion_digest": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/digest"
+        },
+        "rendering_digest": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/digest"
+        },
+        "effective_config_digest": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/digest"
+        },
+        "policy_digest": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/digest"
+        },
+        "model": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/model"
+        },
+        "method": {
+          "anyOf": [
+            {
+              "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "upstream_level": {
+          "enum": [
+            "raw",
+            "L0",
+            "L1",
+            "L2",
+            null
+          ]
+        },
+        "calibration": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/calibration"
+        },
+        "runtime": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/runtime"
+        },
+        "diagnostics": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/json"
+          }
+        }
+      },
+      "required": [
+        "execution_mode",
+        "engine_version",
+        "upstream_commit",
+        "adapter_id",
+        "adapter_version",
+        "profile_id",
+        "profile_generation",
+        "state_id",
+        "state_revision",
+        "state_digest",
+        "criterion_digest",
+        "rendering_digest",
+        "effective_config_digest",
+        "policy_digest",
+        "model",
+        "method",
+        "upstream_level",
+        "calibration",
+        "runtime",
+        "diagnostics"
+      ],
+      "additionalProperties": false
+    },
+    "error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "retryable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "retryable"
+      ],
+      "additionalProperties": false
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "criterion_id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "kind": {
+          "enum": [
+            "choice",
+            "assertion",
+            "score"
+          ]
+        },
+        "status": {
+          "enum": [
+            "evaluated",
+            "abstained",
+            "error"
+          ]
+        },
+        "prediction": {
+          "anyOf": [
+            {
+              "$ref": "urn:jjm:definitions:0.1#/$defs/prediction"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "acceptance": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/acceptance"
+        },
+        "evidence": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/evidenceResult"
+        },
+        "provenance": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/provenance"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "urn:jjm:definitions:0.1#/$defs/error"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "criterion_id",
+        "kind",
+        "status",
+        "prediction",
+        "acceptance",
+        "evidence",
+        "provenance",
+        "error"
+      ],
+      "additionalProperties": false
+    },
+    "response": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "0.1"
+        },
+        "request_id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "evaluated_at": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/time"
+        },
+        "elapsed_ms": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/result"
+          },
+          "minItems": 1,
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "schema_version",
+        "request_id",
+        "evaluated_at",
+        "elapsed_ms",
+        "results"
+      ],
+      "additionalProperties": false
+    },
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "0.1"
+        },
+        "profile_id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "execution_mode": {
+          "enum": [
+            "synthetic",
+            "real"
+          ]
+        },
+        "supported_kinds": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "choice",
+              "assertion",
+              "score"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "methods": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "max_choice_options": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 26
+        },
+        "max_score_levels": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "input_forms": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "text",
+              "json"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "number_semantics": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "normalized_readout",
+              "calibrated_estimate",
+              "provider_reported"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "evidence_selection": {
+          "type": "boolean"
+        },
+        "can_verify_model_revision": {
+          "type": "boolean"
+        },
+        "persistent_state_handles": {
+          "const": false
+        },
+        "max_request_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_criteria": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32
+        },
+        "max_context_tokens": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "profile_id",
+        "execution_mode",
+        "supported_kinds",
+        "methods",
+        "max_choice_options",
+        "max_score_levels",
+        "input_forms",
+        "number_semantics",
+        "evidence_selection",
+        "can_verify_model_revision",
+        "persistent_state_handles",
+        "max_request_bytes",
+        "max_criteria",
+        "max_context_tokens"
+      ],
+      "additionalProperties": false
+    },
+    "labelSource": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "human",
+            "deterministic_outcome",
+            "teacher_model",
+            "synthetic",
+            "mixed"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dataset_id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "dataset_revision": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "kind",
+        "description",
+        "dataset_id",
+        "dataset_revision"
+      ],
+      "additionalProperties": false
+    },
+    "artifact": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "0.1"
+        },
+        "artifact_id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "artifact_version": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "execution_mode": {
+          "enum": [
+            "synthetic",
+            "real"
+          ]
+        },
+        "created_at": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/time"
+        },
+        "payload_digest": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/digest"
+        },
+        "method": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "criterion_digest": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/digest"
+        },
+        "effective_config_digest": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/digest"
+        },
+        "model": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/model"
+        },
+        "rendering_digest": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/digest"
+        },
+        "label_source": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/labelSource"
+        },
+        "fit_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "heldout_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "split_description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "validation_status": {
+          "enum": [
+            "fitted_unvalidated",
+            "validated",
+            "rejected"
+          ]
+        },
+        "validation_report_id": {
+          "anyOf": [
+            {
+              "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scope_id": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+        },
+        "promoted": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "schema_version",
+        "artifact_id",
+        "artifact_version",
+        "execution_mode",
+        "created_at",
+        "payload_digest",
+        "method",
+        "criterion_digest",
+        "effective_config_digest",
+        "model",
+        "rendering_digest",
+        "label_source",
+        "fit_count",
+        "heldout_count",
+        "split_description",
+        "validation_status",
+        "validation_report_id",
+        "scope_id",
+        "promoted"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

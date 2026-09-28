@@ -1,0 +1,16 @@
+profile: forgetrail
+profile_version: 0.1.0
+archetype: product
+project_status: active
+current_phase_instance: phase-bdf2e24d-1c55-48ae-95f8-3541bc3fd101
+phase_instances:
+  - id: phase-bdf2e24d-1c55-48ae-95f8-3541bc3fd101
+    phase: plan
+    status: in_progress
+    started_at: 2026-09-28T20:01:13Z
+    criteria:
+      - id: crit-7c916aa5-25eb-409e-aeb3-d7431b4e31f1
+        text: Record what this application is for
+        status: pending
+        evidence_refs: []
+transitions: []

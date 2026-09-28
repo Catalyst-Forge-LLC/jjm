@@ -1,0 +1,16 @@
+{
+  "inspection_date": "2026-09-25",
+  "repository": "https://github.com/nokia-applied-research/AnyJev",
+  "branch": "main",
+  "commit": null,
+  "declared_package_version": "0.1.0",
+  "inspection_method": "public source and documentation via web retrieval",
+  "local_clone_obtained": false,
+  "upstream_tests_run": false,
+  "model_inference_run": false,
+  "required_before_implementation": [
+    "resolve immutable commit",
+    "reconcile findings",
+    "run inherited CPU tests"
+  ]
+}

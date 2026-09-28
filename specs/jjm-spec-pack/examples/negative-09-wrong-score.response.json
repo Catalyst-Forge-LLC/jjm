@@ -1,0 +1,90 @@
+{
+  "schema_version": "0.1",
+  "request_id": "fixture-score",
+  "evaluated_at": "2026-09-25T18:00:01Z",
+  "elapsed_ms": 0,
+  "results": [
+    {
+      "criterion_id": "explanation-quality",
+      "kind": "score",
+      "status": "evaluated",
+      "prediction": {
+        "weights": {
+          "weak": 0.1,
+          "adequate": 0.3,
+          "strong": 0.6
+        },
+        "semantics": "normalized_readout",
+        "selected": "strong",
+        "value": 2.0,
+        "top_mass": 0.6,
+        "margin": 0.3,
+        "normalized_entropy": 0.8173454221465101
+      },
+      "acceptance": {
+        "status": "pass",
+        "reason_codes": [],
+        "checks": [
+          {
+            "id": "fixture-consumption-check",
+            "mandatory": true,
+            "status": "pass",
+            "code": "OK"
+          }
+        ]
+      },
+      "evidence": {
+        "considered_ids": [],
+        "selected_ids": [],
+        "missing_required_ids": [],
+        "selection_method": "none",
+        "verification": "not_performed"
+      },
+      "provenance": {
+        "execution_mode": "synthetic",
+        "engine_version": "spec-fixture-0.1",
+        "upstream_commit": null,
+        "adapter_id": "mock",
+        "adapter_version": "fixture-1",
+        "profile_id": "fixture-profile",
+        "profile_generation": "fixture-1",
+        "state_id": "fixture-state",
+        "state_revision": "r1",
+        "state_digest": "sha256:2bcc5247b7fd7bdc053c24c2dae34e95900d840bc094b5b97f2ad8dfb37def50",
+        "criterion_digest": "sha256:1312d1216ce2b15b0f0569fc1d6b8eb0d29e7fdcfef48d514fe87c5a8747bd4c",
+        "rendering_digest": "sha256:77fb9322c9784bf14c43a9cf3a4a584cd2c7c059e9d15ee71835e0b86190196d",
+        "effective_config_digest": "sha256:49ec8c496950d6d9641f4cee5ec28329474593d0d130b9464e79f4a4ac3bac69",
+        "policy_digest": "sha256:3196a3e5e682b2a99b52c9afbfdd427da6722d1c2db88404e0e249bfb342906b",
+        "model": {
+          "id": "fixture/not-a-real-model",
+          "revision": "fixture-revision-1",
+          "revision_status": "operator_attested",
+          "tokenizer_revision": "fixture-tokenizer-1"
+        },
+        "method": "mock:normalized",
+        "upstream_level": null,
+        "calibration": {
+          "status": "not_fitted",
+          "artifact_id": null,
+          "validation_report_id": null,
+          "scope_match": false
+        },
+        "runtime": {
+          "id": "fixture-runtime",
+          "version": "1",
+          "dtype": null,
+          "numeric_path": "synthetic",
+          "prompt_evaluations": 0,
+          "adapter_calls": 0,
+          "prefix_reuse": "not_used",
+          "early_exit": "not_used",
+          "elapsed_ms": 0
+        },
+        "diagnostics": {
+          "fixture_notice": "Synthetic contract data, not a model result or a real calibration report."
+        }
+      },
+      "error": null
+    }
+  ]
+}

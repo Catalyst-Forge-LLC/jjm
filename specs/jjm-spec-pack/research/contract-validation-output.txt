@@ -1,0 +1,28 @@
+PASS accepted 01-routing
+PASS accepted 02-supported
+PASS accepted 03-missing-evidence
+PASS accepted 04-not-observable
+PASS accepted 05-calibration-required
+PASS accepted 06-low-margin
+PASS accepted 07-incomplete-backend
+PASS accepted 08-score
+PASS accepted 09-calibrated-shape
+PASS accepted 10-unknown-model
+PASS rejected negative-01-unknown-option: Distribution must contain exactly the expected option IDs
+PASS rejected negative-02-false-calibration: Calibrated semantics require validated in-scope metadata
+PASS rejected negative-03-missing-provenance: 'provenance' is a required property
+PASS rejected negative-04-invalid-sum: Weight sum does not match its defined arithmetic
+PASS rejected negative-05-stale-state-id: Response state identity differs from request
+PASS rejected negative-06-false-selected-evidence: Evidence selections reported without a selection operation
+PASS rejected negative-07-abstained-pass: A non-evaluated result cannot have a prediction or pass
+PASS rejected negative-08-duplicate-criterion: Duplicate criterion ID
+PASS rejected negative-09-wrong-score: Score value does not match its defined arithmetic
+PASS rejected negative-10-rejected-outcome-pass: Selected outcome fails consumption filter
+PASS rejected negative-11-method-mismatch: Actual method is not allowed
+PASS rejected negative-12-unverified-model-pass: Verified model revision is required
+PASS rejected negative-13-missing-required-passes: Considered evidence was not supplied
+PASS rejected negative-14-nonconsecutive-score: Score indices must be consecutive from zero
+PASS rejected negative-15-wrong-head-binding: Artifact binding mismatch: criterion_digest
+
+SUMMARY: 6 schemas valid, 10 positive pairs accepted, 15 negative pairs rejected, 1 capability fixture valid, 4 strict parser cases rejected.
+Scope: synthetic contract checks only. No model, GPU, provider, or calibration evaluation.

@@ -1,0 +1,60 @@
+---
+description: Show ForgeTrail phase and next actions from appledger/profiles/forgetrail.yaml
+alwaysApply: true
+---
+
+# ForgeTrail phase awareness
+
+This repo uses **ForgeTrail**. **Source of truth:** `appledger/profiles/forgetrail.yaml` and the latest session record. Do **not** read or write `.forgetrail/workflow_tracking.json`. If that file exists and is not a pointer, it is a legacy conflict: run `appledger migrate preview`, then apply.
+
+## When to surface status
+
+Include a short **ForgeTrail** footer in replies when it helps orientation—especially:
+
+- User asks **what’s next**, **status**, **phase**, or **milestone**
+- **Start** of a multi-step / multi-file task block
+- **End** of a task block, PR-sized change, or session wrap-up
+
+**Lessons gate:** For substantial work (see **`forgetrail-lessons-gate.mdc`**), run **`getAntiPatterns`** + **`searchLessons`** before deep implementation; the phase footer can still appear at start/end without repeating full lesson text.
+
+Skip the footer for trivial one-line answers (typos, single-token replies) unless the user asked for status.
+
+**Product-facing / non-technical users:** Do **not** show ForgeTrail footers, phase IDs, MCP/tool names, or internal checklists unless they ask how the workflow is wired up. Plain language only. For phase progress without an agent, point them to **`docs/FORGETRAIL_PROGRESS.md`**. The durable phase is `appledger/profiles/forgetrail.yaml`, not `.forgetrail/workflow_tracking.json`.
+
+**Right after bootstrap:** **Omit** the footer entirely—user should get a simple “what’s done + what I need from you next,” not methodology. If you already followed **`getPostBootstrapUserMessage`** in the same turn, do not duplicate status blocks.
+
+## What to read
+
+1. Open **`appledger/profiles/forgetrail.yaml`** and the latest session record (or use known state from the same turn).
+2. Report the current phase id: `plan`, `build`, `stabilize`, `iterate`, `refine`, `align`, or `harden`.
+3. For that phase instance, note **`status`** and **1–3 pending criteria** as **likely next actions** (truncate with “…” if long).
+4. If later-phase docs are expected but missing, mention once: e.g. no **`CONTEXT_PROMPT.md`** / **`TODO.md`** at repo root when the phase is past `plan`.
+
+## Footer format (compact, copy-paste)
+
+Use this shape (adapt fields from JSON):
+
+```text
+**ForgeTrail:** Build (2-scaffolding) · in_progress · Next: … · Docs: CONTEXT_PROMPT / TODO — pending until scaffolded
+```
+
+Keep it **≤4 lines**. Do not repeat the full exit-criteria list—only the next likely moves.
+
+## Presenting options and next steps
+
+When offering **multiple** things the user can do or a **default order** of work:
+
+| Situation | Format |
+|-----------|--------|
+| **Sequence / pipeline** (A before B, or “natural order”) | **Numbered list** `1.` `2.` `3.` — implies order and dependencies |
+| **Parallel options** (same weight, any order) | **Bullets** `-` or `•` |
+| **Pick one track** or short reply (“Start with B”) | **Letters** **A / B / C** — avoids clashing with numbered pipeline steps |
+| **Numbered pipeline** but **flexible start** | Show numbers for the default sequence, then **one line**: which step first (or reorder) |
+
+Do **not** bury three or more paths in a single long sentence—**list them**, then ask which to do first.
+
+(Full text: **`content/USER_REPLY_FORMAT.md`** in ForgeTrail.)
+
+## Phase transitions
+
+Do **not** advance `current_phase_instance` or mark a phase completed without **explicit user confirmation**. If criteria look satisfied, say so and ask before updating the profile. Do not write `workflow_tracking.json`.

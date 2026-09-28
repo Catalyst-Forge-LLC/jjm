@@ -1,0 +1,24 @@
+---
+description: Implementation detail — ForgeTrail MCP searchLessons + getAntiPatterns (also see forgetrail-lessons-gate.mdc)
+globs: src/routes/**,src/lib/**
+alwaysApply: false
+---
+
+# ForgeTrail lessons + anti-patterns (MCP)
+
+**Workflow:** **`forgetrail-lessons-gate.mdc`** defines **when** to run tools before larger tasks. This file adds **density** when you are already editing app code: still run **`getAntiPatterns`** + **`searchLessons`** if the gate applies and you have not run them in this task block.
+
+**Adjust `globs`** in the frontmatter above to match your repo (e.g. add `src/lib/server/**`, e2e paths, or product-specific folders).
+
+For **UI/UX**, **data/API**, **export or document pipelines**, **progress/loading**, **user-facing copy**, or **LLM prompt tone**:
+
+1. **`searchLessons`** (ForgeTrail MCP — typically configured as the `forgetrail` server in `.cursor/mcp.json`)
+   - Pass a short **`query`** string (keywords, not sentences), e.g. `wizard tabs progress`, `empty state copy`, `export loading`, `LLM JSON`, `Svelte backdrop`.
+   - Optional **`limit`** (default 10).
+
+2. **`getAntiPatterns`** (same server, no arguments)
+   - Skim for failure modes that apply (vague specs, schema drift, untested refactors, jargon in empty states).
+
+**When to skip:** trivial one-line edits, pure type renames with no UX impact, or when the user explicitly asks not to broaden scope — consistent with the lessons gate.
+
+**Product-facing users:** Do not mention MCP, tool names, or this rule in user-visible text unless they ask how the workflow is wired up.

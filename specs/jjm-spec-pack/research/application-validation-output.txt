@@ -1,0 +1,1 @@
+PASS: 8 application-boundary checks using synthetic fixtures. No action executed.

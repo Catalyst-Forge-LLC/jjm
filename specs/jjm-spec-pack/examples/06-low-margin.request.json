@@ -1,0 +1,51 @@
+{
+  "schema_version": "0.1",
+  "request_id": "fixture-margin",
+  "scope_id": "fixture.export-workflow",
+  "profile_id": "fixture-profile",
+  "state": {
+    "id": "fixture-state",
+    "revision": "r1",
+    "observed_at": "2026-09-25T18:00:00Z",
+    "content": {
+      "task": "Export the approved report",
+      "agent_note": "The export completed."
+    },
+    "evidence": []
+  },
+  "criteria": [
+    {
+      "id": "route-ticket",
+      "version": "1",
+      "kind": "choice",
+      "question": "Which team should own this ticket?",
+      "required_evidence_ids": [],
+      "accept_outcomes": [],
+      "options": [
+        {
+          "id": "billing",
+          "description": "Billing amounts, charges, or refunds"
+        },
+        {
+          "id": "technical",
+          "description": "A product defect or failed technical operation"
+        },
+        {
+          "id": "other",
+          "description": "Neither of the specified teams is supported by the ticket"
+        }
+      ]
+    }
+  ],
+  "requirements": {
+    "calibration": "not_required",
+    "allowed_methods": [
+      "mock:normalized"
+    ],
+    "min_top_mass": null,
+    "min_margin": 0.1,
+    "require_verified_model_revision": false,
+    "max_state_age_seconds": null
+  },
+  "timeout_ms": 30000
+}

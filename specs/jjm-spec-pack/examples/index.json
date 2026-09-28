@@ -1,0 +1,182 @@
+{
+  "notice": "All values are synthetic contract fixtures. None is a model inference, measured calibration result, or benchmark.",
+  "cases": [
+    {
+      "id": "01-routing",
+      "request": "examples/01-routing.request.json",
+      "response": "examples/01-routing.response.json",
+      "expected": "valid",
+      "note": "Accepted uncalibrated fixture. No claim of model performance."
+    },
+    {
+      "id": "02-supported",
+      "request": "examples/02-supported.request.json",
+      "response": "examples/02-supported.response.json",
+      "expected": "valid",
+      "note": "A considered receipt is not an authenticated receipt or model-selected citation."
+    },
+    {
+      "id": "03-missing-evidence",
+      "request": "examples/03-missing-evidence.request.json",
+      "response": "examples/03-missing-evidence.response.json",
+      "expected": "valid",
+      "note": "Preflight abstention has no prediction and no model invocation."
+    },
+    {
+      "id": "04-not-observable",
+      "request": "examples/04-not-observable.request.json",
+      "response": "examples/04-not-observable.response.json",
+      "expected": "valid",
+      "note": "A semantic outcome, not a runtime abstention."
+    },
+    {
+      "id": "05-calibration-required",
+      "request": "examples/05-calibration-required.request.json",
+      "response": "examples/05-calibration-required.response.json",
+      "expected": "valid",
+      "note": "An unavailable requested assurance causes preflight abstention."
+    },
+    {
+      "id": "06-low-margin",
+      "request": "examples/06-low-margin.request.json",
+      "response": "examples/06-low-margin.response.json",
+      "expected": "valid",
+      "note": "A complete evaluated distribution may still be held."
+    },
+    {
+      "id": "07-incomplete-backend",
+      "request": "examples/07-incomplete-backend.request.json",
+      "response": "examples/07-incomplete-backend.response.json",
+      "expected": "valid",
+      "note": "No fabricated probability fills in a missing backend label."
+    },
+    {
+      "id": "08-score",
+      "request": "examples/08-score.request.json",
+      "response": "examples/08-score.response.json",
+      "expected": "valid",
+      "note": "Weighted index 1.5, not a physical measurement."
+    },
+    {
+      "id": "09-calibrated-shape",
+      "request": "examples/09-calibrated-shape.request.json",
+      "response": "examples/09-calibrated-shape.response.json",
+      "expected": "valid",
+      "note": "Synthetic representation of a calibrated shape only, no actual calibration was performed.",
+      "artifact": "examples/calibration-artifact.synthetic.json"
+    },
+    {
+      "id": "10-unknown-model",
+      "request": "examples/10-unknown-model.request.json",
+      "response": "examples/10-unknown-model.response.json",
+      "expected": "valid",
+      "note": "An unknown immutable revision cannot satisfy a verification requirement."
+    },
+    {
+      "id": "negative-01-unknown-option",
+      "request": "examples/negative-01-unknown-option.request.json",
+      "response": "examples/negative-01-unknown-option.response.json",
+      "expected": "invalid",
+      "note": "Extra output labels are not permitted."
+    },
+    {
+      "id": "negative-02-false-calibration",
+      "request": "examples/negative-02-false-calibration.request.json",
+      "response": "examples/negative-02-false-calibration.response.json",
+      "expected": "invalid",
+      "note": "Calibration semantics require validated in-scope metadata."
+    },
+    {
+      "id": "negative-03-missing-provenance",
+      "request": "examples/negative-03-missing-provenance.request.json",
+      "response": "examples/negative-03-missing-provenance.response.json",
+      "expected": "invalid",
+      "note": "Provenance is required."
+    },
+    {
+      "id": "negative-04-invalid-sum",
+      "request": "examples/negative-04-invalid-sum.request.json",
+      "response": "examples/negative-04-invalid-sum.response.json",
+      "expected": "invalid",
+      "note": "Distribution must sum to one."
+    },
+    {
+      "id": "negative-05-stale-state-id",
+      "request": "examples/negative-05-stale-state-id.request.json",
+      "response": "examples/negative-05-stale-state-id.response.json",
+      "expected": "invalid",
+      "note": "Response must identify the supplied state revision."
+    },
+    {
+      "id": "negative-06-false-selected-evidence",
+      "request": "examples/negative-06-false-selected-evidence.request.json",
+      "response": "examples/negative-06-false-selected-evidence.response.json",
+      "expected": "invalid",
+      "note": "No evidence selection operation ran."
+    },
+    {
+      "id": "negative-07-abstained-pass",
+      "request": "examples/negative-07-abstained-pass.request.json",
+      "response": "examples/negative-07-abstained-pass.response.json",
+      "expected": "invalid",
+      "note": "No prediction cannot pass consumption."
+    },
+    {
+      "id": "negative-08-duplicate-criterion",
+      "request": "examples/negative-08-duplicate-criterion.request.json",
+      "response": "examples/negative-08-duplicate-criterion.response.json",
+      "expected": "invalid",
+      "note": "Criterion IDs must be unique."
+    },
+    {
+      "id": "negative-09-wrong-score",
+      "request": "examples/negative-09-wrong-score.request.json",
+      "response": "examples/negative-09-wrong-score.response.json",
+      "expected": "invalid",
+      "note": "Score arithmetic must match the distribution."
+    },
+    {
+      "id": "negative-10-rejected-outcome-pass",
+      "request": "examples/negative-10-rejected-outcome-pass.request.json",
+      "response": "examples/negative-10-rejected-outcome-pass.response.json",
+      "expected": "invalid",
+      "note": "An outcome filter cannot be bypassed."
+    },
+    {
+      "id": "negative-11-method-mismatch",
+      "request": "examples/negative-11-method-mismatch.request.json",
+      "response": "examples/negative-11-method-mismatch.response.json",
+      "expected": "invalid",
+      "note": "Passing results must use a permitted method."
+    },
+    {
+      "id": "negative-12-unverified-model-pass",
+      "request": "examples/negative-12-unverified-model-pass.request.json",
+      "response": "examples/negative-12-unverified-model-pass.response.json",
+      "expected": "invalid",
+      "note": "Attested metadata is not verified metadata."
+    },
+    {
+      "id": "negative-13-missing-required-passes",
+      "request": "examples/negative-13-missing-required-passes.request.json",
+      "response": "examples/negative-13-missing-required-passes.response.json",
+      "expected": "invalid",
+      "note": "Missing required input cannot yield an accepted result."
+    },
+    {
+      "id": "negative-14-nonconsecutive-score",
+      "request": "examples/negative-14-nonconsecutive-score.request.json",
+      "response": "examples/negative-14-nonconsecutive-score.response.json",
+      "expected": "invalid",
+      "note": "Score levels must be consecutive and ordered."
+    },
+    {
+      "id": "negative-15-wrong-head-binding",
+      "request": "examples/negative-15-wrong-head-binding.request.json",
+      "response": "examples/negative-15-wrong-head-binding.response.json",
+      "expected": "invalid",
+      "note": "Identical option vocabulary cannot substitute for criterion identity.",
+      "artifact": "examples/calibration-artifact.wrong-criterion.json"
+    }
+  ]
+}

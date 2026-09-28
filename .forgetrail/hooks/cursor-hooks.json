@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      {
+        "command": "node .forgetrail/hooks/guard-shell.mjs"
+      }
+    ],
+    "preToolUse": [
+      {
+        "command": "node .forgetrail/hooks/guard-edit.mjs"
+      }
+    ],
+    "sessionStart": [
+      {
+        "command": "node .forgetrail/hooks/session-start.mjs"
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "command": "node .forgetrail/hooks/validate-tracking.mjs"
+      }
+    ],
+    "stop": [
+      {
+        "command": "node .forgetrail/hooks/session-stop.mjs"
+      }
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "schema_version": "0.1",
+  "request_id": "fixture-identity",
+  "evaluated_at": "2026-09-25T18:00:01Z",
+  "elapsed_ms": 0,
+  "results": [
+    {
+      "criterion_id": "route-ticket",
+      "kind": "choice",
+      "status": "abstained",
+      "prediction": null,
+      "acceptance": {
+        "status": "hold",
+        "reason_codes": [
+          "MODEL_IDENTITY_UNKNOWN"
+        ],
+        "checks": [
+          {
+            "id": "fixture-consumption-check",
+            "mandatory": true,
+            "status": "fail",
+            "code": "MODEL_IDENTITY_UNKNOWN"
+          }
+        ]
+      },
+      "evidence": {
+        "considered_ids": [],
+        "selected_ids": [],
+        "missing_required_ids": [],
+        "selection_method": "none",
+        "verification": "not_performed"
+      },
+      "provenance": {
+        "execution_mode": "synthetic",
+        "engine_version": "spec-fixture-0.1",
+        "upstream_commit": null,
+        "adapter_id": "mock",
+        "adapter_version": "fixture-1",
+        "profile_id": "fixture-profile",
+        "profile_generation": "fixture-1",
+        "state_id": "fixture-state",
+        "state_revision": "r1",
+        "state_digest": "sha256:107c9432f024ab6e557c5e4aec9ee3214ae1505e8087f43c9e57a09919ab75c2",
+        "criterion_digest": "sha256:07291dcac7ed5b3dbc31922eb38773596b4c4898d046d5d504d9df7e9feda6b4",
+        "rendering_digest": "sha256:77fb9322c9784bf14c43a9cf3a4a584cd2c7c059e9d15ee71835e0b86190196d",
+        "effective_config_digest": "sha256:49ec8c496950d6d9641f4cee5ec28329474593d0d130b9464e79f4a4ac3bac69",
+        "policy_digest": "sha256:b16a39ea86b20cc3b47e3a67830110c0c2110a4f515254c919db55290134733b",
+        "model": {
+          "id": "fixture/not-a-real-model",
+          "revision": null,
+          "revision_status": "unknown",
+          "tokenizer_revision": "fixture-tokenizer-1"
+        },
+        "method": null,
+        "upstream_level": null,
+        "calibration": {
+          "status": "not_fitted",
+          "artifact_id": null,
+          "validation_report_id": null,
+          "scope_match": false
+        },
+        "runtime": {
+          "id": "fixture-runtime",
+          "version": "1",
+          "dtype": null,
+          "numeric_path": "none",
+          "prompt_evaluations": 0,
+          "adapter_calls": 0,
+          "prefix_reuse": "not_used",
+          "early_exit": "not_used",
+          "elapsed_ms": 0
+        },
+        "diagnostics": {
+          "fixture_notice": "Synthetic contract data, not a model result or a real calibration report."
+        }
+      },
+      "error": null
+    }
+  ]
+}

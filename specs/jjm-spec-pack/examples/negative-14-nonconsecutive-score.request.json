@@ -1,0 +1,54 @@
+{
+  "schema_version": "0.1",
+  "request_id": "fixture-score",
+  "scope_id": "fixture.export-workflow",
+  "profile_id": "fixture-profile",
+  "state": {
+    "id": "fixture-state",
+    "revision": "r1",
+    "observed_at": "2026-09-25T18:00:00Z",
+    "content": {
+      "task": "Export the approved report",
+      "agent_note": "The export completed."
+    },
+    "evidence": []
+  },
+  "criteria": [
+    {
+      "id": "explanation-quality",
+      "version": "1",
+      "kind": "score",
+      "question": "Rate how clearly the supplied explanation identifies the observed problem.",
+      "required_evidence_ids": [],
+      "accept_outcomes": [],
+      "levels": [
+        {
+          "id": "weak",
+          "description": "The problem is not identified",
+          "value": 0
+        },
+        {
+          "id": "adequate",
+          "description": "The problem is identified but important details are missing",
+          "value": 2
+        },
+        {
+          "id": "strong",
+          "description": "The problem and relevant observations are clear",
+          "value": 2
+        }
+      ]
+    }
+  ],
+  "requirements": {
+    "calibration": "not_required",
+    "allowed_methods": [
+      "mock:normalized"
+    ],
+    "min_top_mass": null,
+    "min_margin": null,
+    "require_verified_model_revision": false,
+    "max_state_age_seconds": null
+  },
+  "timeout_ms": 30000
+}

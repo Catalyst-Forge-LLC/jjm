@@ -1,0 +1,41 @@
+{
+  "schema_version": "0.1",
+  "request_id": "fixture-missing",
+  "scope_id": "fixture.export-workflow",
+  "profile_id": "fixture-profile",
+  "state": {
+    "id": "fixture-state",
+    "revision": "r1",
+    "observed_at": "2026-09-25T18:00:00Z",
+    "content": {
+      "task": "Export the approved report",
+      "agent_note": "The export completed."
+    },
+    "evidence": []
+  },
+  "criteria": [
+    {
+      "id": "export-completed",
+      "version": "1",
+      "kind": "assertion",
+      "question": "Does the supplied evidence establish that the requested report export completed?",
+      "required_evidence_ids": [
+        "export-receipt"
+      ],
+      "accept_outcomes": [
+        "supported"
+      ]
+    }
+  ],
+  "requirements": {
+    "calibration": "not_required",
+    "allowed_methods": [
+      "mock:normalized"
+    ],
+    "min_top_mass": null,
+    "min_margin": null,
+    "require_verified_model_revision": false,
+    "max_state_age_seconds": null
+  },
+  "timeout_ms": 30000
+}

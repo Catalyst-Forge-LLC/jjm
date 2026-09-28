@@ -1,0 +1,31 @@
+{
+  "schema_version": "0.1",
+  "artifact_id": "fixture-artifact-1",
+  "artifact_version": "1",
+  "execution_mode": "synthetic",
+  "created_at": "2026-09-25T17:00:00Z",
+  "payload_digest": "sha256:cbdf3091c6a147594105e9cc73c61d271d42fc4f3811a96442d25e3cca64d807",
+  "method": "mock:calibrated",
+  "criterion_digest": "sha256:773b229482559e302867ca5e1fd23768548b7d355a5cd6f9fce63f7b4a11c5e1",
+  "effective_config_digest": "sha256:3c0a8fc4014f6aa586d75f39703a2b90bd02b61df93bb7a8896e6bc2ec805321",
+  "model": {
+    "id": "fixture/not-a-real-model",
+    "revision": "fixture-revision-1",
+    "revision_status": "operator_attested",
+    "tokenizer_revision": "fixture-tokenizer-1"
+  },
+  "rendering_digest": "sha256:77fb9322c9784bf14c43a9cf3a4a584cd2c7c059e9d15ee71835e0b86190196d",
+  "label_source": {
+    "kind": "synthetic",
+    "description": "Schema illustration only. No dataset was collected or model fitted.",
+    "dataset_id": "fixture-only",
+    "dataset_revision": "1"
+  },
+  "fit_count": 10,
+  "heldout_count": 10,
+  "split_description": "Illustrative metadata, not a performed split or evaluation.",
+  "validation_status": "validated",
+  "validation_report_id": "fixture-validation-1",
+  "scope_id": "fixture.export-workflow",
+  "promoted": true
+}

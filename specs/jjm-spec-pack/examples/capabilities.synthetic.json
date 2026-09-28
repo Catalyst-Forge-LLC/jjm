@@ -1,0 +1,30 @@
+{
+  "schema_version": "0.1",
+  "profile_id": "fixture-profile",
+  "execution_mode": "synthetic",
+  "supported_kinds": [
+    "choice",
+    "assertion",
+    "score"
+  ],
+  "methods": [
+    "mock:normalized",
+    "mock:calibrated"
+  ],
+  "max_choice_options": 26,
+  "max_score_levels": 10,
+  "input_forms": [
+    "text",
+    "json"
+  ],
+  "number_semantics": [
+    "normalized_readout",
+    "calibrated_estimate"
+  ],
+  "evidence_selection": false,
+  "can_verify_model_revision": false,
+  "persistent_state_handles": false,
+  "max_request_bytes": 1048576,
+  "max_criteria": 32,
+  "max_context_tokens": null
+}
