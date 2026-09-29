@@ -1,0 +1,62 @@
+{
+  "profiles": [
+    {
+      "id": "route-embed",
+      "adapter": "fitted-head",
+      "encoder": {
+        "kind": "hf",
+        "model": {"id": "Qwen/Qwen3-Embedding-0.6B", "path": null, "revision": null},
+        "pooling": "last",
+        "batch_size": 64,
+        "max_tokens": 256
+      },
+      "artifacts": "../runs/routing/heads",
+      "cache": "../runs/routing/cache",
+      "max_context_tokens": 256
+    },
+    {
+      "id": "route-rerank",
+      "adapter": "fitted-head",
+      "encoder": {
+        "kind": "hf",
+        "model": {"id": "Qwen/Qwen3-Reranker-0.6B", "path": null, "revision": null},
+        "pooling": "mean",
+        "batch_size": 64,
+        "max_tokens": 256
+      },
+      "artifacts": "../runs/routing/heads",
+      "cache": "../runs/routing/cache",
+      "max_context_tokens": 256
+    },
+    {
+      "id": "route-rerank-half",
+      "adapter": "fitted-head",
+      "encoder": {
+        "kind": "hf",
+        "model": {"id": "Qwen/Qwen3-Reranker-0.6B", "path": null, "revision": null},
+        "layer": 0.5,
+        "pooling": "mean",
+        "batch_size": 64,
+        "max_tokens": 256
+      },
+      "artifacts": "../runs/routing/heads",
+      "cache": "../runs/routing/cache",
+      "max_context_tokens": 256
+    },
+    {
+      "id": "route-nomic",
+      "adapter": "fitted-head",
+      "encoder": {
+        "kind": "ollama",
+        "model": "nomic-embed-text-v2-moe:latest",
+        "prefix_template": "classification: {question}\n"
+      },
+      "artifacts": "../runs/routing/heads",
+      "cache": "../runs/routing/cache"
+    }
+  ],
+  "teachers": [
+    {"id": "qwen35", "provider": "ollama", "model": "qwen3.5:9b"},
+    {"id": "hosted", "provider": "litellm", "model": "anthropic/claude-sonnet-4-6"}
+  ]
+}

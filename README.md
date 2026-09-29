@@ -60,6 +60,25 @@ uv run jjm --profiles my-profiles.json evaluate --request request.json
 
 This route uses AnyJev's L0 readout with permutation only: the options are shown in every rotation, and the letter-token probabilities are averaged in log space. There is no prior correction. See `UPSTREAM.md` for the pinned AnyJev release and every setting JJM fixes.
 
+## Fitted-head route
+
+When you have labelled examples for a criterion, a `fitted-head` profile is much faster and, on the tasks tried so far, more accurate. A frozen encoder reads the state once, and a small head fitted on your examples turns that into weights. The encoder can be any Hugging Face checkpoint or Ollama embedding model; nothing is hard-coded.
+
+```bash
+uv run jjm models                       # what is installed locally, with suggested roles
+uv run jjm --profiles p.json fit --profile route-embed --criterion c.json --examples ex.jsonl --promote
+uv run jjm --profiles p.json heads --profile route-embed
+uv run jjm --profiles p.json evaluate-batch --requests requests.jsonl
+```
+
+- `--examples` is JSONL of `{"state": {...}, "label": "<outcome id>"}`. Or pass `--teacher <id>` to have a teacher model label the states instead, and the artifact records that the labels came from it.
+- A head is bound to the exact criterion digest, encoder identity, and head method. Fitting the same examples again returns the stored head. A head serves only after `--promote`; otherwise the criterion abstains with `ARTIFACT_MISMATCH`.
+- Results report `calibration.status: fitted_unvalidated` with the artifact id. Cross-validation picked the head's setting, so its report is not a held-out validation, and a request that requires validated calibration still abstains.
+- Teachers are listed under `teachers` in the profiles file: a local Ollama model, or any provider [LiteLLM](https://docs.litellm.ai/) supports (`uv sync --extra providers`). Teachers label examples. They never run inside `evaluate`.
+- Speed settings live in the profile and its identity: `batch_size`, `max_tokens`, `layer` (early exit, as a layer count or depth fraction), `prefix_reuse`, and a feature `cache` directory.
+
+See `examples/jjm-profiles.routing.example.json`.
+
 ## Real-model results so far
 
 These were run with Qwen3-1.7B at revision `70d244cc`, in bfloat16 on a 12 GB RTX 4000 Ada laptop GPU with CUDA 13.0.
@@ -72,6 +91,7 @@ These were run with Qwen3-1.7B at revision `70d244cc`, in bfloat16 on a 12 GB RT
   - With the model held fixed, JJM's readout beat letting Qwen3-4B write the rank from Sonnet's own prompt. Within one rank was 89% against 69%, weighted kappa 0.19 against 0.10, and rank correlation 0.38 against 0.14.
   - One forward pass is much faster and, zero-shot, orders jobs about as well. A 0.6B reranker's yes/no probability has rank correlation 0.43 with Sonnet at 186 ms, against the 4B readout's 0.43 at 5 s. A small head trained on Sonnet's ranks (cross-validated) reaches weighted kappa 0.45 at that same 186 ms. That head is distillation, not an independent judge.
   - Details are in `trials/fit_rank/README.md`.
+- **Banking77 routing, eight teams, against human labels** (`trials/routing/README.md`): a Qwen3-Embedding-0.6B head reached 97.1% on 3,080 test messages, at about 5 ms per message in bulk and 11 ms per request through `evaluate_batch`. On a 400-message subset, qwen3.5:9b asked directly got 88% at about 400 ms, and the AnyJev readout on Qwen3-1.7B got 75%. With 16 labelled messages per team, the head already beat the 9B model.
 
 ## Layout
 
@@ -80,6 +100,7 @@ These were run with Qwen3-1.7B at revision `70d244cc`, in bfloat16 on a 12 GB RT
 - `docs/PHASE_1_BRIEF.md`: what v1 is and is not.
 - `UPSTREAM.md`: the AnyJev pin, tests run, and reconciliation.
 - `trials/fit_rank/`: the Exec Foundry fit-rank shadow trial.
+- `trials/routing/`: the Banking77 routing benchmark (data not included; CC-BY-4.0, PolyAI).
 
 ## Credits
 

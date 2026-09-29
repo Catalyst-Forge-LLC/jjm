@@ -30,6 +30,14 @@ JJM (Just Judgment Model) is an open-source, local judgment runtime. An applicat
 - The fit-rank trial harness is in `trials/fit_rank`, with criterion wording frozen as version 1. The exporter is `pnpm export:fit-trial` in Exec Foundry.
 - The production trial (253 jobs, `trials/fit_rank/README.md`) found that neither model's picked rank beats always answering "Strong". Qwen3-4B's weights do track Sonnet's ordering (rank correlation 0.43), on a compressed scale. It takes 5.0 s per job with `shared_prefix: "off"`, against Sonnet's 5.1 s median. Qwen3-1.7B takes 0.72 s.
 
+## Fitted-head route (2026-09-29)
+
+- `decision-fitted-head-engine` adds a `fitted-head` profile: a frozen encoder plus a small fitted head. Code is in `src/jjm/heads/`, `src/jjm/adapters/head_adapter.py`, and `src/jjm/discover.py`.
+- No model is hard-coded. Encoders are any Hugging Face checkpoint or Ollama embedding model. Teachers are Ollama models or LiteLLM providers (the optional `providers` extra), and run only outside `evaluate`.
+- Heads bind to criterion digest, encoder identity, and method. They are reused on an identical training digest, served only after promotion, and refused with `ARTIFACT_MISMATCH` otherwise. Calibration reports `fitted_unvalidated`.
+- Banking77 routing (`trials/routing/README.md`): Qwen3-Embedding-0.6B head 97.1% against human labels, about 5 ms per message in bulk. qwen3.5:9b zero-shot 88%, and the AnyJev 1.7B readout 75%. Profiles are in `jjm-profiles.local.json` (gitignored). The data sits in `data/banking77` (gitignored).
+- 119 tests pass.
+
 ## Useful commands
 
 ```text
@@ -37,4 +45,6 @@ uv run pytest
 uv run jjm --profiles jjm-profiles.local.json doctor
 uv run python -m trials.fit_rank.run --input <export.jsonl> --profiles jjm-profiles.local.json \
     --profile local-advisory --hardware "RTX 4000 Ada Laptop 12 GB, CUDA 13.0, bfloat16"
+uv run jjm models
+uv run python -m trials.routing.bench --help
 ```
