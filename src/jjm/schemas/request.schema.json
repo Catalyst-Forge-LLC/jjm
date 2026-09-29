@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:jjm:request:0.1",
+  "title": "JJM proposed request 0.1",
+  "$ref": "urn:jjm:definitions:0.1#/$defs/request"
+}

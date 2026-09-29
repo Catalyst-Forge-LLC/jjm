@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jjm-engine"
+version = "0.1.0.dev0"
+description = "JJM (Just Judgment Model): an open-source local judgment runtime with a strict JSON contract."
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+requires-python = ">=3.10"
+dependencies = [
+    "anyjev==0.2.0",
+    "jsonschema>=4.23",
+    "referencing>=0.35",
+    "rfc3339-validator>=0.1.4",
+    "rfc8785>=0.1.4",
+]
+
+[project.optional-dependencies]
+hf = ["anyjev[hf]==0.2.0"]
+
+[project.scripts]
+jjm = "jjm.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/jjm"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

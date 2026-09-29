@@ -1,0 +1,18 @@
+{
+  "profiles": [
+    {
+      "id": "local-advisory",
+      "adapter": "anyjev-hf",
+      "model": {
+        "id": "Qwen/Qwen3-1.7B",
+        "path": null,
+        "revision": null
+      },
+      "device": "cuda",
+      "dtype": "bfloat16",
+      "batch_size": 8,
+      "max_context_tokens": 32768,
+      "allow_download": false
+    }
+  ]
+}
