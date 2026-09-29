@@ -69,12 +69,15 @@ function outsideLedger(path) {
   return p !== "" && !NOT_PROJECT_WORK.some((prefix) => p.startsWith(prefix));
 }
 
-/** True when project files changed after the newest session record, or when that cannot be told. Ledger and host-config paths do not count. */
+/** True when project files changed after the newest session record, or when that cannot be told. Ledger and host-config paths do not count.
+ *
+ * A commit that updates appledger/records/session/ is the record of the work it contains, including other files in that same commit.
+ * Comparing the session file's save time with later commit timestamps treats that commit as unrecorded, because the commit is stamped after the file was written.
+ */
 function workSinceSession(root) {
   const sessionMs = latestSessionMs(root);
   if (sessionMs === 0) return true;
   try {
-    const since = `@${Math.floor(sessionMs / 1000)}`;
     const hasCommits = (() => {
       try {
         git(root, ["rev-parse", "--verify", "--quiet", "HEAD"]);
@@ -84,7 +87,9 @@ function workSinceSession(root) {
       }
     })();
     if (hasCommits) {
-      const committed = git(root, ["log", `--since=${since}`, "--name-only", "--format="]).split("\n").filter(outsideLedger);
+      const lastSession = git(root, ["log", "-1", "--format=%H", "--", "appledger/records/session"]).trim();
+      const range = lastSession ? [`${lastSession}..HEAD`] : [];
+      const committed = git(root, ["log", ...range, "--name-only", "--format="]).split("\n").filter(outsideLedger);
       if (committed.length > 0) return true;
     }
     const pending = git(root, ["status", "--porcelain", "--untracked-files=all"])
