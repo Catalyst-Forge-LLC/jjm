@@ -56,9 +56,7 @@ def summarize(ids: tuple[str, ...], weights: list[float], semantics: str) -> dic
 def effective_config(adapter: Adapter, profile: Profile) -> dict[str, Any]:
     settings = None
     if adapter.adapter_id == "anyjev":
-        from jjm.adapters.anyjev_adapter import settings_identity
-
-        settings = settings_identity()
+        settings = adapter.settings_identity()
     return {
         "adapter": {"id": adapter.adapter_id, "version": adapter.adapter_version},
         "profile": {"id": profile.id, "generation": profile.generation},

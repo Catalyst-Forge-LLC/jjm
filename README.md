@@ -48,6 +48,8 @@ Requests can also come on stdin: `uv run jjm evaluate < request.json`.
 
 Real profiles come from an operator file, not from the request. See `examples/jjm-profiles.example.json`. Pass it with `--profiles` or `JJM_PROFILES`. The route needs the `hf` extra (torch and transformers). On Windows and Linux, uv installs torch from PyTorch's CUDA 13.0 index (`pyproject.toml`), because PyPI's Windows wheels are CPU-only. Downloads are off unless the profile sets `allow_download: true`.
 
+A profile may set `"shared_prefix": "off"`. That scores each rotation as a full prompt instead of sharing one prefix cache across all K rotations. The weights are the same, but it needs far less GPU memory on long prompts. The setting is part of the profile's identity and the effective config digest.
+
 A request names its `profile_id`, and the CLI refuses a `--profile` that differs from it rather than switching profiles quietly.
 
 ```bash

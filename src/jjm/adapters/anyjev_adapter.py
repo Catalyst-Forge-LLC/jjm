@@ -48,8 +48,14 @@ DECIDER_SETTINGS: dict[str, Any] = {
 }
 
 
-def settings_identity() -> dict[str, Any]:
+# Profile-selectable, compute path only: "off" scores each rotation as a full prompt
+# instead of sharing one prefix KV cache across K copies, which can overflow a small GPU.
+SHARED_PREFIX_MODES = {"auto": "auto", "off": False}
+
+
+def settings_identity(shared_prefix: str = "auto") -> dict[str, Any]:
     out = dict(DECIDER_SETTINGS)
+    out["shared_prefix"] = SHARED_PREFIX_MODES[shared_prefix]
     out["cf_probes"] = list(out["cf_probes"])
     out["system"] = "jjm.compile.SYSTEM_PROMPT"
     return out
@@ -81,7 +87,8 @@ class AnyJevAdapter:
     max_choice_options = 26
 
     def __init__(self, backend: Any, *, execution_mode: str, model: dict[str, Any], runtime_id: str,
-                 runtime_version: str, dtype: Optional[str], max_context_tokens: Optional[int]):
+                 runtime_version: str, dtype: Optional[str], max_context_tokens: Optional[int],
+                 shared_prefix: str = "auto"):
         if anyjev.__version__ != ANYJEV_VERSION:
             raise errors.ExecutionError(errors.BACKEND_UNAVAILABLE,
                                       f"JJM is pinned to anyjev {ANYJEV_VERSION}; found {anyjev.__version__}")
@@ -92,6 +99,13 @@ class AnyJevAdapter:
         self.runtime_version = runtime_version
         self.dtype = dtype
         self.max_context_tokens = max_context_tokens
+        if shared_prefix not in SHARED_PREFIX_MODES:
+            raise errors.RequestError(errors.INVALID_REQUEST, f"shared_prefix must be one of {sorted(SHARED_PREFIX_MODES)}")
+        self.shared_prefix = shared_prefix
+        self.decider_settings = {**DECIDER_SETTINGS, "shared_prefix": SHARED_PREFIX_MODES[shared_prefix]}
+
+    def settings_identity(self) -> dict[str, Any]:
+        return settings_identity(self.shared_prefix)
 
     def model_identity(self) -> dict[str, Any]:
         return dict(self._model)
@@ -112,7 +126,7 @@ class AnyJevAdapter:
 
     def evaluate(self, state_text: str, compiled: CompiledCriterion) -> AdapterOutput:
         q = _question(compiled)
-        decider = Decider(self.backend, **DECIDER_SETTINGS)
+        decider = Decider(self.backend, **self.decider_settings)
         fallbacks_before = getattr(self.backend, "shared_fallbacks", None)
         try:
             decision = decider.decide(state_text, [q])[0]

@@ -55,7 +55,8 @@ def _config_error(message: str) -> errors.RequestError:
 
 
 def _hf_config(entry: dict[str, Any]) -> dict[str, Any]:
-    allowed = {"id", "adapter", "model", "device", "dtype", "batch_size", "max_context_tokens", "allow_download"}
+    allowed = {"id", "adapter", "model", "device", "dtype", "batch_size", "max_context_tokens", "allow_download",
+               "shared_prefix"}
     extra = sorted(set(entry) - allowed)
     if extra:
         raise _config_error(f"profile {entry.get('id')!r} has unknown keys: {', '.join(extra)}")
@@ -74,7 +75,11 @@ def _hf_config(entry: dict[str, Any]) -> dict[str, Any]:
     max_ctx = entry.get("max_context_tokens")
     if not (isinstance(max_ctx, int) and max_ctx > 0):
         raise _config_error(f"profile {entry['id']!r} needs max_context_tokens as a positive integer")
+    shared_prefix = entry.get("shared_prefix", "auto")
+    if shared_prefix not in ("auto", "off"):
+        raise _config_error(f"profile {entry['id']!r} shared_prefix must be 'auto' or 'off'")
     return {
+        "shared_prefix": shared_prefix,
         "adapter": "anyjev-hf",
         "model": {"id": model["id"], "path": path, "revision": revision},
         "device": str(entry.get("device", "cuda")),
@@ -113,7 +118,7 @@ def _hf_factory(cfg: dict[str, Any]) -> Callable[[], Adapter]:
                     "tokenizer_revision": model["revision"]}
         return AnyJevAdapter(backend, execution_mode="real", model=identity, runtime_id="transformers",
                              runtime_version=str(transformers.__version__), dtype=cfg["dtype"],
-                             max_context_tokens=cfg["max_context_tokens"])
+                             max_context_tokens=cfg["max_context_tokens"], shared_prefix=cfg["shared_prefix"])
 
     return build
 

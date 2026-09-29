@@ -28,7 +28,8 @@ from trials.fit_rank.criterion import CRITERION_STATUS, CRITERION_VERSION, RANK_
 
 def read_export(path: Path) -> list[dict[str, Any]]:
     records = []
-    for n, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+    # Not splitlines(): JSON.stringify leaves U+2028 and U+2029 unescaped inside strings.
+    for n, line in enumerate(path.read_text(encoding="utf-8").split("\n"), 1):
         if not line.strip():
             continue
         try:
@@ -147,7 +148,13 @@ def render_markdown(summary: dict[str, Any]) -> str:
     det = summary["determinism"]
     lines += ["", f"Model load: {_fmt(summary['model_load_ms'], 0)} ms. First request: "
               f"{_fmt(lat['first_request'], 0)} ms. Warm p50 {_fmt(lat['warm_p50'], 0)} ms, "
-              f"p95 {_fmt(lat['warm_p95'], 0)} ms over {lat['warm_n']} jobs.", "", lat["note"], "",
+              f"p95 {_fmt(lat['warm_p95'], 0)} ms over {lat['warm_n']} jobs.", ""]
+    for op, s in (summary.get("sonnet_usage") or {}).items():
+        lines += [f"Sonnet `{op}` ({', '.join(s['models'])}, n={s['n']}, from Exec Foundry llm_usage): "
+                  f"p50 {_fmt(s['p50_ms'], 0)} ms, p95 {_fmt(s['p95_ms'], 0)} ms, "
+                  f"about {_fmt(s['input_tokens_p50'], 0)} input and {_fmt(s['output_tokens_p50'], 0)} output tokens, "
+                  f"${s['cost_mean_usd']:.4f} per call.", ""]
+    lines += [lat["note"], "",
               f"Determinism: {det['same_selection']} of {det['repeated']} repeated jobs kept their selection; "
               f"largest weight change {_fmt(det['max_abs_weight_diff'], 9)}.", ""]
     return "\n".join(lines)
@@ -162,6 +169,8 @@ def main(argv: Optional[list[str]] = None) -> int:
     parser.add_argument("--repeat", type=int, default=10, help="re-run this many evaluated jobs for determinism")
     parser.add_argument("--limit", type=int)
     parser.add_argument("--out", type=Path)
+    parser.add_argument("--sonnet-usage", type=Path,
+                        help="JSON of Sonnet fit-call timing from Exec Foundry llm_usage, shown beside JJM's")
     args = parser.parse_args(argv)
     try:
         records = read_export(args.input)[: args.limit]
@@ -209,6 +218,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         "criterion_digests": sorted({r["criterion_digest"] for r in rows}),
         "model_load_ms": load_ms,
         "input": args.input.name,
+        "sonnet_usage": json.loads(args.sonnet_usage.read_text(encoding="utf-8")) if args.sonnet_usage else None,
     }
     summary = summarize(rows, repeats, meta)
     with (out / "envelopes.jsonl").open("w", encoding="utf-8") as fh:

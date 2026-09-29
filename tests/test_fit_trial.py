@@ -90,3 +90,10 @@ def test_real_profile_requires_named_hardware(tmp_path):
     code = main(["--input", str(SAMPLE), "--profiles", str(config), "--profile", "local-advisory",
                  "--out", str(tmp_path / "out")])
     assert code == 2
+
+
+def test_export_lines_may_contain_unicode_line_separators(tmp_path):
+    record = dict(records()[0], listing_text="Lead the platform team.\u2028Remote in the US.")
+    path = tmp_path / "export.jsonl"
+    path.write_text(json.dumps(record, ensure_ascii=False) + "\n", encoding="utf-8")
+    assert read_export(path)[0]["listing_text"].endswith("Remote in the US.")

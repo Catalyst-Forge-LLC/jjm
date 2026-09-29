@@ -129,3 +129,15 @@ def test_t06_nonfinite_logits_become_errors(bad):
     result = run(route_request(), a)["results"][0]
     assert result["status"] == "error"
     assert result["prediction"] is None
+
+
+def test_shared_prefix_off_changes_identity_not_weights():
+    auto = adapter()
+    off = AnyJevAdapter(FakeBackend(routing_content), execution_mode="synthetic", model=MODEL,
+                        runtime_id="anyjev-fake", runtime_version="0.2.0", dtype=None, max_context_tokens=None,
+                        shared_prefix="off")
+    assert off.decider_settings["shared_prefix"] is False
+    a, b = run(route_request(), auto)["results"][0], run(route_request(), off)["results"][0]
+    assert a["prediction"]["weights"] == b["prediction"]["weights"]
+    assert b["provenance"]["runtime"]["prefix_reuse"] == "not_used"
+    assert a["provenance"]["effective_config_digest"] != b["provenance"]["effective_config_digest"]
