@@ -2,8 +2,9 @@
 
 _Structured capture of planning and architecture before code scaffolding. Goal: the build can start from this file plus `appledger/` without re-reading the whole planning chat._
 
-**Status:** `draft`  
+**Status:** `locked`  
 **Last updated:** 2026-09-28  
+**Locked:** 2026-09-28, on the owner's instruction "proceed as far as you can without my intervention", after the second review. Changes after this point go through a new decision record.  
 **Phase 1 exit:** Do not mark the `plan` phase complete until this brief is **locked** and the major commitments are accepted decision records.
 
 Source material: `specs/jjm-spec-pack/` (spec-pack 0.2, contract 0.1) and the decisions already made in this project. This brief does not replace the spec pack. It says what to build first.

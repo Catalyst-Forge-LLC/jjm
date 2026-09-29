@@ -5,7 +5,7 @@ kind: decision
 title: v1 has no accounts or database
 record_status: active
 created_at: 2026-09-28T22:20:00Z
-updated_at: 2026-09-28T22:20:00Z
+updated_at: 2026-09-29T00:35:00Z
 recorded_by:
   id: cursor-agent
   type: agent
@@ -15,15 +15,15 @@ relations:
     target: app-36f50a0b-90a2-4e99-a024-197c6cba62c8
 claims: []
 data:
-  status: proposed
+  status: accepted
   choice: Each judgment is a stateless request. v1 has no PocketBase, login, or hosted inference endpoint.
   rationale: The caller already owns the state. Persistence would turn JJM into an application platform.
   alternatives:
     - PocketBase plus accounts
     - A hosted api.jjm.dev
-  authority: Draft brief, pending owner lock
+  authority: "Owner, 2026-09-28: proceed as far as you can without my intervention (brief locked)"
 ---
 
 # Stateless v1
 
-Proposed in `docs/PHASE_1_BRIEF.md` as D4. Not locked.
+Proposed in `docs/PHASE_1_BRIEF.md` as D4. Locked 2026-09-28.
