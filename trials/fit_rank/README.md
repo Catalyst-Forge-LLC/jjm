@@ -9,6 +9,30 @@ This harness runs the trial protocol from `docs/PHASE_1_BRIEF.md` §2a. JJM read
 - **Local data has no Sonnet ranks.** The 70 jobs in local PocketBase predate `fit_justification_rank`, so only the board-rank comparison has data. The real baseline needs a production export.
 - **First real run:** Qwen3-1.7B answered "Strong Fit" for all 70 local jobs (weighted kappa 0 against the board). The harness and timing work, but that model is too small for this judgment.
 
+## Results: production export, 2026-09-29
+
+These cover the owner's 253 production jobs, 241 of them with a Sonnet rank. They ran on an RTX 4000 Ada laptop GPU (12 GB, CUDA 13.0, bfloat16) with criterion version 1. All 253 jobs were evaluated with no abstentions, and 10 of 10 repeats were identical. There are no owner labels yet, so Sonnet is the reference here, not ground truth.
+
+| | Qwen3-4B | Qwen3-1.7B | Always answer "Strong" |
+| --- | --- | --- | --- |
+| Exact match with Sonnet | 0.27 [0.22, 0.33] | 0.47 [0.41, 0.54] | 0.56 |
+| Within one rank | 0.89 | 0.89 | 0.98 |
+| Weighted kappa | 0.19 | 0.24 | 0 |
+| Mean offset (positive = JJM less favorable) | -0.79 | +0.41 | |
+| Rank correlation, expected rank vs Sonnet | 0.43 | 0.30 | |
+| AUC, Sonnet 1–2 vs 3–5, from expected rank | 0.76 | 0.67 | 0.5 |
+| Warm latency p50 / p95 | 5.0 s / 5.7 s | 0.72 s / 0.89 s | |
+
+- **Sonnet's ranks are concentrated:** 33 Perfect, 136 Strong, 67 Good, 3 Stretch, 2 Long Shot. Always answering "Strong" matches 56% exactly, so exact agreement on its own says little.
+- **The labels JJM picks are not usable yet.** The 4B model only ever answered Perfect (145) or Strong (96). The 1.7B mostly answered Strong or Good, and gave 21 Long Shots that Sonnet did not.
+- **The 4B weights carry ranking signal.** Its expected rank rises with Sonnet's rank at every step (1.19, 1.32, 1.59, 1.79, 2.00), but the scale is compressed toward Perfect. Mapping that onto five levels would need a fitted calibration for this scope, which v1 does not include.
+- **Speed:**
+  - Sonnet 4.6 fit re-assessments: p50 5.1 s and p95 12.2 s, about $0.012 per call (9 calls in Exec Foundry's `llm_usage`). Sonnet also writes the justification, so the task is not identical.
+  - Qwen3-4B matches Sonnet's median with a much tighter tail. It runs with `shared_prefix: "off"`, because five copies of a shared prefix cache spill past 12 GB.
+  - Qwen3-1.7B, with the shared prefix, is about 7 times faster than Sonnet.
+  - Either local model costs nothing per call once downloaded.
+- **Caveat:** candidate material in the export is current. Sonnet ranked many jobs when they were imported, possibly from an older resume or career direction.
+
 ## Missing candidate evidence
 
 The criterion declares the candidate evidence required (`required_evidence_ids`). A job with no resume, profile, supplementary context, or work preferences abstains with `MISSING_REQUIRED_EVIDENCE` before any model runs. The check is deterministic and free, so the model is never asked to guess a middle rank from the listing alone. This replaces the `not_observable` wording in brief §2a (`decision-fit-evidence-abstention`).

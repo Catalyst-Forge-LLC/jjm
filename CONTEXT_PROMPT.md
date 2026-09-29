@@ -28,7 +28,7 @@ JJM (Just Judgment Model) is an open-source, local judgment runtime. An applicat
 - The runtime, the synthetic route, and the fixture pack all pass (98 tests).
 - The real route runs with Qwen3-1.7B on the owner's RTX 4000 Ada laptop GPU (12 GB). The model is at `C:/Users/acmegeek/.cache/huggingface/...`, and its profile is in the gitignored `jjm-profiles.local.json`.
 - The fit-rank trial harness is in `trials/fit_rank`, with criterion wording frozen as version 1. The exporter is `pnpm export:fit-trial` in Exec Foundry.
-- Qwen3-1.7B cannot judge fit: it answered "Strong Fit" for all 70 local jobs. The trial needs a larger model and a production export with Sonnet ranks.
+- The production trial (253 jobs, `trials/fit_rank/README.md`) found that neither model's picked rank beats always answering "Strong". Qwen3-4B's weights do track Sonnet's ordering (rank correlation 0.43), on a compressed scale. It takes 5.0 s per job with `shared_prefix: "off"`, against Sonnet's 5.1 s median. Qwen3-1.7B takes 0.72 s.
 
 ## Useful commands
 

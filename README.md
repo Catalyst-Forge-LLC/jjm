@@ -66,6 +66,10 @@ These were run with Qwen3-1.7B at revision `70d244cc`, in bfloat16 on a 12 GB RT
 
 - **Route example:** the billing ticket selects `billing` at 0.944 and passes. The model's raw pick changed with option order (`order_flip_raw` 1.0), which is the bias the rotations average out. The first run picked `other` with near-certainty. That traced to an explicit "(no evidence items supplied)" line, and the compiler (`jjm-compile-2`) now leaves the evidence section out when there is none.
 - **Fit rank on 70 local Exec Foundry jobs:** every job was evaluated. Model load took 16 s, the warm median was 1.8 s per job (p95 4.3 s), prompts ran about 3,200 tokens, and repeats were identical. The model answered "Strong Fit" for all 70, and its expected rank did not track the board rank (weighted kappa 0). A 1.7B model is too small for this judgment.
+- **Fit rank on 253 production jobs, against Sonnet 4.6:** the ranks JJM picks do not beat always answering "Strong" (56% exact).
+  - Qwen3-4B's weights still order jobs the way Sonnet does (rank correlation 0.43, AUC 0.76 for top-two versus the rest), on a scale compressed toward Perfect.
+  - Latency was 5.0 s per job for Qwen3-4B and 0.72 s for Qwen3-1.7B. Sonnet's measured median is 5.1 s, at about $0.012 per call.
+  - Details are in `trials/fit_rank/README.md`.
 
 ## Layout
 
