@@ -57,6 +57,119 @@ def cmd_evaluate(args: argparse.Namespace) -> int:
     return EXIT_OK
 
 
+def cmd_evaluate_batch(args: argparse.Namespace) -> int:
+    from jjm.engine import evaluate_batch
+
+    lines = _read_request(args.requests).decode("utf-8").split("\n")
+    requests = [load_request(line.encode("utf-8")) for line in lines if line.strip()]
+    responses = evaluate_batch(requests, load_profiles(args.profiles))
+    for response in responses:
+        sys.stdout.write(json.dumps(response, ensure_ascii=False) + "\n")
+    sys.stdout.flush()
+    held = sum(1 for resp in responses for r in resp["results"] if r["acceptance"]["status"] != "pass")
+    print(f"jjm: {len(responses)} request(s), {held} result(s) not passed for consumption", file=sys.stderr)
+    return EXIT_OK
+
+
+def cmd_models(args: argparse.Namespace) -> int:
+    from jjm.discover import discover
+
+    _emit(discover(ollama_host=args.ollama_host))
+    return EXIT_OK
+
+
+def _head_profile(args: argparse.Namespace):
+    profiles = load_profiles(args.profiles)
+    profile = profiles.get(args.profile)
+    if profile is None or profile.adapter_name != "fitted-head":
+        heads = sorted(pid for pid, p in profiles.items() if p.adapter_name == "fitted-head")
+        raise errors.RequestError(errors.INVALID_REQUEST,
+                                  f"{args.profile!r} is not a fitted-head profile. Fitted-head profiles: {heads}")
+    return profile
+
+
+def _read_json(path: str) -> Any:
+    try:
+        with open(path, "r", encoding="utf-8") as fh:
+            return json.load(fh)
+    except OSError as exc:
+        raise errors.RequestError(errors.INVALID_REQUEST, f"Cannot read {path!r}: {exc.strerror}") from None
+    except json.JSONDecodeError as exc:
+        raise errors.RequestError(errors.INVALID_REQUEST, f"{path!r} is not valid JSON: {exc.msg}") from None
+
+
+def read_examples(path: str) -> list[dict[str, Any]]:
+    """JSONL: {"state": {"content": ..., "evidence": [...]}, "label": "<outcome id>" or null}."""
+    out = []
+    with open(path, "r", encoding="utf-8") as fh:
+        for n, line in enumerate(fh.read().split("\n"), 1):
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            state = row.get("state")
+            if not isinstance(state, dict) or "content" not in state:
+                raise errors.RequestError(errors.INVALID_REQUEST, f"{path} line {n}: needs state.content")
+            state.setdefault("evidence", [])
+            out.append({"state": state, "label": row.get("label")})
+    return out
+
+
+def cmd_fit(args: argparse.Namespace) -> int:
+    from jjm.compile import compile_criterion, render_state
+    from jjm.heads.fit import fit_head
+    from jjm.profiles import load_teachers
+
+    profile = _head_profile(args)
+    compiled = compile_criterion(_read_json(args.criterion))
+    examples = read_examples(args.examples)
+    texts = [render_state(e["state"]) for e in examples]
+    dropped = 0
+    if args.teacher:
+        from jjm.heads.teachers import build_teacher
+
+        teachers = load_teachers(args.profiles)
+        if args.teacher not in teachers:
+            raise errors.RequestError(errors.INVALID_REQUEST,
+                                      f"teacher {args.teacher!r} is not configured. Configured: {sorted(teachers)}")
+        teacher = build_teacher(teachers[args.teacher])
+        labels, kept = [], []
+        for i, text in enumerate(texts, 1):
+            ans = teacher.answer(text, compiled)
+            if ans.index is None:
+                dropped += 1
+            else:
+                kept.append(text)
+                labels.append(compiled.outcome_ids[ans.index])
+            if i % 50 == 0:
+                print(f"jjm: teacher labelled {i}/{len(texts)}", file=sys.stderr)
+        texts = kept
+        label_source = {"kind": "teacher", "teacher": teacher.identity()}
+    else:
+        missing = sum(1 for e in examples if e["label"] is None)
+        if missing:
+            raise errors.RequestError(errors.INVALID_REQUEST,
+                                      f"{missing} example(s) have no label. Label them, or pass --teacher.")
+        labels = [e["label"] for e in examples]
+        label_source = {"kind": args.label_source}
+    adapter = profile.adapter()
+    result = fit_head(adapter.featurizer, adapter.store, compiled, texts, labels, method=args.method,
+                      label_source=label_source, promote=args.promote)
+    art = result.artifact
+    _emit({"artifact_id": art["artifact_id"], "binding_digest": art["binding_digest"], "reused": result.reused,
+           "promoted": result.promoted, "examples": art["training"]["n"], "teacher_unparsed": dropped,
+           "label_source": art["training"]["label_source"], "label_counts": art["training"]["label_counts"],
+           "cv": art["report"]["cv"], "feature_ms": round(result.feature_ms, 1)})
+    return EXIT_OK
+
+
+def cmd_heads(args: argparse.Namespace) -> int:
+    profile = _head_profile(args)
+    from jjm.heads.artifact import ArtifactStore
+
+    _emit(ArtifactStore(profile.config["artifacts"]).list())
+    return EXIT_OK
+
+
 def cmd_capabilities(args: argparse.Namespace) -> int:
     profiles = load_profiles(args.profiles)
     if args.profile not in profiles:
@@ -112,6 +225,12 @@ def cmd_doctor(args: argparse.Namespace) -> int:
                 report["problems"].append(f"profile {pid!r} needs the 'hf' extra (torch, transformers)")
             if cfg["model"]["revision"] is None:
                 entry["note"] = "No pinned model revision: provenance reports revision_status 'unknown'."
+        elif profile.adapter_name == "fitted-head":
+            enc = profile.config["encoder"]
+            entry.update({"encoder": enc["kind"], "model": enc["model"]["id"] if enc["kind"] == "hf" else enc["model"],
+                          "artifacts": profile.config["artifacts"], "cache": profile.config["cache"]})
+            if enc["kind"] == "hf" and not (report["packages"]["torch"] and report["packages"]["transformers"]):
+                report["problems"].append(f"profile {pid!r} needs the 'hf' extra (torch, transformers)")
         report["profiles"][pid] = entry
     report["ok"] = not report["problems"]
     _emit(report)
@@ -131,6 +250,25 @@ def build_parser() -> argparse.ArgumentParser:
     cap.set_defaults(func=cmd_capabilities)
     doc = sub.add_parser("doctor", help="report installed pieces and configured profiles")
     doc.set_defaults(func=cmd_doctor)
+    batch = sub.add_parser("evaluate-batch", help="evaluate a JSONL file of requests; one envelope per line out")
+    batch.add_argument("--requests", help="JSONL file, or - for stdin (default)")
+    batch.set_defaults(func=cmd_evaluate_batch)
+    models = sub.add_parser("models", help="list local Hugging Face and Ollama models; loads nothing")
+    models.add_argument("--ollama-host", default="http://localhost:11434")
+    models.set_defaults(func=cmd_models)
+    fit = sub.add_parser("fit", help="fit a head for one criterion, or reuse the one fitted on the same examples")
+    fit.add_argument("--profile", required=True, help="a fitted-head profile")
+    fit.add_argument("--criterion", required=True, help="criterion JSON (kind, question, options)")
+    fit.add_argument("--examples", required=True, help="JSONL of {state, label}")
+    fit.add_argument("--method", choices=("softmax", "ordinal"), default="softmax")
+    fit.add_argument("--teacher", help="label every example with this configured teacher instead")
+    fit.add_argument("--label-source", default="human", choices=("human", "deterministic", "provider", "synthetic"),
+                     help="who produced the labels in the file (ignored with --teacher)")
+    fit.add_argument("--promote", action="store_true", help="serve this head for its criterion and encoder")
+    fit.set_defaults(func=cmd_fit)
+    heads = sub.add_parser("heads", help="list stored heads for a fitted-head profile")
+    heads.add_argument("--profile", required=True)
+    heads.set_defaults(func=cmd_heads)
     return parser
 
 

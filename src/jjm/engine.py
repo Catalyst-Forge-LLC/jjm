@@ -53,10 +53,12 @@ def summarize(ids: tuple[str, ...], weights: list[float], semantics: str) -> dic
     }
 
 
+NOT_FITTED = {"status": "not_fitted", "artifact_id": None, "validation_report_id": None, "scope_match": False}
+
+
 def effective_config(adapter: Adapter, profile: Profile) -> dict[str, Any]:
-    settings = None
-    if adapter.adapter_id == "anyjev":
-        settings = adapter.settings_identity()
+    settings_identity = getattr(adapter, "settings_identity", None)
+    settings = settings_identity() if settings_identity else None
     return {
         "adapter": {"id": adapter.adapter_id, "version": adapter.adapter_version},
         "profile": {"id": profile.id, "generation": profile.generation},
@@ -115,8 +117,7 @@ class Evaluation:
             "model": a.model_identity(),
             "method": a.method if output is not None else None,
             "upstream_level": a.upstream_level if output is not None else None,
-            "calibration": {"status": "not_fitted", "artifact_id": None, "validation_report_id": None,
-                            "scope_match": False},
+            "calibration": self._calibration(compiled),
             "runtime": {
                 "id": a.runtime_id,
                 "version": a.runtime_version,
@@ -130,6 +131,10 @@ class Evaluation:
             },
             "diagnostics": diagnostics,
         }
+
+    def _calibration(self, compiled: CompiledCriterion) -> dict[str, Any]:
+        calibration = getattr(self.adapter, "calibration", None)
+        return calibration(compiled) if calibration else dict(NOT_FITTED)
 
     def _evidence(self, compiled: CompiledCriterion, exposed: bool) -> dict[str, Any]:
         required = compiled.criterion["required_evidence_ids"]
@@ -156,6 +161,11 @@ class Evaluation:
         missing = [x for x in compiled.criterion["required_evidence_ids"] if x not in self.evidence_ids]
         if missing:
             checks.append(_check("required-evidence", False, errors.MISSING_REQUIRED_EVIDENCE))
+        adapter_preflight = getattr(a, "preflight_codes", None)
+        if adapter_preflight and not checks:
+            for code in adapter_preflight(compiled):
+                checks.append(_check("artifact" if code == errors.ARTIFACT_MISMATCH else "adapter-preflight", False,
+                                     code))
         if req["calibration"] == "validated_in_scope":
             checks.append(_check("calibration", False, errors.CALIBRATION_NOT_VALIDATED))
         if req["allowed_methods"] and a.method not in req["allowed_methods"]:
@@ -290,11 +300,34 @@ def self_check(request: dict[str, Any], response: dict[str, Any]) -> None:
         raise errors.ExecutionError(errors.INTERNAL_ERROR, f"Engine produced an invalid envelope: {detail}") from None
 
 
-def evaluate(request: dict[str, Any], profiles: dict[str, Profile], *,
-             clock: Callable[[], datetime] = utc_now) -> dict[str, Any]:
+def _profile(request: dict[str, Any], profiles: dict[str, Profile]) -> Profile:
     profile = profiles.get(request["profile_id"])
     if profile is None:
         known = ", ".join(sorted(profiles))
         raise errors.RequestError(errors.INVALID_REQUEST,
                                   f"profile_id {request['profile_id']!r} is not configured. Configured: {known}")
-    return Evaluation(request, profile, clock=clock).run()
+    return profile
+
+
+def evaluate(request: dict[str, Any], profiles: dict[str, Profile], *,
+             clock: Callable[[], datetime] = utc_now) -> dict[str, Any]:
+    return Evaluation(request, _profile(request, profiles), clock=clock).run()
+
+
+def evaluate_batch(requests: list[dict[str, Any]], profiles: dict[str, Profile], *,
+                   clock: Callable[[], datetime] = utc_now) -> list[dict[str, Any]]:
+    """Each request gets its own envelope, exactly as `evaluate` would return it.
+
+    An adapter that can prefetch encodes every state first, in batches; per-request evaluation
+    then reads those features from its exact-input cache, and each envelope reports the hit.
+    """
+    by_profile: dict[str, list[tuple[str, CompiledCriterion]]] = {}
+    for req in requests:
+        _profile(req, profiles)
+        text = render_state(req["state"])
+        by_profile.setdefault(req["profile_id"], []).extend((text, compile_criterion(c)) for c in req["criteria"])
+    for pid, pairs in by_profile.items():
+        prefetch = getattr(profiles[pid].adapter(), "prefetch", None)
+        if prefetch:
+            prefetch(pairs)
+    return [evaluate(req, profiles, clock=clock) for req in requests]

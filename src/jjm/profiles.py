@@ -123,11 +123,112 @@ def _hf_factory(cfg: dict[str, Any]) -> Callable[[], Adapter]:
     return build
 
 
-def load_profiles(path: Optional[str] = None) -> dict[str, Profile]:
-    profiles = {SYNTHETIC_PROFILE_ID: synthetic_profile()}
+HEAD_ENCODER_KINDS = ("hf", "ollama")
+
+
+def _model_ref(pid: str, model: Any) -> dict[str, Any]:
+    if not isinstance(model, dict) or not isinstance(model.get("id"), str) or not ID_PATTERN.match(model["id"]):
+        raise _config_error(f"profile {pid!r} needs encoder.model.id like 'Qwen/Qwen3-Reranker-0.6B'")
+    extra = sorted(set(model) - {"id", "path", "revision"})
+    if extra:
+        raise _config_error(f"profile {pid!r} encoder.model has unknown keys: {', '.join(extra)}")
+    return {"id": model["id"], "path": model.get("path"), "revision": model.get("revision")}
+
+
+def _head_config(entry: dict[str, Any], base: Path) -> dict[str, Any]:
+    pid = entry["id"]
+    extra = sorted(set(entry) - {"id", "adapter", "encoder", "artifacts", "cache", "max_context_tokens",
+                                 "allow_download"})
+    if extra:
+        raise _config_error(f"profile {pid!r} has unknown keys: {', '.join(extra)}")
+    enc = entry.get("encoder")
+    if not isinstance(enc, dict) or enc.get("kind") not in HEAD_ENCODER_KINDS:
+        raise _config_error(f"profile {pid!r} needs encoder.kind, one of {HEAD_ENCODER_KINDS}")
+    if not isinstance(entry.get("artifacts"), str):
+        raise _config_error(f"profile {pid!r} needs 'artifacts', the head store directory")
+    from jjm.heads.encoders import DEFAULT_PREFIX_TEMPLATE
+
+    template = enc.get("prefix_template", DEFAULT_PREFIX_TEMPLATE)
+    if not isinstance(template, str) or "{question}" not in template:
+        raise _config_error(f"profile {pid!r} encoder.prefix_template must contain {{question}}")
+    if enc["kind"] == "hf":
+        allowed = {"kind", "model", "device", "dtype", "layer", "pooling", "max_tokens", "batch_size", "prefix_reuse",
+                   "prefix_template"}
+        extra = sorted(set(enc) - allowed)
+        if extra:
+            raise _config_error(f"profile {pid!r} encoder has unknown keys: {', '.join(extra)}")
+        layer = enc.get("layer")
+        if isinstance(layer, bool) or (layer is not None and not isinstance(layer, (int, float))):
+            raise _config_error(f"profile {pid!r} encoder.layer must be a layer count, a depth fraction, or null")
+        encoder = {"kind": "hf", "model": _model_ref(pid, enc.get("model")), "device": str(enc.get("device", "cuda")),
+                   "dtype": str(enc.get("dtype", "bfloat16")), "layer": layer,
+                   "pooling": str(enc.get("pooling", "mean")), "max_tokens": int(enc.get("max_tokens", 512)),
+                   "batch_size": int(enc.get("batch_size", 16)), "prefix_reuse": str(enc.get("prefix_reuse", "off")),
+                   "prefix_template": template}
+    else:
+        allowed = {"kind", "model", "host", "digest", "batch_size", "prefix_template", "keep_alive"}
+        extra = sorted(set(enc) - allowed)
+        if extra:
+            raise _config_error(f"profile {pid!r} encoder has unknown keys: {', '.join(extra)}")
+        if not isinstance(enc.get("model"), str) or not enc["model"]:
+            raise _config_error(f"profile {pid!r} needs encoder.model, an Ollama model name")
+        encoder = {"kind": "ollama", "model": enc["model"], "host": str(enc.get("host", "http://localhost:11434")),
+                   "digest": enc.get("digest"), "batch_size": int(enc.get("batch_size", 32)),
+                   "prefix_template": template, "keep_alive": str(enc.get("keep_alive", "5m"))}
+    max_ctx = entry.get("max_context_tokens")
+    if max_ctx is not None and not (isinstance(max_ctx, int) and max_ctx > 0):
+        raise _config_error(f"profile {pid!r} max_context_tokens must be a positive integer or null")
+    cache = entry.get("cache")
+    return {"adapter": "fitted-head", "encoder": encoder, "artifacts": str((base / entry["artifacts"]).resolve()),
+            "cache": str((base / cache).resolve()) if isinstance(cache, str) else None, "max_context_tokens": max_ctx,
+            "allow_download": bool(entry.get("allow_download", False))}
+
+
+def build_encoder(cfg: dict[str, Any], allow_download: bool = False):
+    enc = cfg
+    if enc["kind"] == "ollama":
+        from jjm.heads.encoders import OllamaEncoder
+
+        return OllamaEncoder(enc["model"], host=enc["host"], digest_pin=enc["digest"], batch_size=enc["batch_size"],
+                             prefix_template=enc["prefix_template"], keep_alive=enc["keep_alive"])
+    if not allow_download:
+        os.environ["HF_HUB_OFFLINE"] = "1"
+        os.environ["TRANSFORMERS_OFFLINE"] = "1"
+    try:
+        from jjm.heads.encoders import HFEncoder
+    except ImportError as exc:
+        raise errors.ExecutionError(errors.BACKEND_UNAVAILABLE, f"The Transformers encoder needs the 'hf' extra: {exc}"
+                                    ) from None
+    model = enc["model"]
+    try:
+        return HFEncoder(model["path"] or model["id"], model_id=model["id"], revision=model["revision"],
+                         device=enc["device"], dtype=enc["dtype"], layer=enc["layer"], pooling=enc["pooling"],
+                         max_tokens=enc["max_tokens"], batch_size=enc["batch_size"], prefix_reuse=enc["prefix_reuse"],
+                         prefix_template=enc["prefix_template"])
+    except (OSError, ImportError) as exc:
+        hint = "" if allow_download else " Downloads are off for this profile (allow_download: false)."
+        raise errors.ExecutionError(errors.BACKEND_UNAVAILABLE, f"Could not load encoder {model['id']!r}: {exc}.{hint}"
+                                    ) from None
+
+
+def _head_factory(cfg: dict[str, Any]) -> Callable[[], Adapter]:
+    def build() -> Adapter:
+        from jjm.adapters.head_adapter import FittedHeadAdapter
+        from jjm.heads.artifact import ArtifactStore
+        from jjm.heads.runtime import Featurizer
+
+        encoder = build_encoder(cfg["encoder"], cfg["allow_download"])
+        featurizer = Featurizer(encoder, Path(cfg["cache"]) if cfg["cache"] else None)
+        return FittedHeadAdapter(featurizer, ArtifactStore(Path(cfg["artifacts"])),
+                                 max_context_tokens=cfg["max_context_tokens"])
+
+    return build
+
+
+def _read_file(path: Optional[str]) -> tuple[Optional[dict[str, Any]], Path]:
     path = path or os.environ.get(PROFILES_ENV)
     if not path:
-        return profiles
+        return None, Path.cwd()
     file = Path(path)
     try:
         raw = json.loads(file.read_text(encoding="utf-8"))
@@ -137,24 +238,57 @@ def load_profiles(path: Optional[str] = None) -> dict[str, Profile]:
         raise _config_error(f"{file} is not valid JSON: {exc.msg} at line {exc.lineno}") from None
     if not isinstance(raw, dict) or not isinstance(raw.get("profiles"), list):
         raise _config_error(f"{file} must be an object with a 'profiles' list")
+    return raw, file.resolve().parent
+
+
+def load_profiles(path: Optional[str] = None) -> dict[str, Profile]:
+    profiles = {SYNTHETIC_PROFILE_ID: synthetic_profile()}
+    raw, base = _read_file(path)
+    if raw is None:
+        return profiles
     for entry in raw["profiles"]:
         if not isinstance(entry, dict) or not isinstance(entry.get("id"), str) or not ID_PATTERN.match(entry["id"]):
             raise _config_error("every profile needs an 'id' made of letters, digits, and _ . : / -")
         pid = entry["id"]
         if pid in profiles:
             raise _config_error(f"profile {pid!r} is defined twice or shadows a built-in profile")
-        if entry.get("adapter") != "anyjev-hf":
-            raise _config_error(f"profile {pid!r} has adapter {entry.get('adapter')!r}; supported: 'anyjev-hf'")
-        cfg = _hf_config(entry)
+        adapter = entry.get("adapter")
+        if adapter == "anyjev-hf":
+            cfg = _hf_config(entry)
+            factory = _hf_factory(cfg)
+        elif adapter == "fitted-head":
+            cfg = _head_config(entry, base)
+            factory = _head_factory(cfg)
+        else:
+            raise _config_error(f"profile {pid!r} has adapter {adapter!r}; supported: 'anyjev-hf', 'fitted-head'")
         generation = "cfg-" + digest(cfg)[7:19]
-        profiles[pid] = Profile(pid, generation, "real", "anyjev-hf", cfg, _hf_factory(cfg))
+        profiles[pid] = Profile(pid, generation, "real", adapter, cfg, factory)
     return profiles
+
+
+def load_teachers(path: Optional[str] = None) -> dict[str, dict[str, Any]]:
+    """Teacher entries from the same operator file. Only fitting and escalation use them, never `evaluate`."""
+    raw, _ = _read_file(path)
+    out: dict[str, dict[str, Any]] = {}
+    for entry in (raw or {}).get("teachers", []):
+        if not isinstance(entry, dict) or not isinstance(entry.get("id"), str) or not ID_PATTERN.match(entry["id"]):
+            raise _config_error("every teacher needs an 'id' made of letters, digits, and _ . : / -")
+        if entry.get("provider") not in ("ollama", "litellm") or not isinstance(entry.get("model"), str):
+            raise _config_error(f"teacher {entry['id']!r} needs provider 'ollama' or 'litellm' and a model name")
+        if entry["id"] in out:
+            raise _config_error(f"teacher {entry['id']!r} is defined twice")
+        out[entry["id"]] = entry
+    return out
 
 
 def capabilities(profile: Profile) -> dict[str, Any]:
     """Descriptive capability record (schema 0.1). Does not load a model."""
     if profile.adapter_name == "synthetic":
         methods, max_ctx = ["mock:normalized"], None
+    elif profile.adapter_name == "fitted-head":
+        from jjm.adapters.head_adapter import METHOD as HEAD_METHOD
+
+        methods, max_ctx = [HEAD_METHOD], profile.config["max_context_tokens"]
     else:
         from jjm.adapters.anyjev_adapter import METHOD
 
