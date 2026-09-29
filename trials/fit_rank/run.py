@@ -74,6 +74,7 @@ def summarize(rows: list[dict[str, Any]], repeats: list[dict[str, Any]], meta: d
     for name, (a, b) in {
         "jjm_vs_sonnet": ("jjm_rank", "sonnet_rank"),
         "jjm_vs_owner": ("jjm_rank", "owner_label"),
+        "jjm_vs_board": ("jjm_rank", "board_rank"),
         "sonnet_vs_owner": ("sonnet_rank", "owner_label"),
         "sonnet_rerun_vs_sonnet": ("sonnet_rerun_rank", "sonnet_rank"),
     }.items():

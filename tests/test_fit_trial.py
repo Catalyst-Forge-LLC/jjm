@@ -76,7 +76,8 @@ def test_end_to_end_synthetic_run(tmp_path):
     assert summary["comparisons"]["sonnet_rerun_vs_sonnet"]["n"] == 3
     assert summary["comparisons"]["jjm_vs_owner_overrides"]["n"] == 1
     report = (tmp_path / "summary.md").read_text()
-    assert "Synthetic profile" in report and "draft" in report
+    assert "Synthetic profile" in report and "Criterion wording" not in report
+    assert summary["criterion_status"] == "frozen"
     assert len((tmp_path / "envelopes.jsonl").read_text().splitlines()) == 4
 
 

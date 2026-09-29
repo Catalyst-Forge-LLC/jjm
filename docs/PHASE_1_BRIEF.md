@@ -157,7 +157,7 @@ Skip for the runtime. JJM does not generate prose. The site copy is hand-authore
 
 **D4.** No accounts, database, or hosted inference in v1. The caller sends a complete snapshot. Rejected: PocketBase, login, and `api.jjm.dev`.
 
-**D5.** The first external trial is an Exec Foundry fit-rank shadow score, after v1 works. It runs as a five-option `choice` with frozen level descriptions, plus an assertion for missing candidate evidence, under the section 2a protocol. Exec Foundry keeps the star override and the written justification. Rejected: replacing tailoring, the dossier, or outreach drafts, and bringing `score` into v1 for this trial.
+**D5.** The first external trial is an Exec Foundry fit-rank shadow score, after v1 works. It runs as a five-option `choice` with frozen level descriptions, plus an assertion for missing candidate evidence, under the section 2a protocol. Exec Foundry keeps the star override and the written justification. Rejected: replacing tailoring, the dossier, or outreach drafts, and bringing `score` into v1 for this trial. *Amended 2026-09-28 by `decision-fit-evidence-abstention`: missing candidate evidence abstains on required evidence instead of a model assertion.*
 
 **D6.** Contract stays 0.1. Spec-pack version 0.2 does not bump schema URNs or fixture engine ids. Rejected: rewriting fixtures to match the pack number.
 

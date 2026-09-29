@@ -2,15 +2,45 @@ profile: forgetrail
 profile_version: 0.1.0
 archetype: product
 project_status: active
-current_phase_instance: phase-bdf2e24d-1c55-48ae-95f8-3541bc3fd101
+current_phase_instance: phase-5b0e8a41-7c2d-4f39-9d61-2e8f4c7a1b93
 phase_instances:
   - id: phase-bdf2e24d-1c55-48ae-95f8-3541bc3fd101
     phase: plan
-    status: in_progress
+    status: completed
     started_at: 2026-09-28T20:01:13Z
+    completed_at: 2026-09-29T03:45:00Z
     criteria:
       - id: crit-7c916aa5-25eb-409e-aeb3-d7431b4e31f1
         text: Record what this application is for
+        status: met
+        evidence_refs:
+          - app-36f50a0b-90a2-4e99-a024-197c6cba62c8
+  - id: phase-5b0e8a41-7c2d-4f39-9d61-2e8f4c7a1b93
+    phase: build
+    status: in_progress
+    started_at: 2026-09-29T03:45:00Z
+    criteria:
+      - id: crit-2a6f0d93-41be-4c8e-b7a5-9e3c1d52f807
+        text: The synthetic route and the fixture pack pass end to end
+        status: met
+        evidence_refs:
+          - session-018ef7f3-de8c-4cd3-a78e-9743d3276257
+      - id: crit-8d41c7e2-5f03-4a9b-a6e8-0b7f2c3d9e15
+        text: One real Transformers route runs on the owner's GPU with pinned model revision and a passing self-check
+        status: met
+        evidence_refs:
+          - session-018ef7f3-de8c-4cd3-a78e-9743d3276257
+      - id: crit-c3b95e0a-8f1d-4e27-9c64-5a2d7b1e0f38
+        text: The fit-rank shadow trial runs on a production Exec Foundry export with Sonnet ranks, on a model large enough to track fit
         status: pending
         evidence_refs: []
-transitions: []
+      - id: crit-f60e2b8d-3a74-4c19-8e5b-1d9a0c6f7e24
+        text: CONTEXT_PROMPT.md and TODO.md exist at the repo root and match the brief
+        status: met
+        evidence_refs: []
+transitions:
+  - id: transition-9e4c2a17-6b3d-4f85-a0e1-7d5b8c2f3a96
+    from_instance: phase-bdf2e24d-1c55-48ae-95f8-3541bc3fd101
+    to_instance: phase-5b0e8a41-7c2d-4f39-9d61-2e8f4c7a1b93
+    at: 2026-09-29T03:45:00Z
+    authorized_by: "Owner, 2026-09-28: yes, we should start to build it"

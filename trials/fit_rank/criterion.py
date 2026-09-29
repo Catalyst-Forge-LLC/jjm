@@ -1,14 +1,14 @@
-"""The fit criterion. DRAFT: the owner freezes these descriptions before the first real run.
+"""The fit criterion. Frozen by the owner on 2026-09-28 as version 1.
 
 Changing any question or description text changes the criterion digest, so runs made
-under different wording are never mixed in one report.
+under different wording are never mixed in one report. A change needs a new version.
 """
 from __future__ import annotations
 
 from typing import Any
 
-CRITERION_STATUS = "draft"
-CRITERION_VERSION = "draft-1"
+CRITERION_STATUS = "frozen"
+CRITERION_VERSION = "1"
 
 QUESTION = ("How well does this job listing fit the candidate, judged from the candidate evidence "
             "against the listing's core requirements, seniority, and stated work arrangement?")

@@ -4,13 +4,14 @@ This harness runs the trial protocol from `docs/PHASE_1_BRIEF.md` §2a. JJM read
 
 ## Status
 
-- **Criterion wording is a draft** (`criterion.py`, `CRITERION_STATUS = "draft"`). Results only count once the owner freezes the five level descriptions. Every report prints the wording status and the criterion digest, so runs under different wording can't be mixed up.
-- **The export does not exist yet.** Exec Foundry needs a small read-only script that writes the JSONL format described below. That script belongs in the Exec Foundry repo and hasn't been written.
-- **Real runs need a model.** Only the synthetic profile runs today. Its numbers come from hashed weights and say nothing about fit; the report says so at the top.
+- **Criterion wording is frozen** as version 1 (`criterion.py`). Any change needs a new version. Every report prints the wording status and the criterion digest, so runs under different wording can't be mixed up.
+- **The exporter lives in Exec Foundry:** `pnpm export:fit-trial --email <you> [--prod-db]` writes `temp/jjm-fit-export.jsonl` there. It is read-only and makes no model calls. It rebuilds each job's fit inputs with the same helpers `reassessJobFit` uses. The candidate material is today's, which may differ from what Sonnet saw when it ranked an older job.
+- **Local data has no Sonnet ranks.** The 70 jobs in local PocketBase predate `fit_justification_rank`, so only the board-rank comparison has data. The real baseline needs a production export.
+- **First real run:** Qwen3-1.7B answered "Strong Fit" for all 70 local jobs (weighted kappa 0 against the board). The harness and timing work, but that model is too small for this judgment.
 
-## Deviation from the brief
+## Missing candidate evidence
 
-§2a says jobs with no candidate material should come out as `not_observable`. The harness instead declares the candidate evidence required (`required_evidence_ids`). A job with no resume, profile, supplementary context, or work preferences then abstains with `MISSING_REQUIRED_EVIDENCE` before any model runs. This check is deterministic and costs nothing, so the model is never asked to guess a middle rank from the listing alone. The owner still needs to approve this change.
+The criterion declares the candidate evidence required (`required_evidence_ids`). A job with no resume, profile, supplementary context, or work preferences abstains with `MISSING_REQUIRED_EVIDENCE` before any model runs. The check is deterministic and free, so the model is never asked to guess a middle rank from the listing alone. This replaces the `not_observable` wording in brief §2a (`decision-fit-evidence-abstention`).
 
 ## Export format
 
@@ -46,7 +47,7 @@ Output goes to `runs/fit-rank-<time>/`, which git ignores:
 - `rows.json`: one line per job with JJM's rank, weights, labels, latency, and context tokens.
 - `summary.json` and `summary.md`, which contain:
   - Status counts.
-  - Exact and within-one agreement, quadratic weighted kappa, and mean signed offset, with seeded bootstrap 95% intervals. These are reported for JJM against Sonnet, JJM against the owner, Sonnet against the owner, JJM against the owner's overrides, and Sonnet's re-run against Sonnet.
+  - Exact and within-one agreement, quadratic weighted kappa, and mean signed offset, with seeded bootstrap 95% intervals. These are reported for JJM against Sonnet, the owner, the board rank, and the owner's overrides, plus Sonnet against the owner and Sonnet's re-run against Sonnet.
   - Model load time, first request, and warm p50 and p95 latency.
   - A determinism check that re-runs up to `--repeat` jobs.
 

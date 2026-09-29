@@ -2,7 +2,7 @@
 
 An open-source judgment runtime. Just judgment. Your application makes the decision.
 
-**Status: pre-release.** Nothing is published. The synthetic route works. The local-model route is built and tested against AnyJev's fake backend, but it has not been run on a real model yet.
+**Status: pre-release.** Nothing is published. The synthetic route works. The local-model route has run on a real model (Qwen3-1.7B on an RTX 4000 Ada laptop GPU); see [Real-model results so far](#real-model-results-so-far).
 
 ## What it does
 
@@ -46,7 +46,9 @@ Requests can also come on stdin: `uv run jjm evaluate < request.json`.
 
 ## Local model route
 
-Real profiles come from an operator file, not from the request. See `examples/jjm-profiles.example.json`. Pass it with `--profiles` or `JJM_PROFILES`. The route needs the `hf` extra (torch and transformers). Downloads are off unless the profile sets `allow_download: true`.
+Real profiles come from an operator file, not from the request. See `examples/jjm-profiles.example.json`. Pass it with `--profiles` or `JJM_PROFILES`. The route needs the `hf` extra (torch and transformers). On Windows and Linux, uv installs torch from PyTorch's CUDA 13.0 index (`pyproject.toml`), because PyPI's Windows wheels are CPU-only. Downloads are off unless the profile sets `allow_download: true`.
+
+A request names its `profile_id`, and the CLI refuses a `--profile` that differs from it rather than switching profiles quietly.
 
 ```bash
 uv sync --extra hf
@@ -56,12 +58,20 @@ uv run jjm --profiles my-profiles.json evaluate --request request.json
 
 This route uses AnyJev's L0 readout with permutation only: the options are shown in every rotation, and the letter-token probabilities are averaged in log space. There is no prior correction. See `UPSTREAM.md` for the pinned AnyJev release and every setting JJM fixes.
 
+## Real-model results so far
+
+These were run with Qwen3-1.7B at revision `70d244cc`, in bfloat16 on a 12 GB RTX 4000 Ada laptop GPU with CUDA 13.0.
+
+- **Route example:** the billing ticket selects `billing` at 0.944 and passes. The model's raw pick changed with option order (`order_flip_raw` 1.0), which is the bias the rotations average out. The first run picked `other` with near-certainty. That traced to an explicit "(no evidence items supplied)" line, and the compiler (`jjm-compile-2`) now leaves the evidence section out when there is none.
+- **Fit rank on 70 local Exec Foundry jobs:** every job was evaluated. Model load took 16 s, the warm median was 1.8 s per job (p95 4.3 s), prompts ran about 3,200 tokens, and repeats were identical. The model answered "Strong Fit" for all 70, and its expected rank did not track the board rank (weighted kappa 0). A 1.7B model is too small for this judgment.
+
 ## Layout
 
 - `src/jjm/`: contract, compiler, adapters, engine, CLI.
 - `specs/jjm-spec-pack/`: the design spec and the canonical schemas.
 - `docs/PHASE_1_BRIEF.md`: what v1 is and is not.
 - `UPSTREAM.md`: the AnyJev pin, tests run, and reconciliation.
+- `trials/fit_rank/`: the Exec Foundry fit-rank shadow trial.
 
 ## Credits
 

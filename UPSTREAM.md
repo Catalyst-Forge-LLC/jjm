@@ -21,7 +21,14 @@ AnyJev's own suite, from the 0.2.0 source distribution, against the installed wh
 
 JJM's suite: `uv run pytest`, 87 passed. It includes AnyJev's L0 pipeline running on AnyJev's `FakeBackend`.
 
-No real model has been run yet.
+## Tests run with the `hf` extra (2026-09-28, torch 2.14.0+cu130, transformers 5.17.0, RTX 4000 Ada laptop GPU)
+
+AnyJev's suite, same five modules skipped: 83 passed, 2 failed.
+
+- `test_hf_loading.py::test_shared_prefix_works_on_a_model_whose_backbone_is_not_called_model` and `test_truncate_and_vllm.py::test_truncate_keeps_the_first_blocks_and_says_so` fail because the test code reaches a transformers path that needs `accelerate`. The `hf` extra does not install it. AnyJev's `HFBackend` deliberately avoids `device_map` (see its note on issue #5), and JJM's route loads and runs without `accelerate`.
+- transformers 5.17 is newer than the releases AnyJev 0.2.0 was published against. It works for JJM's route on Qwen3-1.7B. Treat any other model family as untested.
+
+Real-model runs are summarized in `README.md`.
 
 ## Findings from spec 01, checked against 0.2.0 source
 

@@ -196,3 +196,13 @@ def test_criterion_digest_ignores_filters_but_tracks_definitions():
     request["criteria"][0]["options"][0]["description"] = "Billing questions"
     changed = run(request)["results"][0]["provenance"]
     assert changed["criterion_digest"] != base["criterion_digest"]
+
+
+def test_empty_evidence_renders_no_evidence_section():
+    from jjm.compile import EVIDENCE_HEADER, render_state
+
+    state = route_request()["state"]
+    assert state["evidence"] == []
+    assert EVIDENCE_HEADER not in render_state(state)
+    state["evidence"] = [{"id": "e1", "kind": "note", "content": "x", "observed_at": None}]
+    assert EVIDENCE_HEADER in render_state(state)
