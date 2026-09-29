@@ -31,6 +31,24 @@ These cover the owner's 253 production jobs, 241 of them with a Sonnet rank. The
   - Qwen3-4B matches Sonnet's median with a much tighter tail. It runs with `shared_prefix: "off"`, because five copies of a shared prefix cache spill past 12 GB.
   - Qwen3-1.7B, with the shared prefix, is about 7 times faster than Sonnet.
   - Either local model costs nothing per call once downloaded.
+### Same model, two methods
+
+`generate_baseline.py` gives Qwen3-4B the exact `reassessJobFit` prompt Sonnet gets and parses the `fitRank` it writes. Decoding is greedy with thinking off; Sonnet runs at its default temperature. This holds the model fixed and changes only the method. The model and the 241 Sonnet-ranked jobs are the same as above.
+
+| Qwen3-4B | JJM readout | Writes the rank (Sonnet's prompt) |
+| --- | --- | --- |
+| Exact match with Sonnet | 0.27 [0.22, 0.33] | 0.18 [0.13, 0.23] |
+| Within one rank | 0.89 | 0.69 |
+| Weighted kappa | 0.19 [0.14, 0.25] | 0.10 [0.01, 0.20] |
+| Rank correlation with Sonnet | 0.38 (0.43 from expected rank) | 0.14 |
+| Ranks used | 1: 145, 2: 96 | 1: 107, 2: 9, 3: 57, 4: 68 |
+| Warm latency p50 / p95 | 5.0 s / 5.7 s (5 prompts, shared prefix off) | 1.4 s / 1.7 s to the rank; 17.3 s / 24.1 s for the full JSON with justification (30 jobs) |
+| Repeats identical | 10 of 10 | 10 of 10 |
+
+- **With the model held fixed, JJM's method beats generation on every agreement measure.** The written ranks are erratic: mostly 1 or 4, almost never Sonnet's most common 2. The readout is compressed toward Perfect, but it stays ordered.
+- **Rank only versus rank plus justification:** stopping generation right after `fitRank` gave the same rank on 30 of 30 jobs as letting it write the full JSON. That check shows the rank-only run changes nothing.
+- **Speed:** JJM scores five full prompts because the shared prefix does not fit 12 GB with this model. Generation stopped at the rank needs one prompt pass plus six tokens. Writing the justification the way Sonnet does takes 17 s locally.
+
 - **Caveat:** candidate material in the export is current. Sonnet ranked many jobs when they were imported, possibly from an older resume or career direction.
 
 ## Missing candidate evidence

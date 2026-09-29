@@ -97,3 +97,17 @@ def test_export_lines_may_contain_unicode_line_separators(tmp_path):
     path = tmp_path / "export.jsonl"
     path.write_text(json.dumps(record, ensure_ascii=False) + "\n", encoding="utf-8")
     assert read_export(path)[0]["listing_text"].endswith("Remote in the US.")
+
+
+def test_generation_baseline_prompt_and_parser():
+    from trials.fit_rank.generate_baseline import build_prompt, parse_rank
+
+    record = records()[0]
+    prompt = build_prompt(record)
+    assert "BASE RESUME (plain text" in prompt and record["listing_text"] in prompt
+    assert '"fitRank"' in prompt and "sonnet" not in prompt.lower()
+    no_resume = build_prompt(dict(record, base_resume=None))
+    assert "BASE RESUME: (no resume file on file" in no_resume
+    assert parse_rank('{"fitRank": 2, "fitJustification": "..."}') == 2
+    assert parse_rank('{"fitRank": "4"') == 4
+    assert parse_rank("no json here") is None

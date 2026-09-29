@@ -69,6 +69,7 @@ These were run with Qwen3-1.7B at revision `70d244cc`, in bfloat16 on a 12 GB RT
 - **Fit rank on 253 production jobs, against Sonnet 4.6:** the ranks JJM picks do not beat always answering "Strong" (56% exact).
   - Qwen3-4B's weights still order jobs the way Sonnet does (rank correlation 0.43, AUC 0.76 for top-two versus the rest), on a scale compressed toward Perfect.
   - Latency was 5.0 s per job for Qwen3-4B and 0.72 s for Qwen3-1.7B. Sonnet's measured median is 5.1 s, at about $0.012 per call.
+  - With the model held fixed, JJM's readout beat letting Qwen3-4B write the rank from Sonnet's own prompt. Within one rank was 89% against 69%, weighted kappa 0.19 against 0.10, and rank correlation 0.38 against 0.14.
   - Details are in `trials/fit_rank/README.md`.
 
 ## Layout
