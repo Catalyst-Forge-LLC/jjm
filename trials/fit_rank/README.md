@@ -49,6 +49,26 @@ These cover the owner's 253 production jobs, 241 of them with a Sonnet rank. The
 - **Rank only versus rank plus justification:** stopping generation right after `fitRank` gave the same rank on 30 of 30 jobs as letting it write the full JSON. That check shows the rank-only run changes nothing.
 - **Speed:** JJM scores five full prompts because the shared prefix does not fit 12 GB with this model. Generation stopped at the rank needs one prompt pass plus six tokens. Writing the justification the way Sonnet does takes 17 s locally.
 
+### One pass, then a small head
+
+`features.py` saves one forward pass per job. `probe_eval.py` scores those features against Sonnet on the same 241 jobs. Zero-shot rows never see Sonnet's ranks. Learned rows are ridge heads inside nested cross-validation (10 outer folds, an inner 5-fold choice of ridge strength, 3 shuffles), so no job is scored by a head that trained on it. Forward times are medians on the same GPU.
+
+| Method | Trained on Sonnet? | Rank correlation | AUC, 1–2 vs rest | Exact | Within one | Weighted kappa | ms/job |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Always answer "Strong" | no | 0 | 0.50 | 0.564 | 0.979 | 0 | |
+| JJM readout, Qwen3-4B (expected rank) | no | 0.43 | 0.76 | 0.27 | 0.89 | 0.19 | 5000 |
+| Listing–candidate cosine, Embedding-0.6B | no | 0.457 | 0.741 | | | | 275 |
+| Reranker-0.6B, P(yes) | no | 0.429 | 0.753 | | | | 186 |
+| Requirement coverage, mean | no | 0.350 | 0.691 | | | | 275 |
+| 1.7B mean hidden state, layer 7 | yes, cross-validated | 0.479 | 0.773 | 0.581 | 0.982 | 0.273 | 366 |
+| 4B mean hidden state, layer 18 | yes, cross-validated | 0.522 | 0.808 | 0.622 | 0.978 | 0.362 | 918 |
+| Reranker hidden-state head | yes, cross-validated | 0.515 | 0.804 | 0.640 | 0.989 | 0.450 | 186 |
+
+- **Zero-shot, the reranker and the cosine score order jobs about as well as the 4B readout, much faster.** Rank correlation is 0.43 and 0.46 against the readout's 0.43, at 186 ms and 275 ms instead of 5 s. They do not emit a 1–5 label, so exact agreement and kappa are not defined for them.
+- **The best trained head is the reranker's hidden state.** Weighted kappa is 0.45 against the readout's 0.19, and exact agreement is 0.64 against always answering "Strong" at 0.56, at 186 ms. That head was fit to predict Sonnet, so this is distillation. It is not an independent judge, and it cannot be more right than Sonnet.
+- **Mean-pooled hidden states beat the last token.** The 4B last token at layer 18 had rank correlation −0.02. Adding requirement coverage to the embedding head barely moved the score (0.433 against 0.426 for the listing embedding alone).
+- **These heads learn one profile.** The candidate text is the same on every job, so a head trained here will not transfer to another person without their labels. Blind owner labels are still the check that matters.
+
 - **Caveat:** candidate material in the export is current. Sonnet ranked many jobs when they were imported, possibly from an older resume or career direction.
 
 ## Missing candidate evidence

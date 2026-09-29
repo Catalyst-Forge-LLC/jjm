@@ -70,6 +70,7 @@ These were run with Qwen3-1.7B at revision `70d244cc`, in bfloat16 on a 12 GB RT
   - Qwen3-4B's weights still order jobs the way Sonnet does (rank correlation 0.43, AUC 0.76 for top-two versus the rest), on a scale compressed toward Perfect.
   - Latency was 5.0 s per job for Qwen3-4B and 0.72 s for Qwen3-1.7B. Sonnet's measured median is 5.1 s, at about $0.012 per call.
   - With the model held fixed, JJM's readout beat letting Qwen3-4B write the rank from Sonnet's own prompt. Within one rank was 89% against 69%, weighted kappa 0.19 against 0.10, and rank correlation 0.38 against 0.14.
+  - One forward pass is much faster and, zero-shot, orders jobs about as well. A 0.6B reranker's yes/no probability has rank correlation 0.43 with Sonnet at 186 ms, against the 4B readout's 0.43 at 5 s. A small head trained on Sonnet's ranks (cross-validated) reaches weighted kappa 0.45 at that same 186 ms. That head is distillation, not an independent judge.
   - Details are in `trials/fit_rank/README.md`.
 
 ## Layout
