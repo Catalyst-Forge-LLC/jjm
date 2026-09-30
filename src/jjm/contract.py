@@ -10,6 +10,7 @@ from functools import lru_cache
 from importlib import resources
 from typing import Any
 
+import fastjsonschema
 from jsonschema import Draft202012Validator, FormatChecker
 from jsonschema.exceptions import best_match
 from referencing import Registry, Resource
@@ -93,9 +94,31 @@ def _schemas() -> tuple[dict[str, Any], Registry]:
     return schemas, registry
 
 
+@lru_cache(maxsize=None)
 def schema_validator(name: str) -> Draft202012Validator:
     schemas, registry = _schemas()
     return Draft202012Validator(schemas[name], registry=registry, format_checker=FormatChecker())
+
+
+def _urn_schema(uri: str) -> dict[str, Any]:
+    schemas, _ = _schemas()
+    base = uri.split("#", 1)[0]
+    found = next((schema for schema in schemas.values() if schema["$id"] == base), None)
+    if found is None:
+        raise ValueError(f"unknown schema {uri}")
+    return found
+
+
+def _refuse_remote(uri: str) -> dict[str, Any]:
+    raise ValueError(f"schema ref is not local: {uri}")
+
+
+@lru_cache(maxsize=None)
+def _compiled(name: str):
+    """A generated checker for one schema. It resolves urn: refs from the local files and never fetches."""
+    schemas, _ = _schemas()
+    return fastjsonschema.compile(schemas[name], handlers={"urn": _urn_schema, "http": _refuse_remote,
+                                                           "https": _refuse_remote}, use_default=False)
 
 
 def _format_path(path: Any) -> str:
@@ -117,6 +140,17 @@ def schema_errors(value: Any, name: str) -> list[str]:
 
 
 def validate_shape(value: Any, name: str, code: str = errors.INVALID_REQUEST) -> None:
+    """Reject a document that breaks schema 0.1.
+
+    The success path uses a checker generated from the same schema files. A rejection falls back to
+    the interpreter so the message still names the field. The fixture suite checks that the generated
+    checker accepts and rejects the same documents the interpreter does.
+    """
+    try:
+        _compiled(name)(value)
+        return
+    except fastjsonschema.JsonSchemaValueException:
+        pass
     problems = schema_errors(value, name)
     if problems:
         shown = "; ".join(problems[:5])

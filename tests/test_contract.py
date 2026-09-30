@@ -4,9 +4,8 @@ import pytest
 
 from conftest import PACK, fixture_cases, load_json, route_request
 from jjm import errors
-from jjm.contract import MAX_DEPTH, MAX_REQUEST_BYTES, load_request, parse_json_bytes
+from jjm.contract import MAX_DEPTH, MAX_REQUEST_BYTES, load_request, parse_json_bytes, schema_errors, validate_shape
 from jjm.profiles import capabilities, load_profiles
-from jjm.contract import schema_errors
 
 
 def body(value) -> bytes:
@@ -120,3 +119,40 @@ def test_capabilities_match_schema():
 
 def test_pack_capability_fixture_still_valid():
     assert schema_errors(load_json(PACK / "examples" / "capabilities.synthetic.json"), "capabilities") == []
+
+
+def _agrees(document: dict, name: str) -> None:
+    from fastjsonschema import JsonSchemaValueException
+
+    from jjm.contract import _compiled
+
+    problems = schema_errors(document, name)
+    try:
+        _compiled(name)(document)
+        generated_ok = True
+    except JsonSchemaValueException:
+        generated_ok = False
+    assert generated_ok == (problems == []), (name, generated_ok, problems[:3])
+    if problems:
+        with pytest.raises(errors.RequestError, match="schema 0.1"):
+            validate_shape(document, name)
+    else:
+        validate_shape(document, name)
+
+
+def test_generated_checker_matches_the_interpreter_on_the_pack():
+    for case in fixture_cases():
+        request = load_json(PACK / case["request"])
+        response = load_json(PACK / case["response"])
+        _agrees(request, "request")
+        _agrees(response, "response")
+        if case.get("artifact"):
+            _agrees(load_json(PACK / case["artifact"]), "artifact")
+    capabilities_doc = load_json(PACK / "examples" / "capabilities.synthetic.json")
+    _agrees(capabilities_doc, "capabilities")
+    broken = dict(response)
+    del broken["results"]
+    _agrees(broken, "response")
+    broken = dict(response)
+    broken["evaluated_at"] = "yesterday"
+    _agrees(broken, "response")
