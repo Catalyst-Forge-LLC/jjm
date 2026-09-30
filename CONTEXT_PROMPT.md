@@ -38,6 +38,7 @@ JJM (Just Judgment Model) is an open-source, local judgment runtime. An applicat
 - Banking77 routing (`trials/routing/README.md`): Qwen3-Embedding-0.6B head 97.1% against human labels, about 5 ms per message in bulk. qwen3.5:9b zero-shot 88%, and the AnyJev 1.7B readout 75%. Profiles are in `jjm-profiles.local.json` (gitignored). The data sits in `data/banking77` (gitignored).
 - The fitted-head re-run on the 241 production fit jobs is in `trials/fit_rank/README.md`. On JJM's rendered state the softmax head does not beat always answering Strong. The earlier 0.52 correlation used a different prompt.
 - Banking77 zero-shot through Ollama 0.35 `/v1/systemone`, same 400-message subset: Nimble 92.5% at 482 ms, Tev1 4B 89.3% at 389 ms, Tev1 0.8B 79.5% at 370 ms. The fitted embedding head on that subset is 96.5%.
+- The experiment log is `docs/EXPERIMENT_LOG.md`. Trial tables stay in the two README files above.
 - 124 tests pass.
 
 ## Useful commands

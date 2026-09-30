@@ -60,9 +60,9 @@ Test accuracy by labelled examples per team (mean of three draws):
 | Reranker | 45% | 57% | 65% | 77% | 84% | 87% | 91% | 94.3% |
 | Reranker, half depth | 35% | 46% | 61% | 71% | 77% | 81% | 89% | 94.1% |
 
-With 16 labels per team (128 in all), the embedding head already beats the 9B teacher's zero-shot
-answers. The reranker's features are built for yes/no relevance and need more labels to separate
-eight teams. Half depth costs little with all the labels and a lot with few.
+With 64 labels per team (512 in all), the embedding head reaches 92%, about even with Nimble's
+zero-shot 92.5% and ahead of the 9B teacher's 88%. The reranker's features are built for yes/no
+relevance and need more labels to separate eight teams. Half depth costs little with all the labels and a lot with few.
 
 ### Training on teacher labels instead of human labels
 
