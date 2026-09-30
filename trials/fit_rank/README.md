@@ -71,6 +71,21 @@ These cover the owner's 253 production jobs, 241 of them with a Sonnet rank. The
 
 - **Caveat:** candidate material in the export is current. Sonnet ranked many jobs when they were imported, possibly from an older resume or career direction.
 
+### The same jobs through the fitted-head engine
+
+`head_run.py` renders each job as a JJM state, encodes it with the reranker's last token (8,192 token cap; nothing was truncated), and fits the engine's softmax head. Five folds. A job is scored only by a head that did not train on it. The two Long Shot jobs stay in every fit, because the fitter keeps at least two examples of an outcome, so the scored set is 239. Sonnet's ranks are the teacher's labels.
+
+| Method | Rank correlation | AUC, 1–2 vs rest | Exact | Within one | Weighted kappa | ms/job |
+| --- | --- | --- | --- | --- | --- | --- |
+| Always answer "Strong", these 239 jobs | 0 | 0.50 | 0.569 | 0.987 | 0 | |
+| Engine softmax head, expected rank | 0.259 | 0.660 | 0.498 | 0.941 | 0.133 | 365 |
+| Same vectors, ridge, as in the table above | 0.141 | 0.583 | 0.553 | 0.976 | −0.009 | 365 |
+
+Exact-match 95% interval for the softmax head is 0.43 to 0.56. The kappa interval is 0.01 to 0.26. The head's picks were Perfect 26, Strong 144, Good 69, and neither Stretch nor Long Shot.
+
+- **This rendering does not carry the signal the earlier reranker prompt did.** That prompt asked whether the listing fit the candidate, with the candidate as the query and the listing as the document, and a ridge on its hidden state reached correlation 0.52. The same ridge on these JJM-rendered vectors reaches 0.14. The softmax head's probabilities order jobs a little (correlation 0.26) and its picked rank does not beat always answering "Strong" (0.50 against 0.57).
+- **Speed:** the first encode of 191 jobs took 70 seconds, about 365 ms each, on the RTX 4000 Ada. Once a feature is cached, an envelope is about 16 ms.
+
 ## Missing candidate evidence
 
 The criterion declares the candidate evidence required (`required_evidence_ids`). A job with no resume, profile, supplementary context, or work preferences abstains with `MISSING_REQUIRED_EVIDENCE` before any model runs. The check is deterministic and free, so the model is never asked to guess a middle rank from the listing alone. This replaces the `not_observable` wording in brief §2a (`decision-fit-evidence-abstention`).
@@ -101,6 +116,7 @@ The export is one JSON object per line. Unknown fields are refused, which keeps 
 uv run python -m trials.fit_rank.run --input export.jsonl --profile synthetic
 uv run python -m trials.fit_rank.run --input export.jsonl --profiles my-profiles.json \
     --profile local-advisory --hardware "RTX 4000 Ada 12 GB, CUDA 12"
+uv run python -m trials.fit_rank.head_run --input export.jsonl --profiles jjm-profiles.local.json
 ```
 
 Output goes to `runs/fit-rank-<time>/`, which git ignores:

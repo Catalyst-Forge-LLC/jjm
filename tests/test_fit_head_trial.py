@@ -1,0 +1,31 @@
+"""Fold assignment and the systemone response parser. No model and no export."""
+from __future__ import annotations
+
+from trials.fit_rank.head_run import outer_folds
+from trials.routing.systemone import parse_choice, question
+
+
+def test_small_outcomes_stay_in_every_fit_and_each_other_row_is_scored_once():
+    labels = ["perfect"] * 10 + ["strong"] * 6 + ["long_shot"] * 2 + ["stretch"] * 3
+    digests = [f"{i:03d}" for i in range(len(labels))]
+    folds = outer_folds(labels, digests, folds=5, min_train=2)
+    assert len(folds) == 5
+    seen = []
+    for train, test in folds:
+        assert set(train).isdisjoint(test)
+        assert set(train) | set(test) == set(range(len(labels)))
+        for label in ("perfect", "strong", "long_shot", "stretch"):
+            in_train = sum(1 for i in train if labels[i] == label)
+            assert in_train >= 2
+        seen.extend(test)
+        assert all(labels[i] != "long_shot" for i in test)
+    assert sorted(seen) == [i for i, label in enumerate(labels) if label != "long_shot"]
+    assert len(seen) == len(set(seen))
+
+
+def test_systemone_choice_parser_accepts_a_team_and_rejects_anything_else():
+    body = question()
+    assert list(body["criteria"])[0] == "cards"
+    assert parse_choice({"answers": {"team": {"choice": "payments"}}}) == "payments"
+    assert parse_choice({"answers": {"team": {"choice": "not-a-team"}}}) is None
+    assert parse_choice({}) is None

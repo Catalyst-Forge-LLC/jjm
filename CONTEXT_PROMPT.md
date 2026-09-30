@@ -36,7 +36,9 @@ JJM (Just Judgment Model) is an open-source, local judgment runtime. An applicat
 - No model is hard-coded. Encoders are any Hugging Face checkpoint or Ollama embedding model. Teachers are Ollama models or LiteLLM providers (the optional `providers` extra), and run only outside `evaluate`.
 - Heads bind to criterion digest, encoder identity, and method. They are reused on an identical training digest, served only after promotion, and refused with `ARTIFACT_MISMATCH` otherwise. A fit holds out about 20% of each outcome and leaves the head `fitted_unvalidated`. `jjm accept --scope` records that report for one scope. A request that requires `validated_in_scope` then gets `calibrated_estimate` only when its scope matches, and that envelope carries the artifact manifest.
 - Banking77 routing (`trials/routing/README.md`): Qwen3-Embedding-0.6B head 97.1% against human labels, about 5 ms per message in bulk. qwen3.5:9b zero-shot 88%, and the AnyJev 1.7B readout 75%. Profiles are in `jjm-profiles.local.json` (gitignored). The data sits in `data/banking77` (gitignored).
-- 122 tests pass.
+- The fitted-head re-run on the 241 production fit jobs is in `trials/fit_rank/README.md`. On JJM's rendered state the softmax head does not beat always answering Strong. The earlier 0.52 correlation used a different prompt.
+- Banking77 zero-shot through Ollama 0.35 `/v1/systemone`, same 400-message subset: Nimble 92.5% at 482 ms, Tev1 4B 89.3% at 389 ms, Tev1 0.8B 79.5% at 370 ms. The fitted embedding head on that subset is 96.5%.
+- 124 tests pass.
 
 ## Useful commands
 

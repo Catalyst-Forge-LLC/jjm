@@ -16,7 +16,7 @@
 - [x] Cut envelope schema-check cost (a no-model request is about 0.9 ms, down from 3.0 ms)
 - [x] Faster head fitting (about 8 seconds on 10,000 examples; the penalty is chosen on 2,048 stratified rows)
 - [x] Held-out validation report for a head. `jjm accept --scope` records it; a matching scope can require `validated_in_scope`
-- [ ] Re-run the fit trial on the fitted-head route, now that it is part of the engine
+- [x] Re-run the fit trial on the fitted-head route (`trials/fit_rank/README.md`). On the rendered state the head does not beat always answering Strong; the earlier 0.52 correlation used a different prompt
 - [ ] Decide the next step for fit: a larger or quantized model, a calibration for this scope, or a different criterion shape
 - [ ] Owner blind-labels a subset, and a Sonnet re-run supplies the ceiling (brief section 2a)
 - [ ] Decide whether to add `accelerate` to the `hf` extra (two upstream AnyJev tests need it)

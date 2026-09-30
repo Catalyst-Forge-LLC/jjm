@@ -22,8 +22,9 @@ messages, 50 per team.
 
 ## Setup
 
-RTX 4000 Ada laptop GPU (12 GB), CUDA 13.0, bfloat16, transformers 5.17, Ollama 0.34.2. Models are
-from the local Hugging Face cache and Ollama, pinned by revision or digest in `jjm-profiles.local.json`.
+RTX 4000 Ada laptop GPU (12 GB), CUDA 13.0, bfloat16, transformers 5.17. The earlier Ollama rows
+used 0.34.2. Nimble and Tev1 used 0.35.0. Models are from the local Hugging Face cache and Ollama,
+pinned by revision or digest in `jjm-profiles.local.json`.
 
 ## Results
 
@@ -36,11 +37,17 @@ from the local Hugging Face cache and Ollama, pinned by revision or digest in `j
 | Qwen3-Reranker-0.6B + head | 94.3% (full test) | 3.2 ms in bulk | macro F1 0.937 |
 | Qwen3-Reranker-0.6B, half depth, + head | 94.1% (full test) | 3.0 ms in bulk | 14 of 28 layers |
 | qwen3.5:9b teacher, zero-shot (Ollama) | 88.0% (subset) | 390 ms median | every reply parsed |
+| nimble 9B, zero-shot (`/v1/systemone`) | 92.5% (subset) | 482 ms median | every reply parsed |
+| tev1 4B, zero-shot (`/v1/systemone`) | 89.3% (subset) | 389 ms median | every reply parsed |
+| tev1 0.8B, zero-shot (`/v1/systemone`) | 79.5% (subset) | 370 ms median | every reply parsed |
 | Qwen3-Reranker-0.6B yes/no per team, zero-shot | 77.8% (subset) | 82 ms median | 8 prompts in one batch |
 | JJM AnyJev readout, Qwen3-1.7B, zero-shot | 75.3% (subset) | 229 ms median | 8 rotations |
 
 On the 400-message subset, the Qwen3-Embedding head scores 96.5%, so the subset is slightly harder
-than the full test set.
+than the full test set. Nimble is the strongest of the new zero-shot decision models and still
+short of that head, at about the same latency as asking qwen3.5:9b. Those calls use Ollama's
+endpoint directly. They are not JJM envelopes, and the endpoint's confidence is entropy, not
+calibrated correctness.
 
 ### How many labels a head needs
 
@@ -132,7 +139,8 @@ and was not part of these runs. Inside a batch, an envelope whose features were 
 
 - For a closed routing question with labelled history, a small frozen encoder with a fitted head is
   the strongest and fastest route here: 97% at a few milliseconds, against 88% for a 9B model asked
-  directly at about 400 ms.
+  directly at about 400 ms. Nimble, zero-shot on the same 400 messages, scores 92.5% at about 480 ms.
+  The fitted embedding head on those messages is 96.5%.
 - Encoder choice matters more with few labels. An embedding model beats the reranker at every size
   here.
 - Zero-shot readouts on 0.6–1.7B models land near 75–78% on this task. They are for when there are
