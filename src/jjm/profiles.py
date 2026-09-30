@@ -284,15 +284,17 @@ def load_teachers(path: Optional[str] = None) -> dict[str, dict[str, Any]]:
 def capabilities(profile: Profile) -> dict[str, Any]:
     """Descriptive capability record (schema 0.1). Does not load a model."""
     if profile.adapter_name == "synthetic":
-        methods, max_ctx = ["mock:normalized"], None
+        methods, max_ctx, semantics = ["mock:normalized"], None, ["normalized_readout"]
     elif profile.adapter_name == "fitted-head":
         from jjm.adapters.head_adapter import METHOD as HEAD_METHOD
 
         methods, max_ctx = [HEAD_METHOD], profile.config["max_context_tokens"]
+        semantics = ["normalized_readout", "calibrated_estimate"]
     else:
         from jjm.adapters.anyjev_adapter import METHOD
 
         methods, max_ctx = [METHOD], profile.config["max_context_tokens"]
+        semantics = ["normalized_readout"]
     return {
         "schema_version": "0.1",
         "profile_id": profile.id,
@@ -302,7 +304,7 @@ def capabilities(profile: Profile) -> dict[str, Any]:
         "max_choice_options": 26,
         "max_score_levels": 0,
         "input_forms": ["json"],
-        "number_semantics": ["normalized_readout"],
+        "number_semantics": semantics,
         "evidence_selection": False,
         "can_verify_model_revision": False,
         "persistent_state_handles": False,

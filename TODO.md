@@ -15,7 +15,7 @@
 - [x] Banking77 routing benchmark (`trials/routing/README.md`)
 - [x] Cut envelope schema-check cost (a no-model request is about 0.9 ms, down from 3.0 ms)
 - [x] Faster head fitting (about 8 seconds on 10,000 examples; the penalty is chosen on 2,048 stratified rows)
-- [ ] Held-out validation report for a head, so a scope can move past `fitted_unvalidated`
+- [x] Held-out validation report for a head. `jjm accept --scope` records it; a matching scope can require `validated_in_scope`
 - [ ] Re-run the fit trial on the fitted-head route, now that it is part of the engine
 - [ ] Decide the next step for fit: a larger or quantized model, a calibration for this scope, or a different criterion shape
 - [ ] Owner blind-labels a subset, and a Sonnet re-run supplies the ceiling (brief section 2a)

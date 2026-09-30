@@ -10,6 +10,7 @@
 """
 from __future__ import annotations
 
+import inspect
 import math
 import time
 from datetime import datetime, timezone
@@ -133,8 +134,12 @@ class Evaluation:
         }
 
     def _calibration(self, compiled: CompiledCriterion) -> dict[str, Any]:
-        calibration = getattr(self.adapter, "calibration", None)
-        return calibration(compiled) if calibration else dict(NOT_FITTED)
+        fn = getattr(self.adapter, "calibration", None)
+        if fn is None:
+            return dict(NOT_FITTED)
+        if "scope_id" in inspect.signature(fn).parameters:
+            return fn(compiled, scope_id=self.request["scope_id"])
+        return fn(compiled)
 
     def _evidence(self, compiled: CompiledCriterion, exposed: bool) -> dict[str, Any]:
         required = compiled.criterion["required_evidence_ids"]
@@ -166,7 +171,7 @@ class Evaluation:
             for code in adapter_preflight(compiled):
                 checks.append(_check("artifact" if code == errors.ARTIFACT_MISMATCH else "adapter-preflight", False,
                                      code))
-        if req["calibration"] == "validated_in_scope":
+        if req["calibration"] == "validated_in_scope" and self._calibration(compiled)["status"] != "validated_in_scope":
             checks.append(_check("calibration", False, errors.CALIBRATION_NOT_VALIDATED))
         if req["allowed_methods"] and a.method not in req["allowed_methods"]:
             checks.append(_check("method-allowed", False, errors.METHOD_NOT_ALLOWED))
@@ -266,7 +271,11 @@ class Evaluation:
             return compiled, self._error_result(compiled, exc, True, elapsed, context_tokens), None
         output.weights = weights
         prov = self._provenance(compiled, ran=True, output=output, elapsed_ms=elapsed, context_tokens=context_tokens)
-        prediction = summarize(compiled.outcome_ids, weights, self.adapter.semantics)
+        semantics = self.adapter.semantics
+        if (self.request["requirements"]["calibration"] == "validated_in_scope"
+                and prov["calibration"]["status"] == "validated_in_scope"):
+            semantics = "calibrated_estimate"
+        prediction = summarize(compiled.outcome_ids, weights, semantics)
         # Acceptance for evaluated results is finalized once evaluated_at is known.
         return compiled, self._result(compiled, "evaluated", prediction, [], prov, True), output
 
@@ -274,11 +283,23 @@ class Evaluation:
         pending = [self._criterion(c) for c in self.request["criteria"]]
         evaluated_at = self.clock()
         results = []
+        manifests = []
         for compiled, result, output in pending:
             if result["status"] == "evaluated":
                 checks = self._postchecks(compiled, result["prediction"], evaluated_at)
                 result = self._result(compiled, "evaluated", result["prediction"], checks, result["provenance"], True)
+                prediction = result["prediction"]
+                if prediction is not None and prediction["semantics"] == "calibrated_estimate":
+                    build = getattr(self.adapter, "calibration_manifest", None)
+                    manifest = build(compiled, self.request["scope_id"], result["provenance"]) if build else None
+                    if manifest is None:
+                        raise errors.ExecutionError(errors.INTERNAL_ERROR,
+                                                    "A calibrated result had no artifact manifest.")
+                    manifests.append(manifest)
             results.append(result)
+        if len({m["artifact_id"] for m in manifests}) > 1:
+            raise errors.ExecutionError(errors.INTERNAL_ERROR,
+                                        "One envelope cannot carry two different calibrated artifacts.")
         response = {
             "schema_version": "0.1",
             "request_id": self.request["request_id"],
@@ -286,15 +307,17 @@ class Evaluation:
             "elapsed_ms": round((time.monotonic() - self.started) * 1000.0, 3),
             "results": results,
         }
-        self_check(self.request, response)
+        self_check(self.request, response, manifests[0] if manifests else None)
         return response
 
 
-def self_check(request: dict[str, Any], response: dict[str, Any]) -> None:
+def self_check(request: dict[str, Any], response: dict[str, Any], artifact: Optional[dict[str, Any]] = None) -> None:
     """The engine never returns an envelope that breaks its own contract."""
     try:
         validate_shape(response, "response", code=errors.INTERNAL_ERROR)
-        validate_pair(request, response)
+        if artifact is not None:
+            validate_shape(artifact, "artifact", code=errors.INTERNAL_ERROR)
+        validate_pair(request, response, artifact)
     except (errors.RequestError, InvariantError) as exc:
         detail = exc.message if isinstance(exc, errors.JJMError) else str(exc)
         raise errors.ExecutionError(errors.INTERNAL_ERROR, f"Engine produced an invalid envelope: {detail}") from None

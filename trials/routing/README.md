@@ -123,8 +123,9 @@ Through the full JJM contract (`evaluate` and `evaluate_batch`) with the Qwen3-E
 - The 7 ms for a fully cached batch is JJM's own envelope work (validation, digests, checks), so that
   is now the largest cost per request in a batch.
 
-Each envelope reports `calibration.status: fitted_unvalidated` with the artifact id, and
-`numeric_path: hidden_state_head`. Inside a batch, an envelope whose features were prefetched reports
+Each envelope from this trial reports `calibration.status: fitted_unvalidated` with the artifact id, and
+`numeric_path: hidden_state_head`. Accepting the held-out report is a separate `jjm accept --scope` step
+and was not part of these runs. Inside a batch, an envelope whose features were prefetched reports
 `prompt_evaluations: 0`, because the shared batch pass is not its own.
 
 ## What this says

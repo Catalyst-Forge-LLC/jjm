@@ -67,13 +67,14 @@ When you have labelled examples for a criterion, a `fitted-head` profile is much
 ```bash
 uv run jjm models                       # what is installed locally, with suggested roles
 uv run jjm --profiles p.json fit --profile route-embed --criterion c.json --examples ex.jsonl --promote
+uv run jjm --profiles p.json accept --profile route-embed --criterion c.json --scope my-app
 uv run jjm --profiles p.json heads --profile route-embed
 uv run jjm --profiles p.json evaluate-batch --requests requests.jsonl
 ```
 
 - `--examples` is JSONL of `{"state": {...}, "label": "<outcome id>"}`. Or pass `--teacher <id>` to have a teacher model label the states instead, and the artifact records that the labels came from it.
 - A head is bound to the exact criterion digest, encoder identity, and head method. Fitting the same examples again returns the stored head. A head serves only after `--promote`; otherwise the criterion abstains with `ARTIFACT_MISMATCH`.
-- Results report `calibration.status: fitted_unvalidated` with the artifact id. Cross-validation picked the head's setting, so its report is not a held-out validation, and a request that requires validated calibration still abstains.
+- Results report `calibration.status: fitted_unvalidated` until you accept the held-out report. Fitting holds out about 20% of each outcome, scores it, and leaves those rows out of the penalty choice and the fit. `jjm accept --scope <scope_id>` records that the report applies to that scope. A request that sets `calibration` to `validated_in_scope` then gets `calibrated_estimate` weights when its `scope_id` matches, and abstains otherwise. The numbers are the same head output; the status says an accepted report exists for this scope.
 - Teachers are listed under `teachers` in the profiles file: a local Ollama model, or any provider [LiteLLM](https://docs.litellm.ai/) supports (`uv sync --extra providers`). Teachers label examples. They never run inside `evaluate`.
 - Speed settings live in the profile and its identity: `batch_size`, `max_tokens`, `layer` (early exit, as a layer count or depth fraction), `prefix_reuse`, and a feature `cache` directory.
 

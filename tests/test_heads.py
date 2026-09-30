@@ -16,7 +16,7 @@ from jjm.heads.artifact import ArtifactStore
 from jjm.heads.cache import FeatureCache, cache_key
 from jjm.heads.cascade import escalation_curve, threshold_for_accuracy
 from jjm.heads.encoders import DEFAULT_PREFIX_TEMPLATE, EncodeStats, INPUT_VERSION, resolve_layer
-from jjm.heads.fit import fit_head
+from jjm.heads.fit import accept_validation, fit_head
 from jjm.heads.runtime import Featurizer
 from jjm.heads.teachers import parse_letter, teacher_prompt
 from jjm.profiles import Profile, load_profiles, load_teachers
@@ -195,6 +195,49 @@ def test_fitted_head_serves_a_valid_envelope(tmp_path):
     assert again["provenance"]["diagnostics"]["feature_cache"] == "hit"
     assert again["provenance"]["runtime"]["prompt_evaluations"] == 0
     assert again["prediction"]["weights"] == result["prediction"]["weights"]
+    assert fit.artifact["report"]["heldout"]["n"] > 0
+    assert fit.artifact["validation_status"] == "fitted_unvalidated"
+
+
+def test_an_accepted_report_satisfies_a_matching_scope(tmp_path):
+    profiles, adapter = head_profiles(tmp_path)
+    fit = fit_and_promote(adapter)
+    request = head_request()
+    request["requirements"]["calibration"] = "validated_in_scope"
+    refused = evaluate(request, profiles, clock=fixed_clock)["results"][0]
+    assert refused["status"] == "abstained"
+    assert refused["acceptance"]["reason_codes"] == ["CALIBRATION_NOT_VALIDATED"]
+    accept_validation(adapter.store, fit.artifact, "other-scope")
+    wrong = evaluate(request, profiles, clock=fixed_clock)["results"][0]
+    assert wrong["status"] == "abstained"
+    assert wrong["provenance"]["calibration"]["status"] == "out_of_scope"
+    assert wrong["provenance"]["calibration"]["scope_match"] is False
+    accept_validation(adapter.store, fit.artifact, request["scope_id"])
+    ordinary = evaluate(head_request(), profiles, clock=fixed_clock)["results"][0]
+    assert ordinary["prediction"]["semantics"] == "normalized_readout"
+    assert ordinary["provenance"]["calibration"]["status"] == "validated_in_scope"
+    result = evaluate(request, profiles, clock=fixed_clock)["results"][0]
+    assert result["status"] == "evaluated"
+    assert result["acceptance"]["status"] == "pass"
+    assert result["prediction"]["semantics"] == "calibrated_estimate"
+    assert result["prediction"]["selected"] == "billing"
+    cal = result["provenance"]["calibration"]
+    assert cal["status"] == "validated_in_scope" and cal["scope_match"] is True
+    assert cal["validation_report_id"] == fit.artifact["report"]["heldout"]["report_id"]
+
+
+def test_accept_refuses_a_head_with_no_holdout(tmp_path):
+    _, adapter = head_profiles(tmp_path)
+    texts, labels = [], []
+    for label, word in (("billing", "charged"), ("technical", "crash")):
+        for n in range(2):
+            texts.append(render_state({"content": {"ticket": f"{word} {n}"}, "evidence": []}))
+            labels.append(label)
+    fit = fit_head(adapter.featurizer, adapter.store, compile_criterion(criterion()), texts, labels,
+                   label_source={"kind": "human"}, promote=True)
+    assert fit.artifact["report"]["heldout"]["n"] == 0
+    with pytest.raises(errors.RequestError, match="no held-out report"):
+        accept_validation(adapter.store, fit.artifact, "fixture.export-workflow")
 
 
 def test_same_examples_reuse_the_stored_head(tmp_path):

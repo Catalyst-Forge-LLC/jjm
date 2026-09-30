@@ -155,10 +155,27 @@ def cmd_fit(args: argparse.Namespace) -> int:
     result = fit_head(adapter.featurizer, adapter.store, compiled, texts, labels, method=args.method,
                       label_source=label_source, promote=args.promote)
     art = result.artifact
+    held = art["report"]["heldout"]
     _emit({"artifact_id": art["artifact_id"], "binding_digest": art["binding_digest"], "reused": result.reused,
-           "promoted": result.promoted, "examples": art["training"]["n"], "teacher_unparsed": dropped,
-           "label_source": art["training"]["label_source"], "label_counts": art["training"]["label_counts"],
-           "cv": art["report"]["cv"], "feature_ms": round(result.feature_ms, 1)})
+           "promoted": result.promoted, "examples": art["training"]["n"], "fit_count": art["training"]["fit_count"],
+           "teacher_unparsed": dropped, "label_source": art["training"]["label_source"],
+           "label_counts": art["training"]["label_counts"], "cv": art["report"]["cv"],
+           "heldout": {k: held[k] for k in ("n", "accuracy", "macro_f1", "report_id") if k in held},
+           "feature_ms": round(result.feature_ms, 1)})
+    return EXIT_OK
+
+
+def cmd_accept(args: argparse.Namespace) -> int:
+    from jjm.compile import compile_criterion
+    from jjm.heads.fit import accept_validation, served_artifact
+
+    profile = _head_profile(args)
+    compiled = compile_criterion(_read_json(args.criterion))
+    adapter = profile.adapter()
+    art = served_artifact(adapter.store, adapter.featurizer, compiled)
+    if art is None:
+        raise errors.RequestError(errors.INVALID_REQUEST, "No promoted head matches this criterion and encoder.")
+    _emit(accept_validation(adapter.store, art, args.scope))
     return EXIT_OK
 
 
@@ -266,6 +283,11 @@ def build_parser() -> argparse.ArgumentParser:
                      help="who produced the labels in the file (ignored with --teacher)")
     fit.add_argument("--promote", action="store_true", help="serve this head for its criterion and encoder")
     fit.set_defaults(func=cmd_fit)
+    accept = sub.add_parser("accept", help="accept a promoted head's held-out report for one scope")
+    accept.add_argument("--profile", required=True)
+    accept.add_argument("--criterion", required=True, help="the criterion the head was fitted for")
+    accept.add_argument("--scope", required=True, help="scope_id the report applies to")
+    accept.set_defaults(func=cmd_accept)
     heads = sub.add_parser("heads", help="list stored heads for a fitted-head profile")
     heads.add_argument("--profile", required=True)
     heads.set_defaults(func=cmd_heads)

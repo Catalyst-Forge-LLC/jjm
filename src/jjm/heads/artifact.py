@@ -5,8 +5,8 @@ training digest covers the examples and their labels. A new fit with the same bi
 same training digest reuses the stored artifact instead of refitting.
 
 Promotion is a separate, explicit step: a profile serves only the artifact promoted for a
-binding, never whichever fit happened last. Status is always `fitted_unvalidated` here, because
-cross-validation used to choose the head is not a held-out validation (spec 08).
+binding, never whichever fit happened last. The file stays `fitted_unvalidated`. An accepted
+held-out report is a sidecar, `accepted.json`, and never rewrites the head.
 """
 from __future__ import annotations
 
@@ -27,9 +27,10 @@ def binding(criterion_digest: str, encoder_identity: dict[str, Any], method: str
             "encoder": encoder_identity, "encoder_digest": digest(encoder_identity), "method": method}
 
 
-def training_digest(examples: list[tuple[str, str]], label_source: dict[str, Any]) -> str:
+def training_digest(examples: list[tuple[str, str]], label_source: dict[str, Any],
+                    split: Optional[dict[str, Any]] = None) -> str:
     """Examples are (body text digest, outcome id) pairs in a canonical order."""
-    return digest({"examples": sorted(examples), "label_source": label_source})
+    return digest({"examples": sorted(examples), "label_source": label_source, "split": split})
 
 
 def _short(d: str, n: int = 24) -> str:
@@ -111,6 +112,23 @@ class ArtifactStore:
             raise errors.AdapterError(errors.ARTIFACT_MISMATCH, "Promoted head reference names another binding")
         return self.load(binding_digest, ref["artifact_id"])
 
+    def accept(self, art: dict[str, Any], scope_id: str, report_id: str) -> dict[str, Any]:
+        """Record that this head's held-out report is accepted for one scope. Replaces any earlier acceptance."""
+        d = self._dir(art["binding_digest"])
+        d.mkdir(parents=True, exist_ok=True)
+        record = {"artifact_id": art["artifact_id"], "binding_digest": art["binding_digest"],
+                  "scope_id": scope_id, "validation_report_id": report_id}
+        tmp = d / "accepted.tmp"
+        tmp.write_text(json.dumps(record), encoding="utf-8")
+        os.replace(tmp, d / "accepted.json")
+        return record
+
+    def acceptance(self, binding_digest: str) -> Optional[dict[str, Any]]:
+        path = self._dir(binding_digest) / "accepted.json"
+        if not path.exists():
+            return None
+        return json.loads(path.read_text(encoding="utf-8"))
+
     def list(self) -> list[dict[str, Any]]:
         out = []
         if not self.root.is_dir():
@@ -119,12 +137,15 @@ class ArtifactStore:
             promoted = None
             if (d / "promoted.json").exists():
                 promoted = json.loads((d / "promoted.json").read_text(encoding="utf-8"))["artifact_id"]
+            accepted = json.loads((d / "accepted.json").read_text(encoding="utf-8")) if (d / "accepted.json").exists() else None
             for path in sorted(d.glob("head-*.json")):
                 art = json.loads(path.read_text(encoding="utf-8"))
+                held = art["report"].get("heldout") or {}
                 out.append({"artifact_id": art["artifact_id"], "binding_digest": art["binding_digest"],
                             "method": art["binding"]["method"], "encoder": art["binding"]["encoder"]["model"],
                             "criterion_digest": art["binding"]["criterion_digest"],
                             "examples": art["training"]["n"], "label_source": art["training"]["label_source"],
-                            "cv": art["report"].get("cv"), "created_at": art["created_at"],
-                            "promoted": art["artifact_id"] == promoted})
+                            "cv": art["report"].get("cv"), "heldout": held.get("n"),
+                            "created_at": art["created_at"], "promoted": art["artifact_id"] == promoted,
+                            "accepted_scope": accepted["scope_id"] if accepted and accepted.get("artifact_id") == art["artifact_id"] else None})
         return out
