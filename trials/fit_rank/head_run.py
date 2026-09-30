@@ -95,6 +95,16 @@ def _trial_profile(source: Path, out_dir: Path) -> Path:
     return path
 
 
+def state_texts(records: list[dict[str, Any]], text: str) -> list[str]:
+    """The words the encoder reads. `probe` is the dedicated prompt; `rendered` is the JJM state."""
+    if text == "probe":
+        from trials.fit_rank.same_text import probe_text
+        return [probe_text(record) for record in records]
+    if text != "rendered":
+        raise ValueError(f"unknown text {text!r}")
+    return [render_state(req["state"]) for req in _requests(records)]
+
+
 def _requests(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
     built = []
     for record in records:
@@ -104,7 +114,80 @@ def _requests(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return built
 
 
-def run(records: list[dict[str, Any]], profiles_path: Path, out_dir: Path) -> dict[str, Any]:
+def _score_probe(records: list[dict[str, Any]], profiles_path: Path, out_dir: Path) -> dict[str, Any]:
+    """Fit the same softmax head on the dedicated prompt, and score each job with a head that did not train on it.
+
+    The engine would re-render a JJM state, so this path scores the head's weights on the prompt features directly.
+    """
+    from jjm.heads.fit import fit_head, head_from_artifact
+    from jjm.profiles import load_profiles
+
+    labeled = [r for r in records if r.get("sonnet_rank")]
+    texts = state_texts(labeled, "probe")
+    labels = [LEVELS[r["sonnet_rank"]][0] for r in labeled]
+    folds = outer_folds(labels, [text_digest(t) for t in texts])
+    out_dir.mkdir(parents=True, exist_ok=True)
+    profiles = load_profiles(str(_trial_profile(profiles_path, out_dir)))
+    adapter = profiles[PROFILE_ID].adapter()
+    compiled = compile_criterion(_requests(labeled[:1])[0]["criteria"][0])
+    label_source = {"kind": "teacher",
+                    "description": "Sonnet fit rank on this export. Agreement with that teacher, not ground truth."}
+    features = adapter.featurizer.features(adapter.featurizer.inputs(texts, compiled))
+    encoded = features.encode
+    ids = list(compiled.outcome_ids)
+    scored: list[dict[str, Any]] = []
+    fit_seconds = []
+    for fold, (train_at, test_at) in enumerate(folds):
+        if not test_at:
+            continue
+        t0 = time.perf_counter()
+        fit = fit_head(adapter.featurizer, adapter.store, compiled,
+                       [texts[i] for i in train_at], [labels[i] for i in train_at],
+                       label_source=label_source, promote=True)
+        fit_seconds.append(time.perf_counter() - t0)
+        weights = head_from_artifact(fit.artifact).weights(features.features[np.array(test_at)])
+        for row, i in enumerate(test_at):
+            picked = ids[int(np.argmax(weights[row]))]
+            scored.append({
+                "job_id": labeled[i]["job_id"],
+                "fold": fold,
+                "sonnet_rank": labeled[i]["sonnet_rank"],
+                "jjm_rank": RANK_BY_OPTION[picked],
+                "expected_rank": _expected_rank({option: float(weights[row, n]) for n, option in enumerate(ids)}),
+                "artifact_id": fit.artifact["artifact_id"],
+            })
+        print(f"fold {fold}: train {len(train_at)} test {len(test_at)} fit {fit_seconds[-1]:.1f}s", flush=True)
+    kept = scored
+    predicted = [r["jjm_rank"] for r in kept]
+    reference = [r["sonnet_rank"] for r in kept]
+    expected_a = np.asarray([r["expected_rank"] for r in kept], dtype=float)
+    reference_a = np.asarray(reference, dtype=int)
+    summary = {
+        "encoder": "Qwen3-Reranker-0.6B last-token hidden state, softmax head on the dedicated prompt",
+        "text": "probe",
+        "labels": "Sonnet ranks, treated as a teacher. Not ground truth.",
+        "jobs_with_sonnet_rank": len(labeled),
+        "scored": len(kept),
+        "unscored_because_outcome_too_small": len(labeled) - len(scored),
+        "truncated": int(encoded.truncated) if encoded is not None else None,
+        "encode_tokens_max": int(max(encoded.tokens)) if encoded is not None and encoded.tokens else None,
+        "folds": FOLDS,
+        "fit_seconds": fit_seconds,
+        "encode_ms": None if encoded is None else encoded.elapsed_ms,
+        "agreement_argmax": metrics.agreement(predicted, reference),
+        "spearman_expected_rank": float(spearman(expected_a, reference_a)) if kept else None,
+        "auc_sonnet_1_or_2": float(auc(-expected_a, reference_a <= 2)) if kept else None,
+        "rank_counts": {str(n): predicted.count(n) for n in range(1, 6)},
+        "note": "The head's criterion prefix sits in front of the dedicated prompt. The body is that prompt.",
+    }
+    (out_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+    (out_dir / "rows.json").write_text(json.dumps(scored, indent=2) + "\n", encoding="utf-8")
+    return summary
+
+
+def run(records: list[dict[str, Any]], profiles_path: Path, out_dir: Path, *, text: str = "rendered") -> dict[str, Any]:
+    if text == "probe":
+        return _score_probe(records, profiles_path, out_dir)
     from jjm.engine import evaluate_batch
     from jjm.heads.fit import fit_head
     from jjm.profiles import load_profiles
@@ -192,9 +275,11 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--input", required=True, type=Path)
     parser.add_argument("--profiles", required=True, type=Path)
-    parser.add_argument("--out", type=Path, default=Path("runs/fit-rank-head"))
+    parser.add_argument("--out", type=Path, default=None)
+    parser.add_argument("--text", choices=("rendered", "probe"), default="rendered")
     args = parser.parse_args(argv)
-    summary = run(read_export(args.input), args.profiles, args.out)
+    out = args.out or Path("runs/fit-rank-head-probe" if args.text == "probe" else "runs/fit-rank-head")
+    summary = run(read_export(args.input), args.profiles, out, text=args.text)
     print(json.dumps({k: v for k, v in summary.items() if k != "agreement_argmax"}, indent=2))
     print(json.dumps(summary["agreement_argmax"], indent=2))
     return 0

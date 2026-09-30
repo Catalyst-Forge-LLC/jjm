@@ -23,6 +23,19 @@ def test_small_outcomes_stay_in_every_fit_and_each_other_row_is_scored_once():
     assert len(seen) == len(set(seen))
 
 
+def test_probe_head_reads_the_dedicated_prompt():
+    import json
+    from pathlib import Path
+
+    from trials.fit_rank.head_run import state_texts
+
+    record = json.loads(Path("tests/data/fit_export.sample.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    text = state_texts([record], "probe")[0]
+    assert text.startswith("<Instruct>:")
+    assert "sonnet" not in text.lower()
+    assert "Director of Platform" in text
+
+
 def test_fit_texts_carry_the_job_and_not_the_rank():
     import json
     from pathlib import Path
