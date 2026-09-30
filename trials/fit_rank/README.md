@@ -63,9 +63,11 @@ These cover the owner's 253 production jobs, 241 of them with a Sonnet rank. The
 | 1.7B mean hidden state, layer 7 | yes, cross-validated | 0.479 | 0.773 | 0.581 | 0.982 | 0.273 | 366 |
 | 4B mean hidden state, layer 18 | yes, cross-validated | 0.522 | 0.808 | 0.622 | 0.978 | 0.362 | 918 |
 | Reranker hidden-state head | yes, cross-validated | 0.515 | 0.804 | 0.640 | 0.989 | 0.450 | 186 |
+| Same vectors, softmax head | yes, cross-validated | 0.522 | 0.811 | 0.609 | 0.967 | 0.420 | 186 |
 
 - **Zero-shot, the reranker and the cosine score order jobs about as well as the 4B readout, much faster.** Rank correlation is 0.43 and 0.46 against the readout's 0.43, at 186 ms and 275 ms instead of 5 s. They do not emit a 1–5 label, so exact agreement and kappa are not defined for them.
 - **The best trained head is the reranker's hidden state.** Weighted kappa is 0.45 against the readout's 0.19, and exact agreement is 0.64 against always answering "Strong" at 0.56, at 186 ms. That head was fit to predict Sonnet, so this is distillation. It is not an independent judge, and it cannot be more right than Sonnet.
+- **A softmax on those same vectors keeps the signal.** Same saved hidden states, same 10-fold outer loop, three shuffles. Rank correlation is 0.52. Exact agreement, from the picked class rather than a rounded score, is 0.61, still above always answering "Strong." One shuffle picked Perfect 28, Strong 147, Good 65, Stretch 0, and Long Shot 1.
 - **Mean-pooled hidden states beat the last token.** The 4B last token at layer 18 had rank correlation −0.02. Adding requirement coverage to the embedding head barely moved the score (0.433 against 0.426 for the listing embedding alone).
 - **These heads learn one profile.** The candidate text is the same on every job, so a head trained here will not transfer to another person without their labels. Blind owner labels are still the check that matters.
 

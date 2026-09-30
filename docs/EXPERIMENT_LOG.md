@@ -1,6 +1,6 @@
 # JJM experiment log
 
-Last updated: 2026-09-30 (same-text fit entry appended)
+Last updated: 2026-09-30 (softmax and full-test Nimble entries appended)
 
 This is a lab notebook for the judgment experiments. It is not a model card (that describes a model you ship) and not a test plan (that is a walkthrough of the product). Each entry records one comparison: the question, what each method was allowed to see, the result, and what that result does and does not support.
 
@@ -157,3 +157,81 @@ On the dedicated prompt, exact agreement with Sonnet was Nimble 0.45, the fitted
 - Tev1's published context cap cannot read these jobs. The numbers above are the same weights at 8,192 tokens.
 - The head's row has a criterion prefix the decision models do not. The body words match.
 - Agreement with Sonnet is not correctness. One candidate. The export's resume may be newer than the resume Sonnet saw.
+
+## 2026-09-30 — Softmax on the reranker hidden states
+
+### Question
+
+Does the softmax head recover the ridge result when both read the chat-wrapped reranker hidden states?
+
+### Data
+
+The same 241 Sonnet-ranked jobs. Features are the saved vectors in `runs/feat-rerank-0.6b.npz` (gitignored). Sonnet is the teacher.
+
+### Methods
+
+The ridge row and this row share those vectors and the same outer loop: 10 folds, 3 shuffles, no job scored by a head that trained on it. The ridge predicts a number and rounds it. The softmax picks the class with the highest weight. The penalty is chosen inside each training fold.
+
+### Hardware
+
+CPU only. The vectors were encoded earlier on the RTX 4000 Ada, 186 ms per job.
+
+### Result
+
+Full row: `trials/fit_rank/README.md`, "Reranker hidden-state head" and the softmax row under it.
+
+Rank correlation 0.522, AUC 0.811, exact 0.609, within one 0.967, weighted kappa 0.420. Always answering "Strong" is exact 0.564. One shuffle picked Perfect 28, Strong 147, Good 65, Stretch 0, Long Shot 1.
+
+### Worked
+
+The softmax tracks Sonnet as well as the ridge does. Exact agreement beats always answering "Strong." The earlier miss was the text the encoder read, not the head.
+
+### Did not
+
+Exact agreement is a little under the ridge's rounded score (0.61 against 0.64). The head still barely uses Stretch.
+
+### Promising
+
+Serving this encoding through the fitted-head engine, with the reranker's chat wrapper as the encoder input, is the path that matches the result that worked.
+
+### Caveat
+
+Agreement with Sonnet is distillation, not correctness. One candidate.
+
+## 2026-09-30 — Nimble on the full Banking77 test set
+
+### Question
+
+Does Nimble's 92.5% on 400 messages hold on all 3,080 test messages?
+
+### Data
+
+Banking77 test split, human labels mapped to 8 teams. The 400-message figure was 50 per team, seed 0.
+
+### Methods
+
+Nimble 9B, zero-shot, through Ollama `/v1/systemone`. No labels. Not a JJM envelope. Confidence on that API is entropy.
+
+### Hardware
+
+RTX 4000 Ada, Ollama 0.35.0, Nimble on GPU with an 8,192-token window.
+
+### Result
+
+91.6% accuracy, 3,080 of 3,080 replies parsed, median 694 ms. The embedding head on this same full set is 97.1% at a few milliseconds. Weakest team: transfers, 83%. Detail: `trials/routing/README.md`.
+
+### Worked
+
+The subset result was not a fluke. Nimble stays near 92% on the full set, and every reply parsed.
+
+### Did not
+
+It does not catch the fitted head, and it is about 100 times slower per message once the head is fitted.
+
+### Promising
+
+A second public intent set is the check that this routing gap is not special to Banking77.
+
+### Caveat
+
+The head saw the 10,003 training labels. Nimble saw none. The label curve in the routing write-up is the fair budget comparison: about 64 labels per team before the head matches Nimble.

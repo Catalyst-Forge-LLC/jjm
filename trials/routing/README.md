@@ -38,6 +38,7 @@ pinned by revision or digest in `jjm-profiles.local.json`.
 | Qwen3-Reranker-0.6B, half depth, + head | 94.1% (full test) | 3.0 ms in bulk | 14 of 28 layers |
 | qwen3.5:9b teacher, zero-shot (Ollama) | 88.0% (subset) | 390 ms median | every reply parsed |
 | nimble 9B, zero-shot (`/v1/systemone`) | 92.5% (subset) | 482 ms median | every reply parsed |
+| nimble 9B, zero-shot, full test | **91.6%** (full test) | 694 ms median | every reply parsed; transfers 83% |
 | tev1 4B, zero-shot (`/v1/systemone`) | 89.3% (subset) | 389 ms median | every reply parsed |
 | tev1 0.8B, zero-shot (`/v1/systemone`) | 79.5% (subset) | 370 ms median | every reply parsed |
 | Qwen3-Reranker-0.6B yes/no per team, zero-shot | 77.8% (subset) | 82 ms median | 8 prompts in one batch |
@@ -140,7 +141,8 @@ and was not part of these runs. Inside a batch, an envelope whose features were 
 - For a closed routing question with labelled history, a small frozen encoder with a fitted head is
   the strongest and fastest route here: 97% at a few milliseconds, against 88% for a 9B model asked
   directly at about 400 ms. Nimble, zero-shot on the same 400 messages, scores 92.5% at about 480 ms.
-  The fitted embedding head on those messages is 96.5%.
+  On all 3,080 test messages Nimble scores 91.6% at 694 ms. The fitted embedding head on those
+  messages is 97.1%.
 - Encoder choice matters more with few labels. An embedding model beats the reranker at every size
   here.
 - Zero-shot readouts on 0.6–1.7B models land near 75–78% on this task. They are for when there are
