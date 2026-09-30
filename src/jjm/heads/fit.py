@@ -59,10 +59,14 @@ def fit_head(featurizer: Featurizer, store: ArtifactStore, compiled: CompiledCri
     run = featurizer.features(featurizer.inputs(state_texts, compiled))
     y = np.array([ids.index(x) for x in labels], dtype=int)
     head, cv = heads.fit(method, run.features, y, len(ids))
-    report = {"cv": {**heads.classification_report(cv["oof_weights"], y, len(ids)),
+    held_for_selection = cv["rows"]
+    report = {"cv": {**heads.classification_report(cv["oof_weights"], y[held_for_selection], len(ids)),
                      "folds": heads.FOLDS, "selected_setting": cv["setting"],
-                     "note": "Cross-validation also chose the setting, so this is a selection estimate, "
-                             "not a held-out validation."}}
+                     "selection_rows": int(len(held_for_selection)),
+                     "note": "Cross-validation also chose the setting"
+                             + (f" on {len(held_for_selection)} stratified rows" if len(held_for_selection) < len(y)
+                                else "")
+                             + ", so this is a selection estimate, not a held-out validation."}}
     training = {"training_digest": train, "n": len(labels), "label_source": label_source,
                 "label_counts": counts, "split": f"stratified {heads.FOLDS}-fold, seed {heads.SEED}",
                 "feature_dim": int(run.features.shape[1])}

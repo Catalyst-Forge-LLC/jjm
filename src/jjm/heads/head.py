@@ -1,6 +1,7 @@
 """Small heads over frozen features. numpy only, deterministic: fixed folds, zero initialization.
 
-softmax: multinomial logistic regression on standardized features, for unordered outcomes.
+softmax: multinomial logistic regression on standardized features, for unordered outcomes,
+fit by L-BFGS from a zero start.
 ordinal: ridge regression onto the option index, turned into weights by a normal around the
 prediction with the cross-validated residual spread. For outcomes whose order means something.
 """
@@ -15,10 +16,12 @@ import numpy as np
 METHODS = ("softmax", "ordinal")
 SOFTMAX_L2_GRID = (1e-4, 1e-3, 1e-2, 1e-1)
 RIDGE_ALPHA_GRID = tuple(float(a) for a in np.logspace(-1, 5, 13))
-ITERATIONS = 400
-LEARNING_RATE = 0.05
+LBFGS_ITERATIONS = 30
+LBFGS_HISTORY = 8
 FOLDS = 5
 SEED = 0
+# The penalty is chosen on at most this many stratified rows. The final head still fits on every row.
+SELECTION_ROWS = 2048
 
 
 def _standardize(X: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
@@ -44,21 +47,77 @@ def folds(y: np.ndarray, k: int = FOLDS, seed: int = SEED) -> list[np.ndarray]:
     return [np.array(sorted(f), dtype=int) for f in out]
 
 
-def _fit_softmax(Z: np.ndarray, y: np.ndarray, k: int, l2: float) -> tuple[np.ndarray, np.ndarray]:
+def _softmax_loss_grad(theta: np.ndarray, Z: np.ndarray, y: np.ndarray, k: int, l2: float
+                       ) -> tuple[float, np.ndarray]:
+    """Multinomial log loss plus L2 on the weights. The bias is not penalized."""
     n, d = Z.shape
-    Y = np.eye(k)[y]
-    W, b = np.zeros((d, k)), np.zeros(k)
-    mW, vW, mb, vb = np.zeros_like(W), np.zeros_like(W), np.zeros_like(b), np.zeros_like(b)
-    b1, b2, eps = 0.9, 0.999, 1e-8
-    for t in range(1, ITERATIONS + 1):
-        G = (_softmax(Z @ W + b) - Y) / n
-        gW, gb = Z.T @ G + l2 * W, G.sum(0)
-        mW, vW = b1 * mW + (1 - b1) * gW, b2 * vW + (1 - b2) * gW * gW
-        mb, vb = b1 * mb + (1 - b1) * gb, b2 * vb + (1 - b2) * gb * gb
-        c1, c2 = 1 - b1 ** t, 1 - b2 ** t
-        W -= LEARNING_RATE * (mW / c1) / (np.sqrt(vW / c2) + eps)
-        b -= LEARNING_RATE * (mb / c1) / (np.sqrt(vb / c2) + eps)
-    return W, b
+    W = theta[: d * k].reshape(d, k)
+    b = theta[d * k:]
+    P = _softmax(Z @ W + b)
+    G = (P - np.eye(k)[y]) / n
+    loss = float(-np.log(np.clip(P[np.arange(n), y], 1e-12, None)).mean() + 0.5 * l2 * np.sum(W * W))
+    grad = np.concatenate([(Z.T @ G + l2 * W).ravel(), G.sum(0)])
+    return loss, grad
+
+
+def _lbfgs(loss_grad, theta: np.ndarray) -> np.ndarray:
+    """Limited-memory BFGS from a fixed start. Convex loss, so this is the same minimum Adam was walking toward."""
+    s_hist: list[np.ndarray] = []
+    y_hist: list[np.ndarray] = []
+    rho: list[float] = []
+    loss, grad = loss_grad(theta)
+    for _ in range(LBFGS_ITERATIONS):
+        if np.linalg.norm(grad) <= 1e-8 * (1.0 + np.linalg.norm(theta)):
+            break
+        q = grad.copy()
+        alpha = []
+        for s, yv, r in zip(reversed(s_hist), reversed(y_hist), reversed(rho)):
+            a = r * float(np.dot(s, q))
+            alpha.append(a)
+            q -= a * yv
+        gamma = 1.0
+        if y_hist:
+            gamma = float(np.dot(s_hist[-1], y_hist[-1]) / np.dot(y_hist[-1], y_hist[-1]))
+        direction = gamma * q
+        for s, yv, r, a in zip(s_hist, y_hist, rho, reversed(alpha)):
+            beta = r * float(np.dot(yv, direction))
+            direction += s * (a - beta)
+        direction *= -1.0
+        slope = float(np.dot(grad, direction))
+        if slope >= 0.0:
+            direction = -grad
+            slope = float(np.dot(grad, direction))
+        step = 1.0
+        accepted = None
+        for _attempt in range(12):
+            trial = theta + step * direction
+            trial_loss, trial_grad = loss_grad(trial)
+            if trial_loss <= loss + 1e-4 * step * slope:
+                accepted = (trial, trial_loss, trial_grad)
+                break
+            step *= 0.5
+        if accepted is None:
+            break
+        new_theta, new_loss, new_grad = accepted
+        s = new_theta - theta
+        yv = new_grad - grad
+        ys = float(np.dot(yv, s))
+        if ys > 1e-12:
+            if len(s_hist) == LBFGS_HISTORY:
+                s_hist.pop(0)
+                y_hist.pop(0)
+                rho.pop(0)
+            s_hist.append(s)
+            y_hist.append(yv)
+            rho.append(1.0 / ys)
+        theta, loss, grad = new_theta, new_loss, new_grad
+    return theta
+
+
+def _fit_softmax(Z: np.ndarray, y: np.ndarray, k: int, l2: float) -> tuple[np.ndarray, np.ndarray]:
+    d = Z.shape[1]
+    theta = _lbfgs(lambda t: _softmax_loss_grad(t, Z, y, k, l2), np.zeros(d * k + k))
+    return theta[: d * k].reshape(d, k), theta[d * k:]
 
 
 def _fit_ridge(Z: np.ndarray, t: np.ndarray, alpha: float) -> tuple[np.ndarray, float]:
@@ -121,14 +180,39 @@ def _train(method: str, X: np.ndarray, y: np.ndarray, k: int, setting: float, si
     return Head(method, k, mu, sd, w[:, None], np.array([b0]), sigma, setting)
 
 
+def _selection_index(y: np.ndarray, cap: int, seed: int) -> np.ndarray:
+    """Stratified rows for choosing the penalty. Every outcome that exists is kept."""
+    if len(y) <= cap:
+        return np.arange(len(y))
+    rng = np.random.default_rng(seed)
+    labels, counts = np.unique(y, return_counts=True)
+    raw = cap * counts / len(y)
+    alloc = np.maximum(1, np.floor(raw).astype(int))
+    while int(alloc.sum()) > cap:
+        alloc[int(np.argmax(alloc))] -= 1
+    order = np.argsort(-(raw - alloc))
+    cursor = 0
+    while int(alloc.sum()) < cap:
+        alloc[order[cursor % len(order)]] += 1
+        cursor += 1
+    chosen: list[int] = []
+    for label, take, count in zip(labels, alloc, counts):
+        idx = np.flatnonzero(y == label)
+        chosen.extend(rng.choice(idx, size=int(min(take, count)), replace=False).tolist())
+    return np.array(sorted(chosen), dtype=int)
+
+
 def cross_validate(method: str, X: np.ndarray, y: np.ndarray, k: int) -> dict[str, Any]:
     """Pick the regularization by fold log loss (softmax) or squared error (ordinal).
 
-    Returns the chosen setting and the out-of-fold weights for it. Because those folds also chose
-    the setting, the report is a selection estimate, not a held-out evaluation.
+    Returns the chosen setting and the out-of-fold weights for it. The folds also chose the
+    setting, so the report is a selection estimate, not a held-out evaluation. On a large set the
+    choice uses a stratified subset; the caller fits the final head on every row.
     """
     if method not in METHODS:
         raise ValueError(f"head method must be one of {METHODS}")
+    rows = _selection_index(y, SELECTION_ROWS, SEED)
+    X, y = X[rows], y[rows]
     parts = folds(y)
     grid = SOFTMAX_L2_GRID if method == "softmax" else RIDGE_ALPHA_GRID
     best: tuple[float, float, np.ndarray] | None = None
@@ -156,7 +240,7 @@ def cross_validate(method: str, X: np.ndarray, y: np.ndarray, k: int) -> dict[st
     if method == "ordinal":
         sigma = max(float(np.sqrt(loss)), 1e-3)
         oof = ordinal_weights(oof, sigma, k)
-    return {"setting": setting, "sigma": sigma, "oof_weights": oof, "loss": loss}
+    return {"setting": setting, "sigma": sigma, "oof_weights": oof, "loss": loss, "rows": rows}
 
 
 def fit(method: str, X: np.ndarray, y: np.ndarray, k: int) -> tuple[Head, dict[str, Any]]:

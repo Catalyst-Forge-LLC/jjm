@@ -115,8 +115,10 @@ Through the full JJM contract (`evaluate` and `evaluate_batch`) with the Qwen3-E
 | `evaluate_batch`, 400 requests | 96.5% | 11 ms |
 | the same batch again, every feature cached | — | 7 ms |
 
-- Fitting on all 10,003 messages took about 2 minutes, with the features already cached. Asking to
-  fit the same examples again returned the stored head in 0.35 s instead of refitting.
+- Fitting on all 10,003 messages took about 2 minutes with the first optimizer, features already
+  cached. The fitter now chooses its penalty on a stratified subset and then fits once, which takes
+  about 8 seconds on this machine and landed within half a point of that run. Asking to fit the same
+  examples again returned the stored head in 0.35 s instead of refitting.
 - Cached features load from disk at about 0.24 ms per message.
 - The 7 ms for a fully cached batch is JJM's own envelope work (validation, digests, checks), so that
   is now the largest cost per request in a batch.

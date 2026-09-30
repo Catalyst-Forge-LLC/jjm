@@ -13,8 +13,8 @@
 - [x] Export production jobs with Sonnet ranks (`--prod-db`) and run the trial with 4B and 1.7B
 - [x] Fitted-head route: Hugging Face and Ollama encoders, feature cache, head artifacts with reuse and promotion, teachers (Ollama, LiteLLM), `evaluate_batch`, and `jjm models / fit / heads` (decision-fitted-head-engine)
 - [x] Banking77 routing benchmark (`trials/routing/README.md`)
-- [ ] Cut envelope overhead in batches (7 ms per request with every feature cached)
-- [ ] Faster head fitting (now 2 to 5 minutes on 10,000 examples)
+- [x] Cut envelope schema-check cost (a no-model request is about 0.9 ms, down from 3.0 ms)
+- [x] Faster head fitting (about 8 seconds on 10,000 examples; the penalty is chosen on 2,048 stratified rows)
 - [ ] Held-out validation report for a head, so a scope can move past `fitted_unvalidated`
 - [ ] Re-run the fit trial on the fitted-head route, now that it is part of the engine
 - [ ] Decide the next step for fit: a larger or quantized model, a calibration for this scope, or a different criterion shape
