@@ -86,6 +86,26 @@ Exact-match 95% interval for the softmax head is 0.43 to 0.56. The kappa interva
 - **This rendering does not carry the signal the earlier reranker prompt did.** That prompt asked whether the listing fit the candidate, with the candidate as the query and the listing as the document, and a ridge on its hidden state reached correlation 0.52. The same ridge on these JJM-rendered vectors reaches 0.14. The softmax head's probabilities order jobs a little (correlation 0.26) and its picked rank does not beat always answering "Strong" (0.50 against 0.57).
 - **Speed:** the first encode of 191 jobs took 70 seconds, about 365 ms each, on the RTX 4000 Ada. Once a feature is cached, an envelope is about 16 ms.
 
+### Same jobs, same words, 2026-09-30
+
+Nimble 9B and Tev1 4B answered the five fit options through Ollama `/v1/systemone`, with no labels. The fitted head is the reranker softmax from the section above. Two texts: the JJM rendered state, and the dedicated prompt (candidate as the query, listing as the document). Sonnet is the teacher. Every decision-model reply parsed. Stock Tev1 refuses prompts over 2,050 tokens, so Tev1 ran as a local alias with the same weights and an 8,192-token window, matching Nimble. Nothing was truncated. The head on the dedicated prompt scored 239 jobs; the decision models scored all 241.
+
+| Method | Text | Exact | Within one | Weighted kappa | Expected-rank correlation | ms/job |
+| --- | --- | --- | --- | --- | --- | --- |
+| Always answer "Strong" | | 0.564 of 241; 0.569 of 239 | | 0 | 0 | |
+| Nimble 9B | rendered state | 0.241 | 0.884 | 0.388 | 0.621 | 2200 |
+| Tev1 4B | rendered state | 0.162 | 0.788 | 0.161 | 0.630 | 1570 |
+| Fitted softmax head | rendered state | 0.498 of 239 | 0.941 | 0.133 | 0.259 | 365 encode |
+| Nimble 9B | dedicated prompt | 0.452 | 0.888 | 0.435 | 0.602 | 1100 |
+| Tev1 4B | dedicated prompt | 0.295 | 0.900 | 0.315 | 0.605 | 690 |
+| Fitted softmax head | dedicated prompt | 0.460 of 239 | 0.950 | 0.104 | 0.201 | 390 encode |
+
+The head's criterion prefix sits in front of the dedicated prompt. The earlier ridge correlation of 0.52 used the reranker's chat wrapper and read the last token at the assistant position, so it is not this row.
+
+- **The dedicated prompt helps the picked letter.** Nimble's exact agreement rises from 0.24 to 0.45, and Tev1's from 0.16 to 0.29. Neither picked letter beats always answering "Strong."
+- **The decision models' probabilities track Sonnet on either text,** at about 0.60. The fitted head's probabilities do not: 0.26 on the rendered state and 0.20 on the dedicated prompt. On that prompt the head still mostly says Strong (160 of 239).
+- **Speed:** after the encode, the head is the cheap one to serve. Nimble and Tev1 pay about a second on every job.
+
 ## Missing candidate evidence
 
 The criterion declares the candidate evidence required (`required_evidence_ids`). A job with no resume, profile, supplementary context, or work preferences abstains with `MISSING_REQUIRED_EVIDENCE` before any model runs. The check is deterministic and free, so the model is never asked to guess a middle rank from the listing alone. This replaces the `not_observable` wording in brief §2a (`decision-fit-evidence-abstention`).
@@ -117,6 +137,7 @@ uv run python -m trials.fit_rank.run --input export.jsonl --profile synthetic
 uv run python -m trials.fit_rank.run --input export.jsonl --profiles my-profiles.json \
     --profile local-advisory --hardware "RTX 4000 Ada 12 GB, CUDA 12"
 uv run python -m trials.fit_rank.head_run --input export.jsonl --profiles jjm-profiles.local.json
+uv run python -m trials.fit_rank.head_run --input export.jsonl --profiles jjm-profiles.local.json --text probe
 ```
 
 Output goes to `runs/fit-rank-<time>/`, which git ignores:

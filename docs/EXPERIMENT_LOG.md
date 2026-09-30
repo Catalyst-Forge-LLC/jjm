@@ -1,6 +1,6 @@
 # JJM experiment log
 
-Last updated: 2026-09-30
+Last updated: 2026-09-30 (same-text fit entry appended)
 
 This is a lab notebook for the judgment experiments. It is not a model card (that describes a model you ship) and not a test plan (that is a walkthrough of the product). Each entry records one comparison: the question, what each method was allowed to see, the result, and what that result does and does not support.
 
@@ -109,3 +109,51 @@ The engine run scored 239 of 241 jobs with a head that had not trained on that j
 - Fit rank gives the head Sonnet's ranks. Agreement with Sonnet is not correctness. The candidate text is one person, and the export's resume may be newer than the resume Sonnet saw.
 - The production export holds resume text. It stays gitignored, and it should be deleted when the fit trial is over.
 - The published 97.1% routing figure is the earlier optimizer. A refit with the current fitter landed within about half a point (96.8% on that check).
+
+## 2026-09-30 — Same words on the fit jobs
+
+### Question
+
+When the fitted head, Nimble, and Tev1 read the same fit jobs and the same five options, does the head still lose, and does the dedicated prompt change that?
+
+### Data
+
+The same 241 Sonnet-ranked production jobs as the entry above. Sonnet remains the teacher. The two Long Shot jobs stay in every head fit, so the head rows are 239 jobs. The decision models scored all 241.
+
+### Methods
+
+- **Rendered state.** The JJM state the engine head already read.
+- **Dedicated prompt.** The candidate as the query and the listing as the document. Nimble and Tev1 received that string as the state. The fitted head received it as the body, with its usual criterion prefix in front. That is not the chat wrapper behind the earlier ridge correlation of 0.52.
+- **Tev1.** The published model file caps context at 2,050 tokens and refuses a longer prompt. The run used a local alias with the same weights and an 8,192-token window, the same cap Nimble ships with. No job was truncated. Details: `trials/fit_rank/README.md`.
+
+### Hardware
+
+Same GPU as the entry above. Ollama 0.35.0 for Nimble and Tev1. The head encode used the local Qwen3-Reranker-0.6B.
+
+### Result
+
+Full table: `trials/fit_rank/README.md`, section "Same jobs, same words."
+
+On the dedicated prompt, exact agreement with Sonnet was Nimble 0.45, the fitted head 0.46 (of 239), and Tev1 0.29. Always answering "Strong" is 0.56. Expected-rank correlation was about 0.60 for both decision models on either text, and 0.20 for the head on the dedicated prompt (0.26 on the rendered state). Nimble took about 1.1 seconds per job on that prompt, Tev1 about 0.7, and the head's encode about 0.4.
+
+### Worked
+
+- Giving Nimble and Tev1 the dedicated prompt instead of the rendered state raised exact agreement, from 0.24 to 0.45 for Nimble and from 0.16 to 0.29 for Tev1.
+- Their probability-weighted rank tracks the teacher at about 0.60 whichever text they read. Every reply parsed.
+
+### Did not
+
+- No picked letter beat always answering "Strong."
+- The softmax head on the dedicated prompt did not recover the earlier ridge result. It still mostly says Strong, and its probabilities order jobs more weakly than Nimble or Tev1.
+
+### Promising
+
+- The useful fit-rank signal in the decision models is the probability distribution, not the letter they pick.
+- The ridge's 0.52 used a different encoding of this prompt (the reranker chat wrapper, last token at the assistant position). Scoring that same encoding with the softmax head is the remaining same-model check.
+- Blind owner labels are still the check that is not agreement with Sonnet.
+
+### Caveat
+
+- Tev1's published context cap cannot read these jobs. The numbers above are the same weights at 8,192 tokens.
+- The head's row has a criterion prefix the decision models do not. The body words match.
+- Agreement with Sonnet is not correctness. One candidate. The export's resume may be newer than the resume Sonnet saw.
