@@ -23,9 +23,23 @@ def test_small_outcomes_stay_in_every_fit_and_each_other_row_is_scored_once():
     assert len(seen) == len(set(seen))
 
 
+def test_fit_texts_carry_the_job_and_not_the_rank():
+    import json
+    from pathlib import Path
+
+    from trials.fit_rank.same_text import probe_text, rendered_text
+
+    record = json.loads(Path("tests/data/fit_export.sample.jsonl").read_text(encoding="utf-8").splitlines()[0])
+    for text in (probe_text(record), rendered_text(record)):
+        assert "sonnet" not in text.lower()
+        assert "Director of Platform" in text
+        assert len(text) <= 48_000
+
+
 def test_systemone_choice_parser_accepts_a_team_and_rejects_anything_else():
     body = question()
     assert list(body["criteria"])[0] == "cards"
     assert parse_choice({"answers": {"team": {"choice": "payments"}}}) == "payments"
     assert parse_choice({"answers": {"team": {"choice": "not-a-team"}}}) is None
     assert parse_choice({}) is None
+    assert parse_choice({"answers": {"rank": {"choice": "strong"}}}, "rank", ["perfect", "strong"]) == "strong"

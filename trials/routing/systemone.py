@@ -16,7 +16,7 @@ import time
 import urllib.error
 import urllib.request
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Collection, Optional
 
 import numpy as np
 
@@ -34,17 +34,20 @@ def question() -> dict[str, Any]:
     }
 
 
-def parse_choice(payload: dict[str, Any], name: str = "team") -> Optional[str]:
+def parse_choice(payload: dict[str, Any], name: str = "team",
+                 allowed: Optional[Collection[str]] = None) -> Optional[str]:
     answer = (payload.get("answers") or {}).get(name) or {}
     choice = answer.get("choice")
-    if not isinstance(choice, str) or choice not in data.TEAM_IDS:
+    known = data.TEAM_IDS if allowed is None else allowed
+    if not isinstance(choice, str) or choice not in known:
         return None
     return choice
 
 
-def ask(model: str, state: str, *, host: str = HOST, timeout: float = 180.0) -> dict[str, Any]:
+def ask(model: str, state: str, *, host: str = HOST, timeout: float = 180.0,
+        questions: Optional[dict[str, Any]] = None, name: str = "team") -> dict[str, Any]:
     body = json.dumps({"model": model, "state": state, "keep_alive": "30m",
-                       "questions": {"team": question()}}).encode("utf-8")
+                       "questions": questions if questions is not None else {name: question()}}).encode("utf-8")
     url = f"{host.rstrip('/')}/v1/systemone"
     last = ""
     for attempt in range(3):
