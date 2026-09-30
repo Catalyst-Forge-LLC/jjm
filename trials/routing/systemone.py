@@ -44,6 +44,10 @@ def parse_choice(payload: dict[str, Any], name: str = "team",
     return choice
 
 
+class PromptTooLong(Exception):
+    """The endpoint refused the state because it is over the model's context."""
+
+
 def ask(model: str, state: str, *, host: str = HOST, timeout: float = 180.0,
         questions: Optional[dict[str, Any]] = None, name: str = "team") -> dict[str, Any]:
     body = json.dumps({"model": model, "state": state, "keep_alive": "30m",
@@ -57,6 +61,8 @@ def ask(model: str, state: str, *, host: str = HOST, timeout: float = 180.0,
                 return json.loads(resp.read().decode("utf-8"))
         except urllib.error.HTTPError as exc:
             last = exc.read().decode("utf-8", errors="replace")[:500]
+            if exc.code == 400 and "tokens" in last:
+                raise PromptTooLong(last) from None
             if exc.code >= 500 and attempt < 2:
                 time.sleep(2.0)
                 continue

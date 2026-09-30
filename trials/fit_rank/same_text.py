@@ -27,7 +27,7 @@ from trials.fit_rank.criterion import LEVELS, QUESTION, RANK_BY_OPTION
 from trials.fit_rank.features import FIT_INSTRUCTION, candidate_text, listing_text
 from trials.fit_rank.probe_eval import auc, spearman
 from trials.fit_rank.run import read_export
-from trials.routing.systemone import ask, parse_choice
+from trials.routing.systemone import PromptTooLong, ask, parse_choice
 
 HOST = "http://127.0.0.1:11434"
 # The endpoint rejects bodies over 64 KiB. Leave room for the question JSON.
@@ -55,14 +55,21 @@ def score_model(model: str, records: list[dict[str, Any]], text_of: Callable[[di
     rows, skipped = [], []
     warm = next((r for r in records if len(text_of(r)) <= STATE_MAX_CHARS), None)
     if warm is not None:
-        ask(model, text_of(warm), host=host, questions=questions, name="rank")
+        try:
+            ask(model, text_of(warm), host=host, questions=questions, name="rank")
+        except PromptTooLong:
+            pass
     for n, record in enumerate(records, 1):
         state = text_of(record)
         if len(state) > STATE_MAX_CHARS:
             skipped.append(record["job_id"])
             continue
         t = time.perf_counter()
-        payload = ask(model, state, host=host, questions=questions, name="rank")
+        try:
+            payload = ask(model, state, host=host, questions=questions, name="rank")
+        except PromptTooLong:
+            skipped.append(record["job_id"])
+            continue
         elapsed = (time.perf_counter() - t) * 1000.0
         choice = parse_choice(payload, "rank", OPTION_IDS)
         probs = ((payload.get("answers") or {}).get("rank") or {}).get("probabilities") or {}
@@ -109,6 +116,7 @@ def main(argv=None) -> int:
     parser.add_argument("--text", action="append", choices=("rendered", "probe"), default=None)
     parser.add_argument("--host", default=HOST)
     parser.add_argument("--out", type=Path, default=Path("runs/fit-rank-same-text"))
+    parser.add_argument("--force", action="store_true")
     args = parser.parse_args(argv)
     texts = args.text or ["rendered", "probe"]
     builders = {"rendered": rendered_text, "probe": probe_text}
@@ -116,10 +124,13 @@ def main(argv=None) -> int:
     args.out.mkdir(parents=True, exist_ok=True)
     for name in texts:
         for model in args.model:
-            print(f"=== {model} / {name} ===", flush=True)
-            result = score_model(model, records, builders[name], host=args.host)
             slug = model.replace(":", "-").replace("/", "-")
             path = args.out / f"{slug}-{name}.json"
+            if path.exists() and not args.force:
+                print(f"=== {model} / {name} already at {path} ===", flush=True)
+                continue
+            print(f"=== {model} / {name} ===", flush=True)
+            result = score_model(model, records, builders[name], host=args.host)
             path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
             print(json.dumps(result["summary"], indent=2), flush=True)
     return 0
