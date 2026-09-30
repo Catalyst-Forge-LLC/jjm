@@ -75,23 +75,32 @@ def ask(model: str, state: str, *, host: str = HOST, timeout: float = 180.0,
     raise SystemExit(f"{model}: /v1/systemone failed: {last}")
 
 
-def score(model: str, rows: list[dict[str, str]], indices: np.ndarray, *, host: str = HOST) -> dict[str, Any]:
+def score(model: str, rows: list[dict[str, str]], indices: np.ndarray, *, host: str = HOST,
+         prior: Optional[list[dict[str, Any]]] = None, checkpoint=None) -> dict[str, Any]:
     y = data.labels(rows)
+    done = {int(a["index"]): a for a in (prior or [])}
     ask(model, data.texts([rows[int(indices[0])]])[0], host=host)
     answers, ms = [], []
     for n, i in enumerate(indices, 1):
-        state = data.texts([rows[int(i)]])[0]
-        t = time.perf_counter()
-        payload = ask(model, state, host=host)
-        elapsed = (time.perf_counter() - t) * 1000.0
-        choice = parse_choice(payload)
-        answers.append({"index": int(i), "choice": choice, "ms": elapsed,
-                        "confidence": (payload.get("answers") or {}).get("team", {}).get("confidence")})
-        ms.append(elapsed)
+        saved = done.get(int(i))
+        if saved is not None:
+            answers.append(saved)
+            ms.append(float(saved["ms"]))
+        else:
+            state = data.texts([rows[int(i)]])[0]
+            t = time.perf_counter()
+            payload = ask(model, state, host=host)
+            elapsed = (time.perf_counter() - t) * 1000.0
+            choice = parse_choice(payload)
+            answers.append({"index": int(i), "choice": choice, "ms": elapsed,
+                            "confidence": (payload.get("answers") or {}).get("team", {}).get("confidence")})
+            ms.append(elapsed)
         if n % 50 == 0:
             got = [data.TEAM_IDS.index(a["choice"]) if a["choice"] else -1 for a in answers]
             print(f"[{model} {n}/{len(indices)}] accuracy {np.mean(np.array(got) == y[indices[:n]]):.3f} "
                   f"median {float(np.median(ms)):.0f} ms", flush=True)
+            if checkpoint is not None:
+                checkpoint(answers)
     got = np.array([data.TEAM_IDS.index(a["choice"]) if a["choice"] else -1 for a in answers])
     truth = y[indices]
     return {
@@ -119,9 +128,20 @@ def main(argv=None) -> int:
     indices = np.arange(len(rows)) if args.per_team == 0 else data.stratified(y, args.per_team, seed=0)
     OUT.mkdir(parents=True, exist_ok=True)
     for model in args.model:
-        result = score(model, rows, indices, host=args.host)
         slug = model.replace(":", "-").replace("/", "-")
-        path = OUT / f"systemone-{slug}.json"
+        suffix = "-full" if args.per_team == 0 else ""
+        path = OUT / f"systemone-{slug}{suffix}.json"
+        prior = []
+        if suffix and path.exists():
+            saved = json.loads(path.read_text(encoding="utf-8"))
+            prior = saved.get("answers") or []
+            if prior:
+                print(f"resuming {model}: {len(prior)} answers already saved", flush=True)
+
+        def checkpoint(answers, dest=path):
+            dest.write_text(json.dumps({"model": model, "partial": True, "answers": answers}) + "\n", encoding="utf-8")
+
+        result = score(model, rows, indices, host=args.host, prior=prior, checkpoint=checkpoint)
         path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
         shown = {k: v for k, v in result.items() if k != "answers"}
         print(json.dumps(shown, indent=2), flush=True)

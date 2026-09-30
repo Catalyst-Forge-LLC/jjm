@@ -1,8 +1,22 @@
 """Fold assignment and the systemone response parser. No model and no export."""
 from __future__ import annotations
 
+import numpy as np
+
 from trials.fit_rank.head_run import outer_folds
 from trials.routing.systemone import parse_choice, question
+
+
+def test_softmax_on_a_planted_rank_signal_recovers_the_level():
+    from trials.fit_rank.probe_eval import cv_softmax, softmax_report
+
+    y = np.array([1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5])
+    X = np.zeros((len(y), 3))
+    X[:, 0] = y
+    weights = cv_softmax(X, y, outer=4, repeats=1, k=5)
+    assert weights[0].shape == (len(y), 5)
+    assert np.allclose(weights[0].sum(1), 1.0)
+    assert softmax_report("planted", weights, y, 0.0)["exact"] == 1.0
 
 
 def test_small_outcomes_stay_in_every_fit_and_each_other_row_is_scored_once():

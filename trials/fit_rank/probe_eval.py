@@ -52,6 +52,48 @@ def _folds(n, k, rng):
     return [idx[i::k] for i in range(k)]
 
 
+def cv_softmax(X, y_rank, *, outer=10, repeats=3, seed=0, k=5) -> list[np.ndarray]:
+    """Out-of-fold softmax weights on the same outer splits as the ridge.
+
+    y_rank is 1..k. Each repeat scores every row once. The penalty is chosen inside the
+    training fold, the same way the fitted head chooses it.
+    """
+    from jjm.heads.head import fit
+
+    y = np.asarray(y_rank, dtype=int) - 1
+    if y.min() < 0 or y.max() >= k:
+        raise ValueError(f"ranks must be 1..{k}")
+    out = []
+    for rep in range(repeats):
+        rng = np.random.default_rng(seed + rep)
+        weights = np.zeros((len(y), k))
+        for test in _folds(len(y), outer, rng):
+            train = np.setdiff1d(np.arange(len(y)), test)
+            head, _ = fit("softmax", X[train], y[train], k)
+            weights[test] = head.weights(X[test])
+        out.append(weights)
+    return out
+
+
+def softmax_report(name: str, weights: list[np.ndarray], y_rank: np.ndarray, ms: float) -> dict:
+    """Average the per-repeat metrics. Expected rank is the probability-weighted level."""
+    levels = np.arange(1, weights[0].shape[1] + 1, dtype=float)
+    rows = []
+    for w in weights:
+        expected = w @ levels
+        picked = levels[np.argmax(w, axis=1)].astype(int)
+        row = report(name, expected, y_rank, ms)
+        row["exact"] = metrics.exact(picked, y_rank)
+        row["within_one"] = metrics.within_one(picked, y_rank)
+        row["qwk"] = metrics.quadratic_weighted_kappa(list(picked), list(y_rank.astype(int)))
+        row["rank_counts"] = {str(n): int(np.sum(picked == n)) for n in range(1, len(levels) + 1)}
+        rows.append(row)
+    averaged = _avg(rows)
+    averaged["rank_counts"] = rows[0]["rank_counts"]
+    averaged["repeats"] = len(rows)
+    return averaged
+
+
 def cv_predict(X, y, *, outer=10, inner=5, repeats=3, seed=0) -> np.ndarray:
     preds = np.zeros((repeats, len(y)))
     for rep in range(repeats):
@@ -115,17 +157,31 @@ def _avg(rows: list[dict]) -> dict:
 
 
 def main(argv=None) -> int:
-    paths = [Path(p) for p in (argv or sys.argv[1:])]
+    argv = list(argv or sys.argv[1:])
+    softmax_only = "--softmax" in argv
+    paths = [Path(p) for p in argv if p != "--softmax"]
     y = np.load(paths[0])["sonnet"].astype(int)
     base = np.full(len(y), 2)
     print(f"n={len(y)}; always-2 baseline: exact {metrics.exact(base, y):.3f}, within1 "
           f"{metrics.within_one(base, y):.3f}, spearman 0, qwk 0")
     print(f"{'method':52} {'spearman':>8} {'auc12':>6} {'exact':>6} {'within1':>7} {'qwk':>6} {'ms/job':>7}")
     for path in paths:
-        for r in evaluate_file(path):
+        rows = []
+        if softmax_only:
+            d = np.load(path)
+            if "hidden" not in d:
+                raise SystemExit(f"{path} has no hidden states")
+            weights = cv_softmax(d["hidden"], d["sonnet"])
+            rows = [softmax_report(f"{path.stem} softmax on hidden", weights, d["sonnet"].astype(int),
+                                   float(np.median(d["ms"])))]
+        else:
+            rows = evaluate_file(path)
+        for r in rows:
             f = lambda k: f"{r[k]:.3f}" if r.get(k) is not None else "  -  "
             print(f"{r['name']:52} {f('spearman'):>8} {f('auc_top2'):>6} {f('exact'):>6} {f('within_one'):>7} "
                   f"{f('qwk'):>6} {r['ms']:7.0f}")
+            if r.get("rank_counts"):
+                print(f"  picks {r['rank_counts']}", flush=True)
     return 0
 
 
