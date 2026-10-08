@@ -23,4 +23,4 @@
 
 ## Later
 
-- GitHub push, the JJM.dev site, and a package upload still wait for the remote and a clean-machine run of the fitted-head try-it. The name, the README limits, and `examples/try` are in the repo.
+- The private GitHub repo is https://github.com/Catalyst-Forge-LLC/jjm. The JJM.dev site and a package upload still wait for a clean-machine run of the fitted-head try-it.
