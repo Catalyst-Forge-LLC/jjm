@@ -1,4 +1,4 @@
-# JJM: Just Judgment Model
+# JJM: Just Judgment Machine
 
 **An open-source judgment runtime.**
 
@@ -43,7 +43,7 @@ The whole roadmap need not be implemented before the tool is useful.
 
 ## Selected identity
 
-**JJM, Just Judgment Model**, is the selected name. **JJM.dev** is its canonical home, with `https://jjm.dev` as the canonical web origin. The optional wordmark uses a segmented J, which has the same shape as a mirrored L, so **JJM** rhymes visually with **LLM**. The name does not depend on noticing that joke. Registry package names, repository location, and trademark clearance remain unresolved.
+**JJM, Just Judgment Machine**, is the selected name. **JJM.dev** is its canonical home, with `https://jjm.dev` as the canonical web origin. The optional wordmark uses a segmented J, which has the same shape as a mirrored L, so **JJM** rhymes visually with **LLM**. The name does not depend on noticing that joke. Registry package names, repository location, and trademark clearance remain unresolved.
 
 **Just judgment. Your application makes the decision.**
 

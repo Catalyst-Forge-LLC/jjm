@@ -23,4 +23,4 @@
 
 ## Later
 
-- Publishing, the JJM.dev site, and a push to GitHub all wait for the owner's go-ahead.
+- GitHub push, the JJM.dev site, and a package upload still wait for the remote and a clean-machine run of the fitted-head try-it. The name, the README limits, and `examples/try` are in the repo.

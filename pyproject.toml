@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "jjm-engine"
 version = "0.1.0.dev0"
-description = "JJM (Just Judgment Model): an open-source local judgment runtime with a strict JSON contract."
+description = "JJM (Just Judgment Machine): an open-source local judgment runtime with a strict JSON contract."
 readme = "README.md"
 license = "Apache-2.0"
 license-files = ["LICENSE", "NOTICE"]

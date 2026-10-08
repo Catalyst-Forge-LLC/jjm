@@ -1,0 +1,8 @@
+{"state": {"id": "ex-b1", "revision": "1", "observed_at": "2026-10-08T16:00:00Z", "content": {"ticket": "I was charged twice for the same subscription."}, "evidence": []}, "label": "billing"}
+{"state": {"id": "ex-b2", "revision": "1", "observed_at": "2026-10-08T16:00:00Z", "content": {"ticket": "Please refund the duplicate invoice from March."}, "evidence": []}, "label": "billing"}
+{"state": {"id": "ex-b3", "revision": "1", "observed_at": "2026-10-08T16:00:00Z", "content": {"ticket": "My card was declined and the charge still posted."}, "evidence": []}, "label": "billing"}
+{"state": {"id": "ex-b4", "revision": "1", "observed_at": "2026-10-08T16:00:00Z", "content": {"ticket": "The renewal price is higher than the amount I agreed to."}, "evidence": []}, "label": "billing"}
+{"state": {"id": "ex-t1", "revision": "1", "observed_at": "2026-10-08T16:00:00Z", "content": {"ticket": "The app crashes when I open settings."}, "evidence": []}, "label": "technical"}
+{"state": {"id": "ex-t2", "revision": "1", "observed_at": "2026-10-08T16:00:00Z", "content": {"ticket": "Export fails with a timeout after the progress bar reaches 90 percent."}, "evidence": []}, "label": "technical"}
+{"state": {"id": "ex-t3", "revision": "1", "observed_at": "2026-10-08T16:00:00Z", "content": {"ticket": "Login returns a 500 error on the second factor."}, "evidence": []}, "label": "technical"}
+{"state": {"id": "ex-t4", "revision": "1", "observed_at": "2026-10-08T16:00:00Z", "content": {"ticket": "The search page stays blank after I apply a filter."}, "evidence": []}, "label": "technical"}

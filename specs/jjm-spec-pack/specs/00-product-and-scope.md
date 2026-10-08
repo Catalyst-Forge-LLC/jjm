@@ -4,7 +4,7 @@
 
 JJM is a callable, bounded judgment layer. An application supplies the state it wants evaluated, the questions that matter, and the permissible meanings of the answers. JJM returns typed findings and their evaluation context. Ordinary application code decides whether and how to use them.
 
-**Public name:** JJM, Just Judgment Model. Selected, not a placeholder.
+**Public name:** JJM, Just Judgment Machine. Selected, not a placeholder.
 
 **Canonical home:** JJM.dev, with `https://jjm.dev` as the canonical web origin. The user reports acquiring the domain. This does not establish a live site, hosted API, or cleared package namespace.
 

@@ -1,4 +1,4 @@
-# JJM — Just Judgment Model
+# JJM — Just Judgment Machine
 
 An open-source judgment runtime. Just judgment. Your application makes the decision.
 
@@ -35,6 +35,27 @@ uv run pytest
 The `synthetic` profile is a contract demonstration. Its weights are a hash of the input, so they carry no meaning. In the first example it picks `technical` for a billing ticket, and the result is held because its top weight is below the requested 0.5. In the second example the required `export-receipt` evidence is missing, so the criterion abstains before any evaluation runs.
 
 Requests can also come on stdin: `uv run jjm evaluate < request.json`.
+
+## Fitted head on eight labelled tickets
+
+This exercises `jjm fit` without the Banking77 download or any private export. Eight invented tickets, two teams. The first run downloads `Qwen/Qwen3-Embedding-0.6B` (the profile sets `allow_download: true`) and fits on CPU. Heads and the feature cache go under `runs/try/`, which git ignores. Eight rows show the command. They are not a benchmark.
+
+```bash
+uv sync --extra hf
+uv run jjm --profiles examples/try/profile.json fit \
+    --profile try-embed --criterion examples/try/team.criterion.json \
+    --examples examples/try/examples.jsonl --promote
+uv run jjm --profiles examples/try/profile.json evaluate --request examples/try/request.json
+```
+
+The envelope stays `fitted_unvalidated` until `jjm accept --scope`. A request that requires `validated_in_scope` abstains until that scope is accepted. Acceptance records the held-out report. It does not turn the weights into calibrated probabilities.
+
+## Limits of the numbers
+
+- Local only. No accounts, and no hosted inference.
+- Banking77 gave the fitted head the 10,003 training labels and gave Nimble none. The label curve is the fair comparison: about 64 labels per team before the head matches Nimble.
+- Fit rank is one candidate. Agreement with Sonnet is not correctness. The chat-wrapped reranker encoding carried that signal. The rendered job state did not.
+- The production fit export holds resume text and is not in this repository.
 
 ## Exit codes
 
@@ -92,7 +113,7 @@ These were run with Qwen3-1.7B at revision `70d244cc`, in bfloat16 on a 12 GB RT
   - With the model held fixed, JJM's readout beat letting Qwen3-4B write the rank from Sonnet's own prompt. Within one rank was 89% against 69%, weighted kappa 0.19 against 0.10, and rank correlation 0.38 against 0.14.
   - One forward pass is much faster and, zero-shot, orders jobs about as well. A 0.6B reranker's yes/no probability has rank correlation 0.43 with Sonnet at 186 ms, against the 4B readout's 0.43 at 5 s. A small head trained on Sonnet's ranks (cross-validated) reaches weighted kappa 0.45 at that same 186 ms. That head is distillation, not an independent judge.
   - Details are in `trials/fit_rank/README.md`.
-- **Banking77 routing, eight teams, against human labels** (`trials/routing/README.md`): a Qwen3-Embedding-0.6B head reached 97.1% on 3,080 test messages, at about 5 ms per message in bulk and 11 ms per request through `evaluate_batch`. On a 400-message subset, qwen3.5:9b asked directly got 88% at about 400 ms, and the AnyJev readout on Qwen3-1.7B got 75%. With 16 labelled messages per team, the head already beat the 9B model.
+- **Banking77 routing, eight teams, against human labels** (`trials/routing/README.md`): a Qwen3-Embedding-0.6B head reached 97.1% on 3,080 test messages, at about 5 ms per message in bulk and 11 ms per request through `evaluate_batch`. On a 400-message subset, qwen3.5:9b asked directly got 88% at about 400 ms, and the AnyJev readout on Qwen3-1.7B got 75%. At about 64 labelled messages per team the embedding head is even with Nimble's 92.5% on that subset. On the full test set Nimble, with no labels, scores 91.6% at about 700 ms. The comparison is in `docs/EXPERIMENT_LOG.md`.
 
 ## Layout
 

@@ -2,7 +2,7 @@
 
 ## Selected name and home
 
-**JJM, Just Judgment Model.**
+**JJM, Just Judgment Machine.**
 
 **JJM.dev** is the canonical project domain. The user reports acquiring it on September 25, 2026. Use `https://jjm.dev` as the canonical web origin. This pack does not verify DNS, HTTPS, a live deployment, or registry namespaces.
 
@@ -16,7 +16,7 @@ JJM is preferred over LJM because it does not imply a model-size class or new la
 
 Name: **JJM**
 
-Expansion: **Just Judgment Model**
+Expansion: **Just Judgment Machine**
 
 Product descriptor: **An open-source judgment runtime.**
 

@@ -1,4 +1,4 @@
-"""JJM (Just Judgment Model): an open-source local judgment runtime.
+"""JJM (Just Judgment Machine): an open-source local judgment runtime.
 
 Typed findings over explicit criteria, with method, provenance, uncertainty, and
 acceptance checks. JJM does not generate prose on the decision path and never

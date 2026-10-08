@@ -1,4 +1,4 @@
-# JJM: Just Judgment Model
+# JJM: Just Judgment Machine
 ## AnyJev fork specification, version 0.2
 
 **An open-source judgment runtime.**
@@ -9,7 +9,7 @@ A programmable judgment layer for applications and agents.
 
 Give it state, questions, and defined outcomes. Get bounded judgments with explicit method, provenance, uncertainty, and acceptance information. Your application remains responsible for authorization and actions.
 
-Updated September 25, 2026. **JJM, Just Judgment Model**, is the selected name. **JJM.dev** is the canonical project domain, acquired by the user. The canonical web origin is `https://jjm.dev`. Registration is user-reported, not an independent DNS, deployment, or ownership check. Distribution names, repository location, handles, and trademark clearance remain unresolved.
+Updated September 25, 2026. **JJM, Just Judgment Machine**, is the selected name. **JJM.dev** is the canonical project domain, acquired by the user. The canonical web origin is `https://jjm.dev`. Registration is user-reported, not an independent DNS, deployment, or ownership check. Distribution names, repository location, handles, and trademark clearance remain unresolved.
 
 This is **spec-pack version 0.2**, not a runtime release. The proposed contract remains **0.1**, and the original schemas, fixtures, and runtime release sequence are unchanged. See `CHANGELOG.md` for the update and `BRAND.json` for the selected identity.
 

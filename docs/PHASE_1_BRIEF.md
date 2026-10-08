@@ -15,7 +15,7 @@ Source material: `specs/jjm-spec-pack/` (spec-pack 0.2, contract 0.1) and the de
 
 **What we are building (2–4 sentences):**
 
-JJM (Just Judgment Model) is an open-source local judgment runtime. An application supplies a state snapshot, explicit criteria, and an allowlisted profile. JJM returns typed findings with method, provenance, uncertainty, and acceptance checks. The application still decides and acts. It is a local stand-in for the job TypeSafe Jev does as a hosted call: classification and judgment without writing prose. Local Jev-style readout already exists in `nokia-applied-research/AnyJev` and several other open projects. JJM's contribution is the contract: exact criterion binding, honest weight semantics, deterministic acceptance, and provenance. The engine is a pinned `anyjev` release used as a dependency, not a new set of foundation-model weights.
+JJM (Just Judgment Machine) is an open-source local judgment runtime. An application supplies a state snapshot, explicit criteria, and an allowlisted profile. JJM returns typed findings with method, provenance, uncertainty, and acceptance checks. The application still decides and acts. It is a local stand-in for the job TypeSafe Jev does as a hosted call: classification and judgment without writing prose. Local Jev-style readout already exists in `nokia-applied-research/AnyJev` and several other open projects. JJM's contribution is the contract: exact criterion binding, honest weight semantics, deterministic acceptance, and provenance. The engine is a pinned `anyjev` release used as a dependency, not a new set of foundation-model weights.
 
 **Project archetype:** `product`
 

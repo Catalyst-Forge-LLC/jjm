@@ -2,7 +2,7 @@
   "spec_pack_version": "0.2",
   "contract_version": "0.1",
   "name": "JJM",
-  "expanded_name": "Just Judgment Model",
+  "expanded_name": "Just Judgment Machine",
   "name_status": "selected",
   "descriptor": "An open-source judgment runtime.",
   "positioning": "A programmable judgment layer for applications and agents.",

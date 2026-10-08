@@ -1,0 +1,21 @@
+{
+  "profiles": [
+    {
+      "id": "try-embed",
+      "adapter": "fitted-head",
+      "encoder": {
+        "kind": "hf",
+        "model": {"id": "Qwen/Qwen3-Embedding-0.6B", "path": null, "revision": null},
+        "pooling": "last",
+        "batch_size": 8,
+        "max_tokens": 256,
+        "device": "cpu",
+        "dtype": "float32"
+      },
+      "artifacts": "../../runs/try/heads",
+      "cache": "../../runs/try/cache",
+      "allow_download": true,
+      "max_context_tokens": 256
+    }
+  ]
+}

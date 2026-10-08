@@ -2,7 +2,7 @@
 
 ## Defaults chosen by this specification
 
-D01: selected name **JJM, Just Judgment Model**. **JJM.dev** was acquired by the user and is the canonical project home. Use `https://jjm.dev` as the canonical web origin. This is not independent registration verification, trademark clearance, a package reservation, or a live-deployment claim.
+D01: selected name **JJM, Just Judgment Machine**. **JJM.dev** was acquired by the user and is the canonical project home. Use `https://jjm.dev` as the canonical web origin. This is not independent registration verification, trademark clearance, a package reservation, or a live-deployment claim.
 
 D02: actual fork with retained Python inference machinery, not a JavaScript rewrite and not a standalone pretrained model.
 

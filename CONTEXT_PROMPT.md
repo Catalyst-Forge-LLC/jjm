@@ -4,7 +4,7 @@ Read this first in a new session. The locked plan is `docs/PHASE_1_BRIEF.md`, th
 
 ## What JJM is
 
-JJM (Just Judgment Model) is an open-source, local judgment runtime. An application sends a state snapshot and explicit criteria, and gets back weights over allowed outcomes, provenance, and a `pass` / `hold` / `reject` against its own declared requirements. JJM never writes prose on the decision path and never acts. It is a local stand-in for TypeSafe's Jev, with no wire compatibility and no affiliation.
+JJM (Just Judgment Machine) is an open-source, local judgment runtime. An application sends a state snapshot and explicit criteria, and gets back weights over allowed outcomes, provenance, and a `pass` / `hold` / `reject` against its own declared requirements. JJM never writes prose on the decision path and never acts. It is a local stand-in for TypeSafe's Jev, with no wire compatibility and no affiliation.
 
 ## Stack
 

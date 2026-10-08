@@ -6,7 +6,7 @@ Work in small changes with tests and a brief changelog entry. Keep the scope nar
 
 **JJM-001, upstream baseline.** Resolve and record immutable commit, inspect relevant modules and agent instructions, run inherited CPU tests, and reconcile this pack with current source. Acceptance: baseline report distinguishes observed results, skipped tests, and unverified claims.
 
-**JJM-002, identity and attribution.** Apply the selected JJM name, Just Judgment Model expansion, JJM.dev home, and tagline from `BRAND.json`. Add fork documentation, retain license/credits, define isolated packaging, and resolve distribution names before publication. Acceptance: no removed copyright notices, no implied sponsorship, no silent import-file collision, and no claim that owning the domain reserves package namespaces.
+**JJM-002, identity and attribution.** Apply the selected JJM name, Just Judgment Machine expansion, JJM.dev home, and tagline from `BRAND.json`. Add fork documentation, retain license/credits, define isolated packaging, and resolve distribution names before publication. Acceptance: no removed copyright notices, no implied sponsorship, no silent import-file collision, and no claim that owning the domain reserves package namespaces.
 
 ## Phase 1: a complete synthetic path
 

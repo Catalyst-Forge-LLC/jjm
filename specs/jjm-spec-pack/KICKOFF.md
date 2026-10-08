@@ -1,6 +1,6 @@
 # Coding-agent kickoff
 
-Build **JJM, Just Judgment Model**, as a small, maintainable AnyJev fork with an explicit judgment contract. Preserve the inference research rather than rebuilding it.
+Build **JJM, Just Judgment Machine**, as a small, maintainable AnyJev fork with an explicit judgment contract. Preserve the inference research rather than rebuilding it.
 
 The selected product descriptor is **an open-source judgment runtime**. The user has acquired **JJM.dev**, and `https://jjm.dev` is the canonical web origin. Use `BRAND.json` for the identity and **Just judgment. Your application makes the decision.** as the tagline. Do not restart naming or domain-selection work. Registry names and repository placement still need resolution.
 

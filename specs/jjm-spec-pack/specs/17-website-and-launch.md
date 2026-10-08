@@ -2,7 +2,7 @@
 
 ## Purpose and scope
 
-JJM.dev is the canonical project home for **JJM, Just Judgment Model**. Its job is to explain the use, show the contract, and give developers one reliable path to trying the runtime. It is not a hosted inference product, model marketplace, account system, or replacement for the local CLI.
+JJM.dev is the canonical project home for **JJM, Just Judgment Machine**. Its job is to explain the use, show the contract, and give developers one reliable path to trying the runtime. It is not a hosted inference product, model marketplace, account system, or replacement for the local CLI.
 
 The user reports acquiring the domain. DNS, HTTPS, deployment status, repository location, and package-registry availability were not verified for this update. Every route below is a publication target, not a statement that a page already exists.
 
@@ -20,7 +20,7 @@ Keep the docs near the code and derive published examples and schemas from canon
 
 The first screen should answer what JJM is, what goes in, what comes out, and who controls the next step. Lead with readable product text, not the segmented-J wordmark, an unexplained diagram, or benchmark claims.
 
-1. **Name and concrete description.** JJM, Just Judgment Model. An open-source judgment runtime. A programmable judgment layer for applications and agents.
+1. **Name and concrete description.** JJM, Just Judgment Machine. An open-source judgment runtime. A programmable judgment layer for applications and agents.
 2. **Input and output.** Supplied state and explicit criteria become structured findings with evaluation context. The application retains responsibility for actions.
 3. **One small example.** Show the report-export scenario, then the missing-required-receipt variant. Label both as synthetic. Allow access to full JSON without forcing the complete envelope into the hero.
 4. **Why the envelope matters.** Explain the actual model/method, number semantics, evidence boundaries, and acceptance outcome in short, concrete terms.

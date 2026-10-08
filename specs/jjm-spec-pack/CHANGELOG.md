@@ -2,6 +2,10 @@
 
 These are specification-package revisions, not shipped runtime releases. The runtime roadmap and the JSON contract have separate version numbers.
 
+## Name, October 8, 2026
+
+The owner selected the expansion **Just Judgment Machine**. The September 25 record below used Model. Current identity files use Machine.
+
 ## 0.2, September 25, 2026
 
 ### Selected identity

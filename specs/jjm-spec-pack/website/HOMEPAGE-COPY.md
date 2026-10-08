@@ -6,11 +6,11 @@ This file supplies copy, not a rendered or deployed website. Use the pre-release
 
 **Site name:** JJM
 
-**Expanded name:** Just Judgment Model
+**Expanded name:** Just Judgment Machine
 
 **Canonical origin:** `https://jjm.dev`
 
-**Page title:** JJM | Just Judgment Model
+**Page title:** JJM | Just Judgment Machine
 
 **Pre-release meta description:** JJM is a proposed open-source judgment runtime. Evaluate supplied state against explicit criteria, return structured findings, and keep your application in control.
 
@@ -22,7 +22,7 @@ Do not advertise a current release, install command, or repository URL until it 
 
 # JJM
 
-## Just Judgment Model
+## Just Judgment Machine
 
 **An open-source judgment runtime.**
 
@@ -100,6 +100,6 @@ After the fork exists: **An independent fork of AnyJev, with a stricter applicat
 
 **Not affiliated with or endorsed by the upstream authors or TypeSafe AI.**
 
-Footer identity: **JJM, Just Judgment Model. JJM.dev.**
+Footer identity: **JJM, Just Judgment Machine. JJM.dev.**
 
 Link only to real documentation, source, release notes, and attribution pages. Add no guessed contact email, user count, testimonial, performance number, or availability badge.
