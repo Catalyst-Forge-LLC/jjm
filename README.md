@@ -2,7 +2,7 @@
 
 An open-source judgment runtime. Just judgment. Your application makes the decision.
 
-**Status: pre-release.** Nothing is published. The synthetic route works. The local-model route has run on a real model (Qwen3-1.7B on an RTX 4000 Ada laptop GPU); see [Real-model results so far](#real-model-results-so-far).
+**Status: alpha.** This repository is public so people can try it and argue with the numbers. The synthetic quickstart needs no model. The eight-ticket fitted-head walkthrough downloads one small encoder and has been run on the author's machine. There is no hosted service, and `jjm-engine` is not on PyPI. Read [Limits of the numbers](#limits-of-the-numbers) before treating a figure as a general result. Measured runs are in [Real-model results so far](#real-model-results-so-far).
 
 ## What it does
 

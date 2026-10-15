@@ -23,4 +23,4 @@
 
 ## Later
 
-- The private GitHub repo is https://github.com/Catalyst-Forge-LLC/jjm. The JJM.dev site and a package upload still wait for a clean-machine run of the fitted-head try-it.
+- The GitHub repo is public: https://github.com/Catalyst-Forge-LLC/jjm. The JJM.dev site and a PyPI upload of `jjm-engine` still wait for a clean-machine run of the fitted-head try-it.
