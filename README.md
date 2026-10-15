@@ -5,7 +5,7 @@
 
 An open-source judgment runtime. Just judgment. Your application makes the decision.
 
-**Status: alpha.** This repository is public so people can try it and argue with the numbers. The synthetic quickstart needs no model. The eight-ticket fitted-head walkthrough downloads one small encoder and has been run on the author's machine. Measured runs are in [Real-model results so far](#real-model-results-so-far). Read [Limits of the numbers](#limits-of-the-numbers) for what those runs cover.
+**Status: alpha.** This repository is public so people can try it and argue with the numbers. The eight-ticket fitted-head walkthrough is the way to try a real judgment. It downloads one small encoder and has been run on the author's machine. The synthetic commands need no model and only show the envelope. Measured runs are in [Real-model results so far](#real-model-results-so-far). Read [Limits of the numbers](#limits-of-the-numbers) for what those runs cover.
 
 ## PE:TL;DR
 
@@ -35,9 +35,23 @@ Criteria in v1:
 
 Weights are labeled `normalized_readout`: normalized model output, not calibrated probabilities. Accepting a held-out report does not change that label. A request that requires assessed probability calibration abstains, because JJM does not measure that yet.
 
-## Quickstart (synthetic, no model download)
+## Try a fitted judgment
 
-Needs Python 3.10+ and [uv](https://docs.astral.sh/uv/).
+This exercises `jjm fit` without the Banking77 download or any private export. Eight invented tickets, two teams. The first run downloads `Qwen/Qwen3-Embedding-0.6B` (the profile sets `allow_download: true`) and fits on CPU. Heads and the feature cache go under `runs/try/`, which git ignores. Eight rows show the command. They are not a benchmark.
+
+```bash
+uv sync --extra hf
+uv run jjm --profiles examples/try/profile.json fit \
+    --profile try-embed --criterion examples/try/team.criterion.json \
+    --examples examples/try/examples.jsonl --promote
+uv run jjm --profiles examples/try/profile.json evaluate --request examples/try/request.json
+```
+
+The envelope stays `fitted_unvalidated` until `jjm accept --scope`. A request that requires `accepted_in_scope` abstains until that scope is accepted. Acceptance records the held-out report. The weights stay `normalized_readout`.
+
+## Contract check (no model)
+
+Needs Python 3.10+ and [uv](https://docs.astral.sh/uv/). The fitted commands above need the same, plus the `hf` extra.
 
 ```bash
 uv sync
@@ -93,24 +107,10 @@ The return, shortened and rounded. The command prints the full envelope, includi
 
 Requests can also come on stdin: `uv run jjm evaluate < request.json`.
 
-## Fitted head on eight labelled tickets
-
-This exercises `jjm fit` without the Banking77 download or any private export. Eight invented tickets, two teams. The first run downloads `Qwen/Qwen3-Embedding-0.6B` (the profile sets `allow_download: true`) and fits on CPU. Heads and the feature cache go under `runs/try/`, which git ignores. Eight rows show the command. They are not a benchmark.
-
-```bash
-uv sync --extra hf
-uv run jjm --profiles examples/try/profile.json fit \
-    --profile try-embed --criterion examples/try/team.criterion.json \
-    --examples examples/try/examples.jsonl --promote
-uv run jjm --profiles examples/try/profile.json evaluate --request examples/try/request.json
-```
-
-The envelope stays `fitted_unvalidated` until `jjm accept --scope`. A request that requires `accepted_in_scope` abstains until that scope is accepted. Acceptance records the held-out report. The weights stay `normalized_readout`.
-
 ## Limits of the numbers
 
 - The eight-ticket walkthrough has been run on the author's machine. It downloads one small encoder and fits those eight rows.
-- Routing was measured on Banking77, eight teams, human labels, on one laptop GPU. The fitted head used the training labels. About 64 labels per team is where it lines up with Nimble on that set.
+- Routing was measured on Banking77, eight teams, human labels, on one laptop GPU. The fitted head used the training labels. On those same labels it matches a plain classifier on the same embeddings, and it is about 2 points ahead of TF-IDF. About 64 labels per team is where it lines up with Nimble, which had seen no labels.
 - Fit rank was measured on one candidate. Agreement with the teacher is not correctness, and it moved with how the job was written.
 
 ## Exit codes
@@ -177,7 +177,13 @@ These were run with Qwen3-1.7B at revision `70d244cc`, in bfloat16 on a 12 GB RT
   | Nimble, a 9B decision model | 91.6% of 3,080 | 694 ms |
   | qwen3.5:9b, asked to pick | 88% of 400 | 390 ms |
 
-  Banking77 here is 77 intents mapped to eight teams. The head had seen the human training labels. Nimble and the chat model had seen none. About 64 labelled messages per team, 512 in all, is where the embedding head matches Nimble's 92.5% on the 400-message subset. The 97.1% is the earlier fit on the full test set. A refit scored 96.8%. In bulk that run was a few milliseconds per note, about 5 ms. Through the full contract, a batch of 400 took about 11 ms each, and one request at a time with nothing cached took 97 ms median on 100 requests. The other times in the table are medians. The AnyJev readout on Qwen3-1.7B got 75% of that 400. Fit rank, on one candidate, is a different task: agreement with the teacher is not correctness. The comparison is in `docs/EXPERIMENT_LOG.md`.
+  Banking77 here is 77 intents mapped to eight teams. The head had seen the human training labels. Nimble and the chat model had seen none. About 64 labelled messages per team, 512 in all, is where the embedding head matches Nimble's 92.5% on the 400-message subset. The 97.1% is the earlier fit on the full test set. A refit scored 96.8%. In bulk that run was a few milliseconds per note, about 5 ms. Through the full contract, a batch of 400 took about 11 ms each, and one request at a time with nothing cached took 97 ms median on 100 requests. The other times in the table are medians. The AnyJev readout on Qwen3-1.7B got 75% of that 400.
+
+  On the same labels, a logistic regression on the same embeddings scored 97.2% of the 3,080, and a word-and-bigram TF-IDF classifier scored 94.9%. The tenth of a point is not a ranking. TF-IDF never calls the encoder.
+
+  A cutoff was chosen on 616 of the test messages and scored on the 2,464 held aside from that choice. At a top weight of 0.91 the head handled 2,259 of those 2,464. 19 of the 2,259 were wrong, 0.84%. A 95% Wilson interval for that rate is about 0.54% to 1.31%. That is an observation on this slice, not a guarantee of staying under 1%. A cutoff chosen for 2% error did not hold there: 2.8% of the handled messages were wrong.
+
+  Fit rank, on one candidate, is a different task: agreement with the teacher is not correctness. The comparison is in `docs/EXPERIMENT_LOG.md`.
 
 ## Layout
 

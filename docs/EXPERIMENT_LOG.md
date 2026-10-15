@@ -1,6 +1,6 @@
 # JJM experiment log
 
-Last updated: 2026-10-15 (same-encoder logistic regression, TF-IDF, and an operating point appended)
+Last updated: 2026-10-15 (Wilson interval and held-aside wording appended)
 
 This is a lab notebook for the judgment experiments. It is not a model card (that describes a model you ship) and not a test plan (that is a walkthrough of the product). Each entry records one comparison: the question, what each method was allowed to see, the result, and what that result does and does not support.
 
@@ -278,3 +278,41 @@ The same cutoff procedure on a second task, and a real application that sends th
 ### Caveat
 
 The head and both classifiers saw the 10,003 human training labels. This is not the zero-shot comparison. The mapping is eight teams, not 77 intents.
+
+## 2026-10-15 — The 0.84% is an observation
+
+### Question
+
+What does the 0.84% error among handled messages support?
+
+### Data
+
+The same operating point as the entry above. 19 of the 2,259 handled messages on the 2,464 were wrong.
+
+### Methods
+
+A 95% Wilson interval on 19 errors in 2,259 handled cases.
+
+### Hardware
+
+No new run.
+
+### Result
+
+The interval is about 0.54% to 1.31%. The 2,464 were held aside from choosing the cutoff. They are part of the test set already scored for accuracy, so they are not an untouched test.
+
+### Worked
+
+The point estimate on this slice is 0.84%, under 1%. The interval runs to about 1.31%, so it does not establish that the rate stays under 1%.
+
+### Did not
+
+The interval is not a guarantee that a future batch stays under 1%. Calling the 2,464 untouched overstated how new they were.
+
+### Promising
+
+The same cutoff on messages that never entered an earlier accuracy table.
+
+### Caveat
+
+Nineteen errors is a small count. The interval is wide for that reason.

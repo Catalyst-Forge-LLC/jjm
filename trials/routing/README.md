@@ -158,23 +158,26 @@ A minimum top weight was chosen on a stratified 20% of the test set (616 message
 | 2% | 0.45 | 99.8% (2,459) | 2.8% |
 | 5% | none | 100% | 3.0% |
 
-The 1% target held. The 2% target did not: the untouched messages were wrong more often than the 616. Handling every message is already about 3% wrong, so a 5% budget needs no cutoff. This is the eight-team mapping, not 77-class Banking77.
+The 0.84% is 19 wrong out of 2,259 handled. A 95% Wilson interval for that rate is about 0.54% to 1.31%. It is an observation on this slice, not a guarantee of staying under 1%. The 2% target did not hold: on the 2,464 held aside from the choice, 2.8% of the handled messages were wrong. Those 2,464 were held aside for scoring the cutoff. They are part of the test set already used for the accuracy figure, so they are not an untouched test. Handling every message is already about 3% wrong, so a 5% budget needs no cutoff. This is the eight-team mapping, not 77-class Banking77.
 
 ## What this says
 
-- For a closed routing question with labelled history, a small frozen encoder with a fitted head is
-  the strongest and fastest route here: 97% at a few milliseconds, against 88% for a 9B model asked
-  directly at about 400 ms. Nimble, zero-shot on the same 400 messages, scores 92.5% at about 480 ms.
-  On all 3,080 test messages Nimble scores 91.6% at 694 ms. The fitted embedding head on those
-  messages is 97.1%.
+- With labelled history, the fitted embedding head matches a plain logistic regression on the same
+  embeddings (97.1% and 97.2% of all 3,080) and is about 2 points ahead of TF-IDF (94.9%). The tenth
+  of a point is not a ranking. Against models that saw no labels, the head is the faster accurate
+  route on this mapping: 97.1% at a few milliseconds, Nimble at 91.6% and 694 ms on all 3,080, and a
+  9B chat model at 88% of 400 messages and about 400 ms. Nimble's 92.5% on the 400 is the same subset
+  as that chat row.
 - Encoder choice matters more with few labels. An embedding model beats the reranker at every size
   here.
 - Zero-shot readouts on 0.6–1.7B models land near 75–78% on this task. They are for when there are
   no labels at all.
 - A teacher is useful for labels when people's labels are missing, at a cost of about 10 points
   here. It is not a useful fallback unless it is better than the head on the head's hard cases.
-- The subset thresholds above are read off the same data they describe. They are not tuned deployment
-  settings, and none of these heads has a held-out validation report.
+- The cascade thresholds earlier in this note were read off the same subset they describe. They are
+  exploratory, not a tuned deployment setting, and none of these heads has a held-out validation
+  report from `jjm accept`. The operating point above was chosen on 616 messages and scored on the
+  2,464 held aside from that choice.
 
 ## Reproduce
 

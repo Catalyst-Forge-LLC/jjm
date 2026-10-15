@@ -56,7 +56,7 @@ Shortened from [`examples/route-ticket.json`](https://github.com/Catalyst-Forge-
 - **Provenance.** The method, the model, and digests of the inputs.
 - **Your check.** Pass, hold, or reject against requirements you declared. A pass means those requirements were met. The next action stays with your application.
 
-Weights are a normalized readout. A request that requires a validated scope abstains until that scope has an accepted held-out report. That status records the report. It is the same head output.
+Weights are a normalized readout. Accepting a held-out report records that scope. It does not change the weights, and it is not a check that a weight of 0.95 occurs about 95% of the time.
 
 <div class="snippet">
   <div class="snippet-label">Return</div>
@@ -100,7 +100,11 @@ Banking77, 77 intents mapped to eight teams, scored against the human labels, on
 </table>
 </div>
 
-The head had seen the human training labels. The other two had seen none. About 64 labels per team, 512 in all, is where the head matches Nimble. The 97.1% is the earlier fit on the full test set. A refit scored 96.8%. In bulk that run was a few milliseconds per note, about 5 ms. Through the full contract, a batch of 400 took about 11 ms each, and one request at a time with nothing cached took 97 ms median on 100 requests. The other times in the table are medians.
+The head had seen the human training labels. Nimble and the chat model had seen none. About 64 labels per team, 512 in all, is where the head matches Nimble. The 97.1% is the earlier fit on the full test set. A refit scored 96.8%. In bulk that run was a few milliseconds per note, about 5 ms. Through the full contract, a batch of 400 took about 11 ms each, and one request at a time with nothing cached took 97 ms median on 100 requests. The other times in the table are medians.
+
+On the same labels, a logistic regression on the same embeddings scored 97.2% of the 3,080, and a word-and-bigram TF-IDF classifier scored 94.9%. The tenth of a point is not a ranking. TF-IDF never calls the encoder.
+
+A cutoff was chosen on 616 of the test messages and scored on the 2,464 held aside from that choice. At a top weight of 0.91 the head handled 2,259 of those 2,464. 19 of the 2,259 were wrong, 0.84%. A 95% Wilson interval for that rate is about 0.54% to 1.31%. That is an observation on this slice, not a guarantee of staying under 1%. A cutoff chosen for 2% error did not hold there: 2.8% of the handled messages were wrong.
 
 Fit rank was one candidate. Agreement with the teacher moved with how the job was written, and agreement is not correctness.
 
@@ -109,10 +113,24 @@ The figures and the hardware are in the [experiment log](https://github.com/Cata
 ## Limits
 
 - The eight-ticket walkthrough has been run on the author's machine. It downloads one small encoder and fits those eight rows.
-- Routing was measured on Banking77, eight teams, human labels, on one laptop GPU. The fitted head used the training labels. About 64 labels per team is where it lines up with Nimble on that set.
+- Routing was measured on Banking77, eight teams, human labels, on one laptop GPU. The fitted head used the training labels. On those same labels it matches a plain classifier on the same embeddings, and it is about 2 points ahead of TF-IDF. About 64 labels per team is where it lines up with Nimble, which had seen no labels.
 - Fit rank was measured on one candidate. Agreement with the teacher is not correctness, and it moved with how the job was written.
 
-## Try it with no model
+## Try a fitted judgment
+
+Eight invented tickets, two teams. The first run downloads one small encoder and fits on CPU. Eight rows show the command. They are not a benchmark.
+
+```bash
+uv sync --extra hf
+uv run jjm --profiles examples/try/profile.json fit \
+    --profile try-embed --criterion examples/try/team.criterion.json \
+    --examples examples/try/examples.jsonl --promote
+uv run jjm --profiles examples/try/profile.json evaluate --request examples/try/request.json
+```
+
+The same walkthrough is in the repository README.
+
+## Check the contract, with no model
 
 The synthetic path needs no download. Its weights are a hash of the input, so they carry no meaning. They show the envelope.
 
@@ -121,6 +139,6 @@ uv sync
 uv run jjm evaluate --request examples/route-ticket.json
 ```
 
-The fitted-head walkthrough is in the repository README. JJM depends on [AnyJev](https://github.com/nokia-applied-research/AnyJev), Apache-2.0. JJM is not affiliated with TypeSafe AI or Jev.
+JJM depends on [AnyJev](https://github.com/nokia-applied-research/AnyJev), Apache-2.0. JJM is not affiliated with TypeSafe AI or Jev.
 
 Built by [Catalyst Forge LLC](https://www.catalystforge.com).
