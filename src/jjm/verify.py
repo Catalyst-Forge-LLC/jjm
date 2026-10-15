@@ -48,6 +48,22 @@ def parse_time(value: str) -> datetime:
     return datetime.fromisoformat(f"{date}T{clock}{fraction}{offset}")
 
 
+def _require_accepted_artifact(artifact: Optional[dict[str, Any]], validation: dict[str, Any],
+                               provenance: dict[str, Any], request: dict[str, Any]) -> None:
+    if artifact is None:
+        fail("An accepted result needs its artifact manifest")
+    if (artifact["artifact_id"] != validation["artifact_id"]
+            or artifact["validation_report_id"] != validation["validation_report_id"]):
+        fail("Artifact or report identity mismatch")
+    for key in ["criterion_digest", "effective_config_digest", "rendering_digest", "model", "method"]:
+        if artifact[key] != provenance[key]:
+            fail(f"Artifact binding mismatch: {key}")
+    if artifact["scope_id"] != request["scope_id"]:
+        fail("Artifact scope differs from request")
+    if not artifact["promoted"] or artifact["validation_status"] != "validated" or artifact["heldout_count"] <= 0:
+        fail("An accepted result requires an approved held-out validation report")
+
+
 def validate_pair(request: dict[str, Any], response: dict[str, Any], artifact: Optional[dict[str, Any]] = None) -> None:
     criteria = request["criteria"]
     _unique([c["id"] for c in criteria], "criterion ID")
@@ -109,10 +125,13 @@ def validate_pair(request: dict[str, Any], response: dict[str, Any], artifact: O
                 fail("An unknown or failed mandatory check cannot pass")
         if prov["model"]["revision_status"] == "verified" and not prov["model"]["revision"]:
             fail("A verified model revision must be identified")
-        cal = prov["calibration"]
-        if cal["status"] == "validated_in_scope":
-            if not cal["artifact_id"] or not cal["validation_report_id"] or not cal["scope_match"]:
-                fail("In-scope calibration needs a named artifact, report, and scope match")
+        val = prov["validation"]
+        if val["status"] == "accepted_in_scope":
+            if not val["artifact_id"] or not val["validation_report_id"] or not val["scope_match"]:
+                fail("An accepted scope needs a named artifact, report, and scope match")
+        pc = prov["probability_calibration"]
+        if pc["status"] == "assessed_in_scope" and not pc["report_id"]:
+            fail("An assessed probability calibration needs a report id")
         if p is None:
             continue
         weights = p["weights"]
@@ -133,29 +152,24 @@ def validate_pair(request: dict[str, Any], response: dict[str, Any], artifact: O
                    "Score value")
         elif p["value"] is not None:
             fail("Non-score predictions cannot contain score values")
-        if p["semantics"] == "calibrated_estimate":
-            if cal["status"] != "validated_in_scope":
-                fail("Calibrated semantics require validated in-scope metadata")
-            if artifact is None:
-                fail("A calibrated result needs its artifact manifest")
-            if (artifact["artifact_id"] != cal["artifact_id"]
-                    or artifact["validation_report_id"] != cal["validation_report_id"]):
-                fail("Artifact or report identity mismatch")
-            for key in ["criterion_digest", "effective_config_digest", "rendering_digest", "model", "method"]:
-                if artifact[key] != prov[key]:
-                    fail(f"Artifact binding mismatch: {key}")
-            if artifact["scope_id"] != request["scope_id"]:
-                fail("Artifact scope differs from request")
-            if not artifact["promoted"] or artifact["validation_status"] != "validated" or artifact["heldout_count"] <= 0:
-                fail("Calibrated result requires approved held-out validation metadata")
+        if p["semantics"] == "calibrated_probability":
+            if pc["status"] != "assessed_in_scope" or not pc["report_id"]:
+                fail("calibrated_probability requires an assessed probability-calibration report")
+            if val["status"] != "accepted_in_scope":
+                fail("calibrated_probability requires an accepted validation report")
+            _require_accepted_artifact(artifact, val, prov, request)
         if gate["status"] == "pass":
             requirements = request["requirements"]
             allowed = requirements["allowed_methods"]
             if allowed and prov["method"] not in allowed:
                 fail("Actual method is not allowed")
-            if requirements["calibration"] == "validated_in_scope":
-                if cal["status"] != "validated_in_scope" or p["semantics"] != "calibrated_estimate":
-                    fail("Required calibration is unavailable")
+            if requirements["validation"] == "accepted_in_scope":
+                if val["status"] != "accepted_in_scope":
+                    fail("Required validation acceptance is unavailable")
+                _require_accepted_artifact(artifact, val, prov, request)
+            if requirements["probability_calibration"] == "assessed_in_scope":
+                if pc["status"] != "assessed_in_scope" or p["semantics"] != "calibrated_probability":
+                    fail("Required probability calibration is unavailable")
             if requirements["min_top_mass"] is not None and p["top_mass"] + EPS < requirements["min_top_mass"]:
                 fail("Top mass below requirement")
             if requirements["min_margin"] is not None and p["margin"] + EPS < requirements["min_margin"]:

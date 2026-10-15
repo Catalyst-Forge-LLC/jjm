@@ -173,7 +173,8 @@ def test_no_promoted_head_abstains_before_any_model_call(tmp_path):
     assert result["status"] == "abstained"
     assert result["acceptance"]["reason_codes"] == ["ARTIFACT_MISMATCH"]
     assert adapter.encoder.calls == 0
-    assert result["provenance"]["calibration"]["status"] == "not_fitted"
+    assert result["provenance"]["validation"]["status"] == "not_fitted"
+    assert result["provenance"]["probability_calibration"]["status"] == "not_assessed"
 
 
 def test_fitted_head_serves_a_valid_envelope(tmp_path):
@@ -188,8 +189,9 @@ def test_fitted_head_serves_a_valid_envelope(tmp_path):
     prov = result["provenance"]
     assert prov["method"] == METHOD
     assert prov["runtime"]["numeric_path"] == "hidden_state_head"
-    assert prov["calibration"] == {"status": "fitted_unvalidated", "artifact_id": fit.artifact["artifact_id"],
-                                   "validation_report_id": None, "scope_match": False}
+    assert prov["validation"] == {"status": "fitted_unvalidated", "artifact_id": fit.artifact["artifact_id"],
+                                  "validation_report_id": None, "scope_match": False}
+    assert prov["probability_calibration"]["status"] == "not_assessed"
     assert prov["diagnostics"]["feature_cache"] == "miss"
     again = evaluate(head_request(), profiles, clock=fixed_clock)["results"][0]
     assert again["provenance"]["diagnostics"]["feature_cache"] == "hit"
@@ -203,27 +205,33 @@ def test_an_accepted_report_satisfies_a_matching_scope(tmp_path):
     profiles, adapter = head_profiles(tmp_path)
     fit = fit_and_promote(adapter)
     request = head_request()
-    request["requirements"]["calibration"] = "validated_in_scope"
+    request["requirements"]["validation"] = "accepted_in_scope"
     refused = evaluate(request, profiles, clock=fixed_clock)["results"][0]
     assert refused["status"] == "abstained"
-    assert refused["acceptance"]["reason_codes"] == ["CALIBRATION_NOT_VALIDATED"]
+    assert refused["acceptance"]["reason_codes"] == ["VALIDATION_NOT_ACCEPTED"]
     accept_validation(adapter.store, fit.artifact, "other-scope")
     wrong = evaluate(request, profiles, clock=fixed_clock)["results"][0]
     assert wrong["status"] == "abstained"
-    assert wrong["provenance"]["calibration"]["status"] == "out_of_scope"
-    assert wrong["provenance"]["calibration"]["scope_match"] is False
+    assert wrong["provenance"]["validation"]["status"] == "out_of_scope"
+    assert wrong["provenance"]["validation"]["scope_match"] is False
     accept_validation(adapter.store, fit.artifact, request["scope_id"])
     ordinary = evaluate(head_request(), profiles, clock=fixed_clock)["results"][0]
     assert ordinary["prediction"]["semantics"] == "normalized_readout"
-    assert ordinary["provenance"]["calibration"]["status"] == "validated_in_scope"
+    assert ordinary["provenance"]["validation"]["status"] == "accepted_in_scope"
     result = evaluate(request, profiles, clock=fixed_clock)["results"][0]
     assert result["status"] == "evaluated"
     assert result["acceptance"]["status"] == "pass"
-    assert result["prediction"]["semantics"] == "calibrated_estimate"
+    assert result["prediction"]["semantics"] == "normalized_readout"
+    assert result["prediction"]["weights"] == ordinary["prediction"]["weights"]
     assert result["prediction"]["selected"] == "billing"
-    cal = result["provenance"]["calibration"]
-    assert cal["status"] == "validated_in_scope" and cal["scope_match"] is True
-    assert cal["validation_report_id"] == fit.artifact["report"]["heldout"]["report_id"]
+    val = result["provenance"]["validation"]
+    assert val["status"] == "accepted_in_scope" and val["scope_match"] is True
+    assert val["validation_report_id"] == fit.artifact["report"]["heldout"]["report_id"]
+    assert result["provenance"]["probability_calibration"]["status"] == "not_assessed"
+    request["requirements"]["probability_calibration"] = "assessed_in_scope"
+    uncalibrated = evaluate(request, profiles, clock=fixed_clock)["results"][0]
+    assert uncalibrated["status"] == "abstained"
+    assert uncalibrated["acceptance"]["reason_codes"] == ["PROBABILITY_CALIBRATION_NOT_ASSESSED"]
 
 
 def test_accept_refuses_a_head_with_no_holdout(tmp_path):

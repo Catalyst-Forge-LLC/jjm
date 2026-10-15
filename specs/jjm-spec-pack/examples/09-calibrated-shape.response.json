@@ -14,7 +14,7 @@
           "technical": 0.15,
           "other": 0.05
         },
-        "semantics": "calibrated_estimate",
+        "semantics": "normalized_readout",
         "selected": "billing",
         "value": null,
         "top_mass": 0.8,
@@ -63,11 +63,15 @@
         },
         "method": "mock:calibrated",
         "upstream_level": null,
-        "calibration": {
-          "status": "validated_in_scope",
+        "validation": {
+          "status": "accepted_in_scope",
           "artifact_id": "fixture-artifact-1",
           "validation_report_id": "fixture-validation-1",
           "scope_match": true
+        },
+        "probability_calibration": {
+          "status": "not_assessed",
+          "report_id": null
         },
         "runtime": {
           "id": "fixture-runtime",

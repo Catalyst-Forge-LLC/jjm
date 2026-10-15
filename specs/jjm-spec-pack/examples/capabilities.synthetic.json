@@ -18,8 +18,7 @@
     "json"
   ],
   "number_semantics": [
-    "normalized_readout",
-    "calibrated_estimate"
+    "normalized_readout"
   ],
   "evidence_selection": false,
   "can_verify_model_revision": false,

@@ -19,12 +19,17 @@
       "version": "1",
       "kind": "assertion",
       "question": "Does the supplied evidence establish that the requested report export completed?",
-      "required_evidence_ids": ["export-receipt"],
-      "accept_outcomes": ["supported"]
+      "required_evidence_ids": [
+        "export-receipt"
+      ],
+      "accept_outcomes": [
+        "supported"
+      ]
     }
   ],
   "requirements": {
-    "calibration": "not_required",
+    "validation": "not_required",
+    "probability_calibration": "not_required",
     "allowed_methods": [],
     "min_top_mass": null,
     "min_margin": null,

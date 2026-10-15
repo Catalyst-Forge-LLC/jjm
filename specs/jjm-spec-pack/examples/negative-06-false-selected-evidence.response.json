@@ -67,11 +67,15 @@
         },
         "method": "mock:normalized",
         "upstream_level": null,
-        "calibration": {
+        "validation": {
           "status": "not_fitted",
           "artifact_id": null,
           "validation_report_id": null,
           "scope_match": false
+        },
+        "probability_calibration": {
+          "status": "not_assessed",
+          "report_id": null
         },
         "runtime": {
           "id": "fixture-runtime",

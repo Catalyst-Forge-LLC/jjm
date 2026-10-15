@@ -33,7 +33,7 @@ Criteria in v1:
 - `choice`: two to 26 caller-defined options.
 - `assertion`: three fixed outcomes. `supported` and `contradicted` mean the supplied evidence settles the question one way or the other. `not_observable` means it does not settle it.
 
-Weights are labeled `normalized_readout`: normalized model output, not calibrated probabilities. A request that requires validated calibration abstains.
+Weights are labeled `normalized_readout`: normalized model output, not calibrated probabilities. Accepting a held-out report does not change that label. A request that requires assessed probability calibration abstains, because JJM does not measure that yet.
 
 ## Quickstart (synthetic, no model download)
 
@@ -105,7 +105,7 @@ uv run jjm --profiles examples/try/profile.json fit \
 uv run jjm --profiles examples/try/profile.json evaluate --request examples/try/request.json
 ```
 
-The envelope stays `fitted_unvalidated` until `jjm accept --scope`. A request that requires `validated_in_scope` abstains until that scope is accepted. Acceptance records the held-out report. It does not turn the weights into calibrated probabilities.
+The envelope stays `fitted_unvalidated` until `jjm accept --scope`. A request that requires `accepted_in_scope` abstains until that scope is accepted. Acceptance records the held-out report. The weights stay `normalized_readout`.
 
 ## Limits of the numbers
 
@@ -151,7 +151,7 @@ uv run jjm --profiles p.json evaluate-batch --requests requests.jsonl
 
 - `--examples` is JSONL of `{"state": {...}, "label": "<outcome id>"}`. Or pass `--teacher <id>` to have a teacher model label the states instead, and the artifact records that the labels came from it.
 - A head is bound to the exact criterion digest, encoder identity, and head method. Fitting the same examples again returns the stored head. A head serves only after `--promote`; otherwise the criterion abstains with `ARTIFACT_MISMATCH`.
-- Results report `calibration.status: fitted_unvalidated` until you accept the held-out report. Fitting holds out about 20% of each outcome, scores it, and leaves those rows out of the penalty choice and the fit. `jjm accept --scope <scope_id>` records that the report applies to that scope. A request that sets `calibration` to `validated_in_scope` then gets `calibrated_estimate` weights when its `scope_id` matches, and abstains otherwise. The numbers are the same head output. `calibrated_estimate` names that accepted scope. It is not a measurement that a weight of 0.95 occurs about 95% of the time.
+- Results report `validation.status: fitted_unvalidated` until you accept the held-out report. Fitting holds out about 20% of each outcome, scores it, and leaves those rows out of the penalty choice and the fit. `jjm accept --scope <scope_id>` records that the report applies to that scope. A request that sets `validation` to `accepted_in_scope` passes when its `scope_id` matches, and abstains otherwise. The weights stay `normalized_readout`. `probability_calibration` stays `not_assessed`. A weight of 0.95 is not a measurement that the outcome occurs about 95% of the time. Asking for `assessed_in_scope` abstains until a calibrator and its reliability report exist.
 - Teachers are listed under `teachers` in the profiles file: a local Ollama model, or any provider [LiteLLM](https://docs.litellm.ai/) supports (`uv sync --extra providers`). Teachers label examples. They never run inside `evaluate`.
 - Speed settings live in the profile and its identity: `batch_size`, `max_tokens`, `layer` (early exit, as a layer count or depth fraction), `prefix_reuse`, and a feature `cache` directory.
 

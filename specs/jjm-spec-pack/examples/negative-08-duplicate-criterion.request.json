@@ -59,7 +59,8 @@
     }
   ],
   "requirements": {
-    "calibration": "not_required",
+    "validation": "not_required",
+    "probability_calibration": "not_required",
     "allowed_methods": [
       "mock:normalized"
     ],

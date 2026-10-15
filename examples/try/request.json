@@ -21,14 +21,23 @@
       "required_evidence_ids": [],
       "accept_outcomes": [],
       "options": [
-        {"id": "billing", "description": "Billing amounts, charges, or refunds"},
-        {"id": "technical", "description": "A product defect or failed technical operation"}
+        {
+          "id": "billing",
+          "description": "Billing amounts, charges, or refunds"
+        },
+        {
+          "id": "technical",
+          "description": "A product defect or failed technical operation"
+        }
       ]
     }
   ],
   "requirements": {
-    "calibration": "not_required",
-    "allowed_methods": ["jjm:hidden-state-head"],
+    "validation": "not_required",
+    "probability_calibration": "not_required",
+    "allowed_methods": [
+      "jjm:hidden-state-head"
+    ],
     "min_top_mass": null,
     "min_margin": null,
     "require_verified_model_revision": false,

@@ -38,7 +38,8 @@
     }
   ],
   "requirements": {
-    "calibration": "validated_in_scope",
+    "validation": "accepted_in_scope",
+    "probability_calibration": "not_required",
     "allowed_methods": [
       "mock:calibrated"
     ],

@@ -12,9 +12,11 @@ For weights p over K outcomes, top mass is max(p). Margin is largest minus secon
 
 A 0.98 weight on an outcome in an uncalibrated readout is not a demonstrated 98% chance of correctness. A threshold on such a number is allowed for advisory experimentation only when the caller explicitly permits uncalibrated results.
 
-## Calibration is scoped
+## Acceptance and calibration are separate, and both are scoped
 
-A validated calibration status refers to an estimator, held-out data, a use domain, a criterion definition, and a pinned effective system. It is not a global quality stamp. Distribution shift, changed criteria, model revision, changed prompt rendering, and modified artifact state may invalidate that status.
+An accepted validation report refers to one estimator, one held-out evaluation, one use domain, one criterion definition, and a pinned effective system. It is not a global quality stamp, and it does not make the weights calibrated probabilities. Distribution shift, changed criteria, model revision, changed prompt rendering, and modified artifact state may invalidate that acceptance.
+
+`probability_calibration` records whether those weights were assessed as frequencies. `calibrated_probability` is allowed only when that status is `assessed_in_scope`.
 
 Do not convert upstream level ordering into cross-provider assurance. There is no rule that all L2 results are safer than all L1 results. Method choice may depend on measured quality, latency, and cost for a task.
 

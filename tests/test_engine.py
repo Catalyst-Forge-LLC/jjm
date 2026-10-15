@@ -42,10 +42,11 @@ def run(request, adapter=None):
     ("02-supported", "evaluated", None),
     ("03-missing-evidence", "abstained", "MISSING_REQUIRED_EVIDENCE"),
     ("04-not-observable", "evaluated", None),
-    ("05-calibration-required", "abstained", "CALIBRATION_NOT_VALIDATED"),
+    ("05-calibration-required", "abstained", "VALIDATION_NOT_ACCEPTED"),
     ("06-low-margin", "evaluated", None),
     ("08-score", "abstained", "UNSUPPORTED_KIND"),
-    ("09-calibrated-shape", "abstained", "CALIBRATION_NOT_VALIDATED"),
+    ("09-calibrated-shape", "abstained", "VALIDATION_NOT_ACCEPTED"),
+    ("11-probability-calibration-required", "abstained", "PROBABILITY_CALIBRATION_NOT_ASSESSED"),
     ("10-unknown-model", "abstained", "MODEL_IDENTITY_UNKNOWN"),
 ])
 def test_positive_fixture_requests_run_on_the_synthetic_profile(case_id, status, reason):

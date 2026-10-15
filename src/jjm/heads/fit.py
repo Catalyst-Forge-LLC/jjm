@@ -136,7 +136,7 @@ def accept_validation(store: ArtifactStore, art: dict[str, Any], scope_id: str) 
 
 
 def contract_manifest(art: dict[str, Any], provenance: dict[str, Any], scope_id: str) -> dict[str, Any]:
-    """The artifact manifest validate_pair requires for a calibrated result. Built at serve time."""
+    """The artifact manifest validate_pair requires for an accepted scope. Built at serve time."""
     src = art["training"]["label_source"]
     dataset = src.get("dataset_id") if isinstance(src.get("dataset_id"), str) and _ID.match(src["dataset_id"]) else "unspecified"
     revision = src.get("dataset_revision") if isinstance(src.get("dataset_revision"), str) and src["dataset_revision"] else "unspecified"

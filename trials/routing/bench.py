@@ -213,7 +213,8 @@ def _request(message: str, i: int, profile_id: str, methods: list[str]) -> dict[
             "state": {"id": f"msg-{i}", "revision": "1", "observed_at": "2026-09-29T00:00:00Z",
                       "content": {"message": message}, "evidence": []},
             "criteria": [data.criterion()],
-            "requirements": {"calibration": "not_required", "allowed_methods": methods, "min_top_mass": None,
+            "requirements": {"validation": "not_required", "probability_calibration": "not_required",
+                             "allowed_methods": methods, "min_top_mass": None,
                              "min_margin": None, "require_verified_model_revision": False,
                              "max_state_age_seconds": None},
             "timeout_ms": 600000}
@@ -375,7 +376,7 @@ def cmd_engine(args) -> None:
                       "ms_p95": _pct(single_ms, 95), "feature_cache": sorted(set(envelopes))},
            "batch": {"n": len(reqs), "accuracy": float(np.mean(batch_ok)), "ms_per_request": batch_ms / len(reqs)},
            "repeat_batch": {"ms_per_request": repeat_ms / len(reqs)},
-           "sample_provenance": {k: sample["provenance"][k] for k in ("method", "calibration", "runtime", "model")}}
+           "sample_provenance": {k: sample["provenance"][k] for k in ("method", "validation", "probability_calibration", "runtime", "model")}}
     _write(f"engine-{args.profile}.json", out)
     print(json.dumps({k: v for k, v in out.items() if k != "sample_provenance"}, indent=2))
 

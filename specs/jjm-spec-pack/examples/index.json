@@ -62,7 +62,7 @@
       "request": "examples/09-calibrated-shape.request.json",
       "response": "examples/09-calibrated-shape.response.json",
       "expected": "valid",
-      "note": "Synthetic representation of a calibrated shape only, no actual calibration was performed.",
+      "note": "Accepted held-out report for one scope. Weights stay a normalized readout. No probability calibration was performed.",
       "artifact": "examples/calibration-artifact.synthetic.json"
     },
     {
@@ -71,6 +71,13 @@
       "response": "examples/10-unknown-model.response.json",
       "expected": "valid",
       "note": "An unknown immutable revision cannot satisfy a verification requirement."
+    },
+    {
+      "id": "11-probability-calibration-required",
+      "request": "examples/11-probability-calibration-required.request.json",
+      "response": "examples/11-probability-calibration-required.response.json",
+      "expected": "valid",
+      "note": "A request for assessed probability calibration abstains when none has been measured."
     },
     {
       "id": "negative-01-unknown-option",
@@ -84,7 +91,7 @@
       "request": "examples/negative-02-false-calibration.request.json",
       "response": "examples/negative-02-false-calibration.response.json",
       "expected": "invalid",
-      "note": "Calibration semantics require validated in-scope metadata."
+      "note": "calibrated_probability requires an assessed probability-calibration report."
     },
     {
       "id": "negative-03-missing-provenance",

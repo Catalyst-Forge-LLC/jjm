@@ -232,7 +232,7 @@ def run(records: list[dict[str, Any]], profiles_path: Path, out_dir: Path, *, te
                 "sonnet_rank": record["sonnet_rank"],
                 "jjm_rank": RANK_BY_OPTION[prediction["selected"]] if prediction else None,
                 "expected_rank": _expected_rank(prediction["weights"]) if prediction else None,
-                "artifact_id": result["provenance"]["calibration"].get("artifact_id"),
+                "artifact_id": result["provenance"]["validation"].get("artifact_id"),
                 "truncated": bool((result["provenance"].get("diagnostics") or {}).get("truncated")),
                 "elapsed_ms": response["elapsed_ms"],
                 "batch_ms_per_request": batch_ms / len(reqs),

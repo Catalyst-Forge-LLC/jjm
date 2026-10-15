@@ -46,13 +46,13 @@ A rejected or held evaluated prediction may be retained for diagnostics. It must
 
 ## Prediction
 
-`weights` covers every expected option ID exactly once, has finite values in [0,1], and sums to one within 1e-6. A caller must not interpret weights as calibrated event probabilities unless the semantics and validation status support that interpretation.
+`weights` covers every expected option ID exactly once, has finite values in [0,1], and sums to one within 1e-6. A caller must not interpret weights as calibrated event probabilities unless `semantics` is `calibrated_probability` and `probability_calibration.status` is `assessed_in_scope`.
 
 `semantics` is one of:
 
-- `normalized_readout`: normalized model output, not claimed empirically calibrated.
-- `calibrated_estimate`: a fitted estimator with an approved, in-scope held-out validation report and an exact matching deployment profile.
-- `provider_reported`: a provider supplies probability-like values, but JJM has not established the preceding condition.
+- `normalized_readout`: normalized model output. Accepting a held-out report does not change this label.
+- `calibrated_probability`: a fitted calibrator whose reliability was assessed for this scope. It also requires an accepted validation report for the underlying estimator. Nothing in the current runtime emits this value.
+- `provider_reported`: a provider supplies probability-like values, and JJM has not assessed their calibration.
 
 Do not put embedding similarities or arbitrary scores in `weights`. Reject an adapter that cannot populate this field honestly. A future score-only adapter needs a separately versioned prediction variant.
 
@@ -68,7 +68,7 @@ Acceptance is a deterministic record with `pass`, `hold`, or `reject`, reason co
 
 ## Requirements
 
-Global requirements apply independently to every criterion. They include calibrated-in-scope estimates when requested, allowed method IDs, optional top-mass and margin thresholds, optional model-revision verification, and optional state-age limits. Criterion-specific evidence IDs and outcome filters also apply.
+Global requirements apply independently to every criterion. They include an accepted validation report when requested, assessed probability calibration when requested, allowed method IDs, optional top-mass and margin thresholds, optional model-revision verification, and optional state-age limits. Criterion-specific evidence IDs and outcome filters also apply. `validation: accepted_in_scope` and `probability_calibration: assessed_in_scope` are separate requirements.
 
 All mandatory unknown checks fail closed. A requested method is not the achieved method. Early releases must return `UNSUPPORTED_REQUIREMENT` rather than ignoring a field they cannot enforce.
 
@@ -80,6 +80,6 @@ One criterion can fail while another succeeds. An invalid envelope is rejected b
 
 ## Errors
 
-Stable codes include `INVALID_REQUEST`, `DUPLICATE_CRITERION_ID`, `UNSUPPORTED_KIND`, `TOO_MANY_OPTIONS`, `CONTEXT_LIMIT_EXCEEDED`, `MISSING_REQUIRED_EVIDENCE`, `STATE_TOO_OLD`, `ARTIFACT_MISMATCH`, `CALIBRATION_NOT_VALIDATED`, `METHOD_NOT_ALLOWED`, `MODEL_IDENTITY_UNKNOWN`, `INCOMPLETE_LABEL_DISTRIBUTION`, `NONFINITE_RESULT`, `BACKEND_TIMEOUT`, and `INTERNAL_ERROR`.
+Stable codes include `INVALID_REQUEST`, `DUPLICATE_CRITERION_ID`, `UNSUPPORTED_KIND`, `TOO_MANY_OPTIONS`, `CONTEXT_LIMIT_EXCEEDED`, `MISSING_REQUIRED_EVIDENCE`, `STATE_TOO_OLD`, `ARTIFACT_MISMATCH`, `VALIDATION_NOT_ACCEPTED`, `PROBABILITY_CALIBRATION_NOT_ASSESSED`, `METHOD_NOT_ALLOWED`, `MODEL_IDENTITY_UNKNOWN`, `INCOMPLETE_LABEL_DISTRIBUTION`, `NONFINITE_RESULT`, `BACKEND_TIMEOUT`, and `INTERNAL_ERROR`.
 
 Error records never contain provider keys, raw private state, or unrestricted tracebacks. `retryable` is explicit. No error is converted into zero probability.

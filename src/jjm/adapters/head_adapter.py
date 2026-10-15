@@ -2,8 +2,9 @@
 
 A criterion runs only when a promoted head's binding matches its criterion digest and this
 encoder's identity exactly. Otherwise it abstains with ARTIFACT_MISMATCH before any model call.
-There is no fallback to another method. Weights are the head's output, labelled `normalized_readout`, with calibration status
-`fitted_unvalidated`, until a held-out report is explicitly accepted for the request's scope.
+There is no fallback to another method. Weights stay `normalized_readout`. Validation status stays
+`fitted_unvalidated` until a held-out report is explicitly accepted for the request's scope.
+Acceptance does not assess probability calibration.
 """
 from __future__ import annotations
 
@@ -66,7 +67,7 @@ class FittedHeadAdapter:
             return []
         return [self._refused.get(compiled.criterion_digest, errors.ARTIFACT_MISMATCH)]
 
-    def calibration(self, compiled: CompiledCriterion, scope_id: Optional[str] = None) -> dict[str, Any]:
+    def validation(self, compiled: CompiledCriterion, scope_id: Optional[str] = None) -> dict[str, Any]:
         served = self._serve(compiled)
         if served is None:
             return {"status": "not_fitted", "artifact_id": None, "validation_report_id": None, "scope_match": False}
@@ -76,13 +77,13 @@ class FittedHeadAdapter:
             return {"status": "fitted_unvalidated", "artifact_id": art["artifact_id"],
                     "validation_report_id": None, "scope_match": False}
         match = acceptance.get("scope_id") == scope_id
-        return {"status": "validated_in_scope" if match else "out_of_scope",
+        return {"status": "accepted_in_scope" if match else "out_of_scope",
                 "artifact_id": art["artifact_id"],
                 "validation_report_id": acceptance["validation_report_id"],
                 "scope_match": match}
 
-    def calibration_manifest(self, compiled: CompiledCriterion, scope_id: str,
-                             provenance: dict[str, Any]) -> Optional[dict[str, Any]]:
+    def validation_manifest(self, compiled: CompiledCriterion, scope_id: str,
+                            provenance: dict[str, Any]) -> Optional[dict[str, Any]]:
         served = self._serve(compiled)
         if served is None:
             return None

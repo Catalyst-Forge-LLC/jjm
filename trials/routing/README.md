@@ -131,10 +131,34 @@ Through the full JJM contract (`evaluate` and `evaluate_batch`) with the Qwen3-E
 - The 7 ms for a fully cached batch is JJM's own envelope work (validation, digests, checks), so that
   is now the largest cost per request in a batch.
 
-Each envelope from this trial reports `calibration.status: fitted_unvalidated` with the artifact id, and
+Each envelope from this trial reports `validation.status: fitted_unvalidated` with the artifact id, and
 `numeric_path: hidden_state_head`. Accepting the held-out report is a separate `jjm accept --scope` step
 and was not part of these runs. Inside a batch, an envelope whose features were prefetched reports
 `prompt_evaluations: 0`, because the shared batch pass is not its own.
+
+## Same labels, two other classifiers
+
+`trials/routing/baselines.py` uses the cached Qwen3-Embedding features and the published head's test weights. scikit-learn is not a JJM dependency.
+
+| Method | Full test accuracy |
+| --- | ---: |
+| Published embedding head | 97.1% |
+| Logistic regression on the same embeddings | 97.2% |
+| Word and bigram TF-IDF, then logistic regression | 94.9% |
+
+The plain classifier on the same encoder lands with the head. That fit stopped at its iteration limit, so the tenth of a point is not a ranking. TF-IDF never calls the encoder. It is about 2 points behind, and it fit in 0.3 seconds. The head's advantage on this task is not a different classifier. The contract around the head is the part the plain classifier does not provide.
+
+## An operating point, chosen before it was scored
+
+A minimum top weight was chosen on a stratified 20% of the test set (616 messages, seed 0) and then scored on the other 2,464. Those 2,464 did not pick the threshold.
+
+| Error target on the 616 | Top weight | Handled, of the 2,464 | Wrong, among the handled |
+| --- | ---: | ---: | ---: |
+| 1% | 0.91 | 91.7% (2,259) | 0.84% |
+| 2% | 0.45 | 99.8% (2,459) | 2.8% |
+| 5% | none | 100% | 3.0% |
+
+The 1% target held. The 2% target did not: the untouched messages were wrong more often than the 616. Handling every message is already about 3% wrong, so a 5% budget needs no cutoff. This is the eight-team mapping, not 77-class Banking77.
 
 ## What this says
 
@@ -165,6 +189,7 @@ uv run python -m trials.routing.bench readout  --profiles jjm-profiles.local.jso
 uv run python -m trials.routing.bench rerank-zeroshot --model-path <reranker snapshot>
 uv run python -m trials.routing.bench speed    --model-path <reranker snapshot> --revision <sha>
 uv run python -m trials.routing.bench engine   --profiles jjm-profiles.local.json --profile route-embed
+uv run --with scikit-learn python -m trials.routing.baselines
 ```
 
 Profiles for the four encoders are in `examples/jjm-profiles.routing.example.json`. Results land in

@@ -289,7 +289,7 @@ def capabilities(profile: Profile) -> dict[str, Any]:
         from jjm.adapters.head_adapter import METHOD as HEAD_METHOD
 
         methods, max_ctx = [HEAD_METHOD], profile.config["max_context_tokens"]
-        semantics = ["normalized_readout", "calibrated_estimate"]
+        semantics = ["normalized_readout"]
     else:
         from jjm.adapters.anyjev_adapter import METHOD
 

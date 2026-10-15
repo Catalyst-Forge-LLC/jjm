@@ -315,10 +315,16 @@
     "requirements": {
       "type": "object",
       "properties": {
-        "calibration": {
+        "validation": {
           "enum": [
             "not_required",
-            "validated_in_scope"
+            "accepted_in_scope"
+          ]
+        },
+        "probability_calibration": {
+          "enum": [
+            "not_required",
+            "assessed_in_scope"
           ]
         },
         "allowed_methods": {
@@ -369,7 +375,8 @@
         }
       },
       "required": [
-        "calibration",
+        "validation",
+        "probability_calibration",
         "allowed_methods",
         "min_top_mass",
         "min_margin",
@@ -444,7 +451,7 @@
         "semantics": {
           "enum": [
             "normalized_readout",
-            "calibrated_estimate",
+            "calibrated_probability",
             "provider_reported"
           ]
         },
@@ -595,14 +602,14 @@
       ],
       "additionalProperties": false
     },
-    "calibration": {
+    "validation": {
       "type": "object",
       "properties": {
         "status": {
           "enum": [
             "not_fitted",
             "fitted_unvalidated",
-            "validated_in_scope",
+            "accepted_in_scope",
             "out_of_scope",
             "unknown"
           ]
@@ -636,6 +643,33 @@
         "artifact_id",
         "validation_report_id",
         "scope_match"
+      ],
+      "additionalProperties": false
+    },
+    "probability_calibration": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "not_assessed",
+            "assessed_in_scope",
+            "out_of_scope"
+          ]
+        },
+        "report_id": {
+          "anyOf": [
+            {
+              "$ref": "urn:jjm:definitions:0.1#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "report_id"
       ],
       "additionalProperties": false
     },
@@ -855,8 +889,11 @@
             null
           ]
         },
-        "calibration": {
-          "$ref": "urn:jjm:definitions:0.1#/$defs/calibration"
+        "validation": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/validation"
+        },
+        "probability_calibration": {
+          "$ref": "urn:jjm:definitions:0.1#/$defs/probability_calibration"
         },
         "runtime": {
           "$ref": "urn:jjm:definitions:0.1#/$defs/runtime"
@@ -886,7 +923,8 @@
         "model",
         "method",
         "upstream_level",
-        "calibration",
+        "validation",
+        "probability_calibration",
         "runtime",
         "diagnostics"
       ],
@@ -1077,7 +1115,7 @@
           "items": {
             "enum": [
               "normalized_readout",
-              "calibrated_estimate",
+              "calibrated_probability",
               "provider_reported"
             ]
           },

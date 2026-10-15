@@ -33,13 +33,13 @@ The validation report includes task metrics, probabilistic metrics, acceptance t
 
 `fitted_unvalidated`: a fitted artifact exists, but a suitable held-out report has not been accepted.
 
-`validated_in_scope`: an approved report exists and all pinned scope and identity checks pass for the selected use.
+`accepted_in_scope`: an approved held-out report exists and all pinned scope and identity checks pass for the selected use. The weights remain `normalized_readout`.
 
 `out_of_scope`: a report exists but its scope, model, criterion, rendering, or deployment assumptions do not apply.
 
 `unknown`: the provider or artifact does not supply enough information.
 
-Only `validated_in_scope` can support `calibrated_estimate` in the proposed public contract. This is an evidence-based release convention, not a mathematical promise that every individual output is accurate.
+Probability calibration is a separate record, `probability_calibration`. Its status is `not_assessed` until a calibrator is fitted and a reliability report for that scope is accepted. Only `assessed_in_scope` can support `calibrated_probability`. An accepted held-out accuracy report does not establish that a weight of 0.95 occurs about 95% of the time.
 
 ## Scope checks
 

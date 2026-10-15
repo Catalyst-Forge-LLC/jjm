@@ -1,6 +1,6 @@
 # JJM experiment log
 
-Last updated: 2026-09-30 (softmax and full-test Nimble entries appended)
+Last updated: 2026-10-15 (same-encoder logistic regression, TF-IDF, and an operating point appended)
 
 This is a lab notebook for the judgment experiments. It is not a model card (that describes a model you ship) and not a test plan (that is a walkthrough of the product). Each entry records one comparison: the question, what each method was allowed to see, the result, and what that result does and does not support.
 
@@ -235,3 +235,46 @@ A second public intent set is the check that this routing gap is not special to 
 ### Caveat
 
 The head saw the 10,003 training labels. Nimble saw none. The label curve in the routing write-up is the fair budget comparison: about 64 labels per team before the head matches Nimble.
+
+## 2026-10-15 — Same embeddings, a plain classifier, and an operating point
+
+### Question
+
+On the eight-team Banking77 mapping, does the published embedding head beat a plain classifier that sees the same labels? And if a cutoff is chosen on held-aside messages, what share of the remaining messages can be handled at a stated error rate?
+
+### Data
+
+Banking77, human intents mapped to eight teams. Train 10,003, test 3,080. Cached embeddings and the published head's test weights are `runs/routing/feat-embed.npz` and `runs/routing/weights-embed.npy`. The operating point uses a stratified 20% of the test set (616 messages, seed 0) only to choose the cutoff. The other 2,464 are scored after that choice.
+
+### Methods
+
+- The published Qwen3-Embedding-0.6B softmax head, weights already saved.
+- scikit-learn logistic regression (saga, C=1) on those same embeddings, after standardizing on the training set.
+- Word and bigram TF-IDF on the customer message, then the same logistic regression. No encoder.
+- A minimum top weight. Targets of 1%, 2%, and 5% error among handled messages, chosen on the 616 and scored on the 2,464.
+
+### Hardware
+
+The classifier fits ran on CPU. The embeddings were the existing GPU cache. scikit-learn is not a JJM dependency.
+
+### Result
+
+Logistic regression on the same embeddings: 97.2% of 3,080. The published head: 97.1%. TF-IDF: 94.9%, fit in 0.3 seconds. Detail is `runs/routing/baselines.json` and `trials/routing/README.md`.
+
+On the untouched 2,464, a top weight of 0.91 handles 91.7% (2,259) with 0.84% of those wrong. That cutoff was chosen for a 1% error target. The 2% target did not hold: the untouched error was 2.8% while handling 99.8%. Handling every message on that slice is 3.0% wrong.
+
+### Worked
+
+A plain classifier on the same encoder matches the head. The useful gap against TF-IDF is about 2 points, on this eight-team task, with the same human labels. A cutoff chosen aside from the scored messages can hold a 1% error among the messages the head handles.
+
+### Did not
+
+The tenth of a point between the head and the logistic regression is not a ranking. That fit stopped at its iteration limit. The 2% target, chosen on 616 messages, was too optimistic on the rest. This does not compare SetFit, and it does not say the head beats a classifier that fine-tunes the encoder.
+
+### Promising
+
+The same cutoff procedure on a second task, and a real application that sends the unhandled share to review.
+
+### Caveat
+
+The head and both classifiers saw the 10,003 human training labels. This is not the zero-shot comparison. The mapping is eight teams, not 77 intents.

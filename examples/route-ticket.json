@@ -21,14 +21,24 @@
       "required_evidence_ids": [],
       "accept_outcomes": [],
       "options": [
-        { "id": "billing", "description": "Billing amounts, charges, or refunds" },
-        { "id": "technical", "description": "A product defect or failed technical operation" },
-        { "id": "other", "description": "Neither of the specified teams is supported by the ticket" }
+        {
+          "id": "billing",
+          "description": "Billing amounts, charges, or refunds"
+        },
+        {
+          "id": "technical",
+          "description": "A product defect or failed technical operation"
+        },
+        {
+          "id": "other",
+          "description": "Neither of the specified teams is supported by the ticket"
+        }
       ]
     }
   ],
   "requirements": {
-    "calibration": "not_required",
+    "validation": "not_required",
+    "probability_calibration": "not_required",
     "allowed_methods": [],
     "min_top_mass": 0.5,
     "min_margin": null,

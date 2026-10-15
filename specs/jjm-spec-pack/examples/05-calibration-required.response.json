@@ -12,14 +12,14 @@
       "acceptance": {
         "status": "hold",
         "reason_codes": [
-          "CALIBRATION_NOT_VALIDATED"
+          "VALIDATION_NOT_ACCEPTED"
         ],
         "checks": [
           {
             "id": "fixture-consumption-check",
             "mandatory": true,
             "status": "fail",
-            "code": "CALIBRATION_NOT_VALIDATED"
+            "code": "VALIDATION_NOT_ACCEPTED"
           }
         ]
       },
@@ -53,11 +53,15 @@
         },
         "method": null,
         "upstream_level": null,
-        "calibration": {
+        "validation": {
           "status": "not_fitted",
           "artifact_id": null,
           "validation_report_id": null,
           "scope_match": false
+        },
+        "probability_calibration": {
+          "status": "not_assessed",
+          "report_id": null
         },
         "runtime": {
           "id": "fixture-runtime",

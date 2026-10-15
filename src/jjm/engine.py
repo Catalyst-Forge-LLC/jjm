@@ -55,6 +55,7 @@ def summarize(ids: tuple[str, ...], weights: list[float], semantics: str) -> dic
 
 
 NOT_FITTED = {"status": "not_fitted", "artifact_id": None, "validation_report_id": None, "scope_match": False}
+NOT_ASSESSED = {"status": "not_assessed", "report_id": None}
 
 
 def effective_config(adapter: Adapter, profile: Profile) -> dict[str, Any]:
@@ -118,7 +119,8 @@ class Evaluation:
             "model": a.model_identity(),
             "method": a.method if output is not None else None,
             "upstream_level": a.upstream_level if output is not None else None,
-            "calibration": self._calibration(compiled),
+            "validation": self._validation(compiled),
+            "probability_calibration": self._probability_calibration(compiled),
             "runtime": {
                 "id": a.runtime_id,
                 "version": a.runtime_version,
@@ -133,10 +135,18 @@ class Evaluation:
             "diagnostics": diagnostics,
         }
 
-    def _calibration(self, compiled: CompiledCriterion) -> dict[str, Any]:
-        fn = getattr(self.adapter, "calibration", None)
+    def _validation(self, compiled: CompiledCriterion) -> dict[str, Any]:
+        fn = getattr(self.adapter, "validation", None)
         if fn is None:
             return dict(NOT_FITTED)
+        if "scope_id" in inspect.signature(fn).parameters:
+            return fn(compiled, scope_id=self.request["scope_id"])
+        return fn(compiled)
+
+    def _probability_calibration(self, compiled: CompiledCriterion) -> dict[str, Any]:
+        fn = getattr(self.adapter, "probability_calibration", None)
+        if fn is None:
+            return dict(NOT_ASSESSED)
         if "scope_id" in inspect.signature(fn).parameters:
             return fn(compiled, scope_id=self.request["scope_id"])
         return fn(compiled)
@@ -171,8 +181,11 @@ class Evaluation:
             for code in adapter_preflight(compiled):
                 checks.append(_check("artifact" if code == errors.ARTIFACT_MISMATCH else "adapter-preflight", False,
                                      code))
-        if req["calibration"] == "validated_in_scope" and self._calibration(compiled)["status"] != "validated_in_scope":
-            checks.append(_check("calibration", False, errors.CALIBRATION_NOT_VALIDATED))
+        if req["validation"] == "accepted_in_scope" and self._validation(compiled)["status"] != "accepted_in_scope":
+            checks.append(_check("validation", False, errors.VALIDATION_NOT_ACCEPTED))
+        if (req["probability_calibration"] == "assessed_in_scope"
+                and self._probability_calibration(compiled)["status"] != "assessed_in_scope"):
+            checks.append(_check("probability-calibration", False, errors.PROBABILITY_CALIBRATION_NOT_ASSESSED))
         if req["allowed_methods"] and a.method not in req["allowed_methods"]:
             checks.append(_check("method-allowed", False, errors.METHOD_NOT_ALLOWED))
         if req["require_verified_model_revision"] and a.model_identity()["revision_status"] != "verified":
@@ -271,11 +284,7 @@ class Evaluation:
             return compiled, self._error_result(compiled, exc, True, elapsed, context_tokens), None
         output.weights = weights
         prov = self._provenance(compiled, ran=True, output=output, elapsed_ms=elapsed, context_tokens=context_tokens)
-        semantics = self.adapter.semantics
-        if (self.request["requirements"]["calibration"] == "validated_in_scope"
-                and prov["calibration"]["status"] == "validated_in_scope"):
-            semantics = "calibrated_estimate"
-        prediction = summarize(compiled.outcome_ids, weights, semantics)
+        prediction = summarize(compiled.outcome_ids, weights, self.adapter.semantics)
         # Acceptance for evaluated results is finalized once evaluated_at is known.
         return compiled, self._result(compiled, "evaluated", prediction, [], prov, True), output
 
@@ -289,17 +298,20 @@ class Evaluation:
                 checks = self._postchecks(compiled, result["prediction"], evaluated_at)
                 result = self._result(compiled, "evaluated", result["prediction"], checks, result["provenance"], True)
                 prediction = result["prediction"]
-                if prediction is not None and prediction["semantics"] == "calibrated_estimate":
-                    build = getattr(self.adapter, "calibration_manifest", None)
+                accepted = (prediction is not None
+                            and self.request["requirements"]["validation"] == "accepted_in_scope"
+                            and result["provenance"]["validation"]["status"] == "accepted_in_scope")
+                if accepted:
+                    build = getattr(self.adapter, "validation_manifest", None)
                     manifest = build(compiled, self.request["scope_id"], result["provenance"]) if build else None
                     if manifest is None:
                         raise errors.ExecutionError(errors.INTERNAL_ERROR,
-                                                    "A calibrated result had no artifact manifest.")
+                                                    "An accepted result had no artifact manifest.")
                     manifests.append(manifest)
             results.append(result)
         if len({m["artifact_id"] for m in manifests}) > 1:
             raise errors.ExecutionError(errors.INTERNAL_ERROR,
-                                        "One envelope cannot carry two different calibrated artifacts.")
+                                        "One envelope cannot carry two different accepted artifacts.")
         response = {
             "schema_version": "0.1",
             "request_id": self.request["request_id"],
