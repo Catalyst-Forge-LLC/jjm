@@ -1,0 +1,109 @@
+{
+  "schema_version": "0.1",
+  "request_id": "tfidf-test-0",
+  "evaluated_at": "2026-10-15T18:38:53.758Z",
+  "elapsed_ms": 0.0,
+  "results": [
+    {
+      "criterion_id": "route-banking",
+      "kind": "choice",
+      "status": "evaluated",
+      "prediction": {
+        "weights": {
+          "cards": 0.8963845852550856,
+          "payments": 0.01992610079022046,
+          "transfers": 0.00854856238984519,
+          "top_up": 0.013969817416425794,
+          "cash": 0.003865698952288114,
+          "fees_fx": 0.010881906961917,
+          "security": 0.03020246637577758,
+          "account": 0.016220861858440298
+        },
+        "semantics": "normalized_readout",
+        "selected": "cards",
+        "value": null,
+        "top_mass": 0.8963845852550856,
+        "margin": 0.866182118879308,
+        "normalized_entropy": 0.24991078883279236
+      },
+      "acceptance": {
+        "status": "pass",
+        "reason_codes": [],
+        "checks": [
+          {
+            "id": "prediction-complete",
+            "mandatory": true,
+            "status": "pass",
+            "code": "OK"
+          },
+          {
+            "id": "method-allowed",
+            "mandatory": true,
+            "status": "pass",
+            "code": "OK"
+          }
+        ]
+      },
+      "evidence": {
+        "considered_ids": [],
+        "selected_ids": [],
+        "missing_required_ids": [],
+        "selection_method": "none",
+        "verification": "not_performed"
+      },
+      "provenance": {
+        "execution_mode": "real",
+        "engine_version": "jjm-engine 0.1.0.dev0",
+        "upstream_commit": null,
+        "adapter_id": "jjm-tfidf",
+        "adapter_version": "jjm-tfidf-1",
+        "profile_id": "text",
+        "profile_generation": "measurement-1",
+        "state_id": "ticket-9001",
+        "state_revision": "r1",
+        "state_digest": "sha256:6bbdb0a58754c4d48093c55e6171bf4e298c21d2e546e6a900c0ffe5ebae842f",
+        "criterion_digest": "sha256:29092e13867f57ba68af111ef9e3d866603e5e8bcdb7e006a3ea05eb0600e3e5",
+        "rendering_digest": "sha256:3126bbf913b4a9a530fbb23be9f01c94a99a5015e8067dcea9e9986e9a3d898d",
+        "effective_config_digest": "sha256:b3251fe068e2f7f8f04ef39599da3f0c386683223bed6bce340064bab3d389dc",
+        "policy_digest": "sha256:0c50491174c2a553f1ae965215188acafe14e5519fec3eb1248968150521b482",
+        "model": {
+          "id": "jjm/tfidf-logistic",
+          "revision": "jjm-tfidf-1",
+          "revision_status": "operator_attested",
+          "tokenizer_revision": "jjm-tfidf-1"
+        },
+        "method": "jjm:tfidf-logistic",
+        "upstream_level": null,
+        "validation": {
+          "status": "fitted_unvalidated",
+          "artifact_id": "head-b8704284d26cdfc31d87",
+          "validation_report_id": null,
+          "scope_match": false
+        },
+        "probability_calibration": {
+          "status": "not_assessed",
+          "report_id": null
+        },
+        "runtime": {
+          "id": "scikit-learn",
+          "version": "1.9.1",
+          "dtype": "float64",
+          "numeric_path": "provider_native",
+          "prompt_evaluations": 0,
+          "adapter_calls": 1,
+          "prefix_reuse": "not_used",
+          "early_exit": "not_used",
+          "elapsed_ms": 0.0
+        },
+        "diagnostics": {
+          "artifact_id": "head-b8704284d26cdfc31d87",
+          "feature_type": "tfidf",
+          "active_features": 21,
+          "all_features_unknown": false,
+          "rendered_state_digest": "sha256:a86cbe4ad63ac8cfc33649d4c06d264bc35e98d5a82114fd568e50e3bec382c0"
+        }
+      },
+      "error": null
+    }
+  ]
+}

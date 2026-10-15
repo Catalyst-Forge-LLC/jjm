@@ -7,6 +7,7 @@ A request names a profile ID. It never carries model paths, URLs, or settings.
 from __future__ import annotations
 
 import json
+import math
 import os
 import re
 from dataclasses import dataclass, field
@@ -225,6 +226,43 @@ def _head_factory(cfg: dict[str, Any]) -> Callable[[], Adapter]:
     return build
 
 
+def _tfidf_config(entry: dict[str, Any], base: Path) -> dict[str, Any]:
+    allowed = {"id", "adapter", "artifacts", "ngram_range", "min_df", "max_features", "C", "max_iter"}
+    if set(entry) - allowed:
+        raise _config_error(f"TF-IDF has unknown keys: {sorted(set(entry) - allowed)}")
+    if not isinstance(entry.get("artifacts"), str) or not entry["artifacts"]:
+        raise _config_error("TF-IDF needs an artifacts directory")
+    ngram = entry.get("ngram_range", [1, 2])
+    if (not isinstance(ngram, list) or len(ngram) != 2 or any(type(v) is not int for v in ngram)
+            or not 1 <= ngram[0] <= ngram[1] <= 3):
+        raise _config_error("TF-IDF ngram_range must be two integers with 1 <= min <= max <= 3")
+    settings = {"ngram_range": ngram, "min_df": entry.get("min_df", 1),
+                "max_features": entry.get("max_features"), "C": entry.get("C", 4.0),
+                "max_iter": entry.get("max_iter", 1000)}
+    for name in ("min_df", "max_iter", "max_features"):
+        value = settings[name]
+        if name == "max_features" and value is None:
+            continue
+        if type(value) is not int or value < 1:
+            raise _config_error(f"TF-IDF {name} must be a positive integer")
+    value = settings["C"]
+    if type(value) not in (int, float) or not math.isfinite(value) or value <= 0:
+        raise _config_error("TF-IDF C must be finite and positive")
+    return {"adapter": "tfidf", "artifacts": str((base / entry["artifacts"]).resolve()), "settings": settings}
+
+
+def _tfidf_factory(cfg: dict[str, Any]) -> Callable[[], Adapter]:
+    def build() -> Adapter:
+        try:
+            from jjm.adapters.tfidf_adapter import TfidfAdapter
+        except ImportError:
+            raise errors.ExecutionError(errors.BACKEND_UNAVAILABLE,
+                                        "TF-IDF needs the 'text' extra: uv sync --extra text") from None
+        from jjm.heads.artifact import ArtifactStore
+        return TfidfAdapter(ArtifactStore(Path(cfg["artifacts"])), cfg["settings"])
+    return build
+
+
 def _read_file(path: Optional[str]) -> tuple[Optional[dict[str, Any]], Path]:
     path = path or os.environ.get(PROFILES_ENV)
     if not path:
@@ -259,8 +297,11 @@ def load_profiles(path: Optional[str] = None) -> dict[str, Profile]:
         elif adapter == "fitted-head":
             cfg = _head_config(entry, base)
             factory = _head_factory(cfg)
+        elif adapter == "tfidf":
+            cfg = _tfidf_config(entry, base)
+            factory = _tfidf_factory(cfg)
         else:
-            raise _config_error(f"profile {pid!r} has adapter {adapter!r}; supported: 'anyjev-hf', 'fitted-head'")
+            raise _config_error(f"profile {pid!r} has adapter {adapter!r}; supported: 'anyjev-hf', 'fitted-head', 'tfidf'")
         generation = "cfg-" + digest(cfg)[7:19]
         profiles[pid] = Profile(pid, generation, "real", adapter, cfg, factory)
     return profiles
@@ -290,6 +331,8 @@ def capabilities(profile: Profile) -> dict[str, Any]:
 
         methods, max_ctx = [HEAD_METHOD], profile.config["max_context_tokens"]
         semantics = ["normalized_readout"]
+    elif profile.adapter_name == "tfidf":
+        methods, max_ctx, semantics = ["jjm:tfidf-logistic"], None, ["normalized_readout"]
     else:
         from jjm.adapters.anyjev_adapter import METHOD
 
@@ -299,7 +342,7 @@ def capabilities(profile: Profile) -> dict[str, Any]:
         "schema_version": "0.1",
         "profile_id": profile.id,
         "execution_mode": profile.execution_mode,
-        "supported_kinds": ["choice", "assertion"],
+        "supported_kinds": ["choice"] if profile.adapter_name == "tfidf" else ["choice", "assertion"],
         "methods": methods,
         "max_choice_options": 26,
         "max_score_levels": 0,

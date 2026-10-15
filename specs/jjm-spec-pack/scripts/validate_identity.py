@@ -122,10 +122,13 @@ def main() -> int:
         kind = path.name.removesuffix('.schema.json')
         require(schema['$id'] == f'urn:jjm:{kind}:0.1', f'Schema identity changed: {path.name}')
     pairs = list((ROOT / 'examples').glob('*.request.json')) + list((ROOT / 'examples').glob('*.response.json'))
-    require(len(pairs) == 50, 'Expected 25 request/response fixture pairs')
+    cases = read_json(ROOT / 'examples/index.json')['cases']
+    indexed = [ROOT / case[key] for case in cases for key in ('request', 'response')]
+    require(len(indexed) == len(set(indexed)) and set(pairs) == set(indexed),
+            'Request/response fixtures must match the case index exactly')
     for path in pairs:
         require(read_json(path)['schema_version'] == '0.1', f'Fixture contract version changed: {path.name}')
-    print('PASS six schema URNs and all 50 request/response fixture versions remain at contract 0.1')
+    print(f'PASS six schema URNs and all {len(pairs)} request/response fixture versions remain at contract 0.1')
 
     readme = (ROOT / 'README.md').read_text(encoding='utf-8')
     require('specification, version 0.2' in readme and '18 focused specifications' in

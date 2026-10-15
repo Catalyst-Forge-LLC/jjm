@@ -12,17 +12,18 @@ from typing import Any, Optional, Sequence
 
 from jjm import errors
 from jjm.adapters.base import AdapterOutput
+from jjm.adapters.fitted import FittedArtifactAdapter
 from jjm.compile import CompiledCriterion
 from jjm.heads.artifact import ArtifactStore
 from jjm.heads.encoders import encoder_input
-from jjm.heads.fit import contract_manifest, head_from_artifact, served_artifact
+from jjm.heads.fit import head_from_artifact, served_artifact
 from jjm.heads.head import Head
 from jjm.heads.runtime import Featurizer
 
 METHOD = "jjm:hidden-state-head"
 
 
-class FittedHeadAdapter:
+class FittedHeadAdapter(FittedArtifactAdapter):
     adapter_id = "jjm-head"
     adapter_version = "jjm-head-1"
     execution_mode = "real"
@@ -36,13 +37,11 @@ class FittedHeadAdapter:
     def __init__(self, featurizer: Featurizer, store: ArtifactStore, *, max_context_tokens: Optional[int]):
         self.featurizer = featurizer
         self.encoder = featurizer.encoder
-        self.store = store
+        super().__init__(store)
         self.runtime_id = self.encoder.runtime_id
         self.runtime_version = self.encoder.runtime_version
         self.dtype = self.encoder.dtype
         self.max_context_tokens = max_context_tokens
-        self._served: dict[str, Optional[tuple[dict[str, Any], Head]]] = {}
-        self._refused: dict[str, str] = {}
 
     def settings_identity(self) -> dict[str, Any]:
         return {"encoder": self.encoder.identity(), "encoder_digest": self.featurizer.digest,
@@ -51,48 +50,9 @@ class FittedHeadAdapter:
     def model_identity(self) -> dict[str, Any]:
         return self.encoder.model_identity()
 
-    def _serve(self, compiled: CompiledCriterion) -> Optional[tuple[dict[str, Any], Head]]:
-        key = compiled.criterion_digest
-        if key not in self._served:
-            try:
-                art = served_artifact(self.store, self.featurizer, compiled)
-            except errors.AdapterError as exc:
-                art = None
-                self._refused[key] = exc.code
-            self._served[key] = None if art is None else (art, head_from_artifact(art))
-        return self._served[key]
-
-    def preflight_codes(self, compiled: CompiledCriterion) -> list[str]:
-        if self._serve(compiled) is not None:
-            return []
-        return [self._refused.get(compiled.criterion_digest, errors.ARTIFACT_MISMATCH)]
-
-    def validation(self, compiled: CompiledCriterion, scope_id: Optional[str] = None) -> dict[str, Any]:
-        served = self._serve(compiled)
-        if served is None:
-            return {"status": "not_fitted", "artifact_id": None, "validation_report_id": None, "scope_match": False}
-        art = served[0]
-        acceptance = self.store.acceptance(art["binding_digest"])
-        if acceptance is None or acceptance.get("artifact_id") != art["artifact_id"]:
-            return {"status": "fitted_unvalidated", "artifact_id": art["artifact_id"],
-                    "validation_report_id": None, "scope_match": False}
-        match = acceptance.get("scope_id") == scope_id
-        return {"status": "accepted_in_scope" if match else "out_of_scope",
-                "artifact_id": art["artifact_id"],
-                "validation_report_id": acceptance["validation_report_id"],
-                "scope_match": match}
-
-    def validation_manifest(self, compiled: CompiledCriterion, scope_id: str,
-                            provenance: dict[str, Any]) -> Optional[dict[str, Any]]:
-        served = self._serve(compiled)
-        if served is None:
-            return None
-        art = served[0]
-        acceptance = self.store.acceptance(art["binding_digest"])
-        if (acceptance is None or acceptance.get("artifact_id") != art["artifact_id"]
-                or acceptance.get("scope_id") != scope_id):
-            return None
-        return contract_manifest(art, provenance, scope_id)
+    def _load(self, compiled: CompiledCriterion) -> Optional[tuple[dict[str, Any], Head]]:
+        art = served_artifact(self.store, self.featurizer, compiled)
+        return None if art is None else (art, head_from_artifact(art))
 
     def context_tokens(self, state_text: str, compiled: CompiledCriterion) -> Optional[int]:
         prefix, body = encoder_input(state_text, compiled, self.encoder.identity()["prefix_template"])

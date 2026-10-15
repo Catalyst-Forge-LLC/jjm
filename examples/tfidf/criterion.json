@@ -1,0 +1,12 @@
+{
+  "id": "route-ticket",
+  "version": "1",
+  "kind": "choice",
+  "question": "Which team should own this ticket?",
+  "required_evidence_ids": [],
+  "accept_outcomes": [],
+  "options": [
+    {"id": "billing", "description": "Billing amounts, charges, or refunds"},
+    {"id": "technical", "description": "A product defect or failed technical operation"}
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "profiles": [
+    {
+      "id": "route-text",
+      "adapter": "tfidf",
+      "artifacts": "../../runs/tfidf/heads",
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 1,
+      "C": 4.0,
+      "max_iter": 1000
+    }
+  ]
+}

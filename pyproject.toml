@@ -20,6 +20,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+text = ["scikit-learn>=1.6,<2"]
 hf = ["anyjev[hf]==0.2.0", "torch>=2.3"]
 providers = ["litellm>=1.60"]
 

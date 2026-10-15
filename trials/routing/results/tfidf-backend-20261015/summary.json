@@ -1,0 +1,85 @@
+{
+  "purpose": "Integrated TF-IDF backend verification; separate from original raw-text baseline",
+  "date": "2026-10-15",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "python": "3.12.13",
+  "packages": {
+    "jjm-engine": "0.1.0.dev0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "neural_modules_loaded": [],
+  "settings": {
+    "ngram_range": [
+      1,
+      2
+    ],
+    "min_df": 1,
+    "max_features": null,
+    "C": 4.0,
+    "max_iter": 1000
+  },
+  "artifact_id": "head-b8704284d26cdfc31d87",
+  "payload_digest": "sha256:b8704284d26cdfc31d875514287324e9b2aeb5c993b919eeca11e4a0296d0e93",
+  "training": {
+    "training_digest": "sha256:e75ed5f6ad9e2dc6d6532e5d860f1c65ef8399c6116bf8da5adf1876f6539219",
+    "n": 9603,
+    "fit_count": 7680,
+    "label_source": {
+      "kind": "human"
+    },
+    "label_counts": {
+      "cards": 2119,
+      "payments": 929,
+      "transfers": 1359,
+      "top_up": 1138,
+      "cash": 533,
+      "fees_fx": 1813,
+      "security": 749,
+      "account": 963
+    },
+    "split": "stratified 20% by text digest within each outcome, before vocabulary, IDF, and classifier fit",
+    "feature_dim": 20643
+  },
+  "heldout": {
+    "n": 1923,
+    "accuracy": 0.9485179407176287,
+    "macro_f1": 0.9413672466699412,
+    "log_loss": 0.2526831396952102,
+    "mean_top_mass": 0.8377982811286607,
+    "split": "stratified 20% by text digest within each outcome, before vocabulary, IDF, and classifier fit",
+    "note": "Fixed operator settings; no selection on holdout. Not yet accepted.",
+    "report_id": "report-a91dc626d071a822ebbd"
+  },
+  "test": {
+    "n": 3080,
+    "accuracy": 0.9577922077922078,
+    "macro_f1": 0.9528030617039702,
+    "log_loss": 0.24463727659816972,
+    "mean_top_mass": 0.842650103118145
+  },
+  "direct_vs_contract_max_weight_delta": 0.0,
+  "fit_ms": 1578.9556999952765,
+  "artifact_reload_ms": 566.1387000000104,
+  "warm_contract": {
+    "n": 200,
+    "p50_ms": 1.8490000002202578,
+    "p95_ms": 2.197484996577259
+  },
+  "warm_bare_classifier": {
+    "n": 200,
+    "p50_ms": 1.039399990986567,
+    "p95_ms": 1.303204993746476
+  },
+  "evaluate_batch_ms": 4602.082900004461,
+  "evaluate_batch_rows_per_second": 669.2621725690805,
+  "split_sha256": "0cb3db5974d65e7bc912a6855319de20db927ef8b6a645544f97f40dfcdbdc21",
+  "latency_sample_sha256": "6403ca7d1be4f85919404bc86a7d6cec0253db781c323ee2ab3bef8f7c25abe8",
+  "sources": {
+    "src/jjm/heads/tfidf.py": "f2f8daddc44272572a6ccd20ec9303eeb687befeb445c1d0e90549350a19a66a",
+    "src/jjm/adapters/tfidf_adapter.py": "dd3503577dc37655b2fd8cbb0142adc685614d60ee4ca59ba71db698cd36d110",
+    "trials/routing/tfidf_backend.py": "ba232a75249c2fe27e23b1993d68cc5a3c2ad825ab5b7cd8a6f10335c0843a86"
+  },
+  "note": "One run on a shared laptop; rendered JJM state and fixed C. No calibrated probabilities."
+}

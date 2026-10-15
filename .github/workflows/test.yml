@@ -12,7 +12,7 @@ jobs:
       - uses: astral-sh/setup-uv@v5
         with:
           python-version: "3.12"
-      - run: uv sync --frozen
+      - run: uv sync --frozen --extra text
       - run: uv run pytest
       - run: uv run jjm evaluate --request examples/route-ticket.json
       - run: uv run python specs/jjm-spec-pack/scripts/validate_identity.py

@@ -81,10 +81,10 @@ def cmd_models(args: argparse.Namespace) -> int:
 def _head_profile(args: argparse.Namespace):
     profiles = load_profiles(args.profiles)
     profile = profiles.get(args.profile)
-    if profile is None or profile.adapter_name != "fitted-head":
-        heads = sorted(pid for pid, p in profiles.items() if p.adapter_name == "fitted-head")
+    if profile is None or profile.adapter_name not in ("fitted-head", "tfidf"):
+        heads = sorted(pid for pid, p in profiles.items() if p.adapter_name in ("fitted-head", "tfidf"))
         raise errors.RequestError(errors.INVALID_REQUEST,
-                                  f"{args.profile!r} is not a fitted-head profile. Fitted-head profiles: {heads}")
+                                  f"{args.profile!r} is not a fitted profile. Fitted profiles: {heads}")
     return profile
 
 
@@ -152,8 +152,12 @@ def cmd_fit(args: argparse.Namespace) -> int:
         labels = [e["label"] for e in examples]
         label_source = {"kind": args.label_source}
     adapter = profile.adapter()
-    result = fit_head(adapter.featurizer, adapter.store, compiled, texts, labels, method=args.method,
-                      label_source=label_source, promote=args.promote)
+    if profile.adapter_name == "tfidf":
+        result = adapter.fit(compiled, texts, labels, method=args.method,
+                             label_source=label_source, promote=args.promote)
+    else:
+        result = fit_head(adapter.featurizer, adapter.store, compiled, texts, labels, method=args.method,
+                          label_source=label_source, promote=args.promote)
     art = result.artifact
     held = art["report"]["heldout"]
     _emit({"artifact_id": art["artifact_id"], "binding_digest": art["binding_digest"], "reused": result.reused,
@@ -167,14 +171,14 @@ def cmd_fit(args: argparse.Namespace) -> int:
 
 def cmd_accept(args: argparse.Namespace) -> int:
     from jjm.compile import compile_criterion
-    from jjm.heads.fit import accept_validation, served_artifact
+    from jjm.heads.fit import accept_validation
 
     profile = _head_profile(args)
     compiled = compile_criterion(_read_json(args.criterion))
     adapter = profile.adapter()
-    art = served_artifact(adapter.store, adapter.featurizer, compiled)
+    art = adapter.artifact(compiled)
     if art is None:
-        raise errors.RequestError(errors.INVALID_REQUEST, "No promoted head matches this criterion and encoder.")
+        raise errors.RequestError(errors.INVALID_REQUEST, "No promoted artifact matches this criterion and profile.")
     _emit(accept_validation(adapter.store, art, args.scope))
     return EXIT_OK
 
@@ -202,7 +206,7 @@ def _package(name: str) -> Optional[str]:
     try:
         from importlib.metadata import version
 
-        return version(name)
+        return version("scikit-learn" if name == "sklearn" else name)
     except Exception:
         return "installed"
 
@@ -212,7 +216,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     report: dict[str, Any] = {
         "engine_version": ENGINE_VERSION,
         "python": platform.python_version(),
-        "packages": {name: _package(name) for name in ("anyjev", "numpy", "torch", "transformers", "jsonschema")},
+        "packages": {name: _package(name) for name in ("anyjev", "numpy", "torch", "transformers", "jsonschema", "sklearn")},
         "cuda": None,
         "profiles": {},
         "problems": [],
@@ -248,6 +252,11 @@ def cmd_doctor(args: argparse.Namespace) -> int:
                           "artifacts": profile.config["artifacts"], "cache": profile.config["cache"]})
             if enc["kind"] == "hf" and not (report["packages"]["torch"] and report["packages"]["transformers"]):
                 report["problems"].append(f"profile {pid!r} needs the 'hf' extra (torch, transformers)")
+        elif profile.adapter_name == "tfidf":
+            entry.update({"artifacts": profile.config["artifacts"], "device": "cpu",
+                          "settings": profile.config["settings"]})
+            if not report["packages"]["sklearn"]:
+                report["problems"].append(f"profile {pid!r} needs the 'text' extra (scikit-learn)")
         report["profiles"][pid] = entry
     report["ok"] = not report["problems"]
     _emit(report)
@@ -274,7 +283,7 @@ def build_parser() -> argparse.ArgumentParser:
     models.add_argument("--ollama-host", default="http://localhost:11434")
     models.set_defaults(func=cmd_models)
     fit = sub.add_parser("fit", help="fit a head for one criterion, or reuse the one fitted on the same examples")
-    fit.add_argument("--profile", required=True, help="a fitted-head profile")
+    fit.add_argument("--profile", required=True, help="a fitted-head or tfidf profile")
     fit.add_argument("--criterion", required=True, help="criterion JSON (kind, question, options)")
     fit.add_argument("--examples", required=True, help="JSONL of {state, label}")
     fit.add_argument("--method", choices=("softmax", "ordinal"), default="softmax")
@@ -288,7 +297,7 @@ def build_parser() -> argparse.ArgumentParser:
     accept.add_argument("--criterion", required=True, help="the criterion the head was fitted for")
     accept.add_argument("--scope", required=True, help="scope_id the report applies to")
     accept.set_defaults(func=cmd_accept)
-    heads = sub.add_parser("heads", help="list stored heads for a fitted-head profile")
+    heads = sub.add_parser("heads", help="list stored artifacts for a fitted-head or tfidf profile")
     heads.add_argument("--profile", required=True)
     heads.set_defaults(func=cmd_heads)
     return parser

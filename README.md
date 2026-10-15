@@ -1,7 +1,7 @@
 <img width="254" alt="JJM" src="brand/jjm-wordmark.png#gh-light-mode-only">
 <img width="254" alt="JJM" src="brand/jjm-wordmark-on-dark.png#gh-dark-mode-only">
 
-# JJM — Just Judgment Machine
+# JJM â€” Just Judgment Machine
 
 An open-source judgment runtime. Just judgment. Your application makes the decision.
 
@@ -48,6 +48,22 @@ uv run jjm --profiles examples/try/profile.json evaluate --request examples/try/
 ```
 
 The envelope stays `fitted_unvalidated` until `jjm accept --scope`. A request that requires `accepted_in_scope` abstains until that scope is accepted. Acceptance records the held-out report. The weights stay `normalized_readout`.
+
+## Try TF-IDF on CPU
+
+For fixed text categories with labeled examples, JJM also has an optional
+TF-IDF + logistic regression backend. It needs no GPU or language-model download:
+
+~~~bash
+uv sync --extra text
+uv run jjm --profiles examples/tfidf/profile.json fit --profile route-text --criterion examples/tfidf/criterion.json --examples examples/tfidf/examples.jsonl --promote
+uv run jjm --profiles examples/tfidf/profile.json evaluate --request examples/tfidf/request.json
+~~~
+
+The same promotion, scope acceptance, and calibration checks apply. This first
+version supports choice criteria; it learns your categories from examples and
+does not interpret new rubrics zero-shot. See the [TF-IDF guide](examples/tfidf/README.md)
+for configuration, data requirements, limitations, and measured contract latency.
 
 ## Contract check (no model)
 
