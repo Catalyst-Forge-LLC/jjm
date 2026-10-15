@@ -6,7 +6,7 @@ order: 1
 
 ## PE:TL;DR
 
-Plain English. You have notes, and a set of buckets you are willing to use. Show JJM a few notes that are already in the right bucket. After that it sorts new notes on your own computer, quickly, and writes down how it got there. The next step stays yours.
+Plain English. The payoff is a fast answer in buckets you already trust. Show JJM a few notes that are already sorted. The next note comes back in a few milliseconds, on your computer, with a number for every bucket and a receipt for how it got there. A chat model can pick a bucket too. It writes a paragraph, and it takes longer. You still make the call.
 
 Your application sends a state and the options it allows. JJM returns a weight for each option, and a record of what produced it. Your application decides what happens next.
 
@@ -28,6 +28,30 @@ Your application sends a state and the options it allows. JJM returns a weight f
 
 A JSON request with a snapshot and explicit criteria. A choice has two to 26 options you define. An assertion has three outcomes: the supplied evidence supports the claim, contradicts it, or does not settle it.
 
+<div class="snippet">
+  <div class="snippet-label">Request</div>
+  <pre><code>{
+  <span class="k">"state"</span>: {
+    <span class="k">"content"</span>: {
+      <span class="k">"ticket"</span>: <span class="s">"I was charged twice for the same subscription."</span>
+    }
+  },
+  <span class="k">"criteria"</span>: [{
+    <span class="k">"id"</span>: <span class="s">"route-ticket"</span>,
+    <span class="k">"kind"</span>: <span class="s">"choice"</span>,
+    <span class="k">"question"</span>: <span class="s">"Which team should own this ticket?"</span>,
+    <span class="k">"options"</span>: [
+      { <span class="k">"id"</span>: <span class="s">"billing"</span> },
+      { <span class="k">"id"</span>: <span class="s">"technical"</span> },
+      { <span class="k">"id"</span>: <span class="s">"other"</span> }
+    ]
+  }],
+  <span class="k">"requirements"</span>: { <span class="k">"min_top_mass"</span>: <span class="n">0.5</span> }
+}</code></pre>
+</div>
+
+Shortened from [`examples/route-ticket.json`](https://github.com/Catalyst-Forge-LLC/jjm/blob/main/examples/route-ticket.json). The file also names the scope, the profile, and the evidence list.
+
 ## What you get back
 
 - **A weight** over every option you allowed.
@@ -36,9 +60,51 @@ A JSON request with a snapshot and explicit criteria. A choice has two to 26 opt
 
 Weights are a normalized readout. A request that requires a validated scope abstains until that scope has an accepted held-out report. That status records the report. It is the same head output.
 
+<div class="snippet">
+  <div class="snippet-label">Return</div>
+  <pre><code>{
+  <span class="k">"results"</span>: [{
+    <span class="k">"criterion_id"</span>: <span class="s">"route-ticket"</span>,
+    <span class="k">"prediction"</span>: {
+      <span class="k">"weights"</span>: {
+        <span class="k">"billing"</span>: <span class="n">0.892</span>,
+        <span class="k">"technical"</span>: <span class="n">0.005</span>,
+        <span class="k">"other"</span>: <span class="n">0.103</span>
+      },
+      <span class="k">"semantics"</span>: <span class="s">"normalized_readout"</span>,
+      <span class="k">"selected"</span>: <span class="s">"billing"</span>
+    },
+    <span class="k">"acceptance"</span>: { <span class="k">"status"</span>: <span class="s">"pass"</span> },
+    <span class="k">"provenance"</span>: {
+      <span class="k">"method"</span>: <span class="s">"mock:normalized"</span>,
+      <span class="k">"model"</span>: { <span class="k">"id"</span>: <span class="s">"jjm/synthetic-no-model"</span> }
+    }
+  }]
+}</code></pre>
+</div>
+
+Shortened from the no-model command below, with the weights rounded. They are a hash of the input, so this pass is not a judgment that the ticket is billing. The full envelope also includes the digests, the checks, and that notice.
+
 ## What has been tried
 
-On Banking77, mapped to eight teams, a frozen embedding model plus a small head fitted on the human labels scored 97.1% on the 3,080 test messages, at a few milliseconds each. About 64 labels per team is where that head matches Nimble, a 9B decision model, on the same set. On fit rank for one candidate, the chat-wrapped reranker encoding tracked the teacher's ranks.
+Banking77, mapped to eight teams, scored against the human labels, on one laptop GPU.
+
+<div class="compare">
+<table>
+  <thead>
+    <tr><th></th><th>Right</th><th>Time per note</th></tr>
+  </thead>
+  <tbody>
+    <tr><th scope="row">Fitted head</th><td>97.1% of 3,080</td><td>a few milliseconds</td></tr>
+    <tr><th scope="row">Nimble, a 9B decision model</th><td>91.6% of 3,080</td><td>694 ms</td></tr>
+    <tr><th scope="row">A 9B chat model, asked to pick</th><td>88% of 400</td><td>390 ms</td></tr>
+  </tbody>
+</table>
+</div>
+
+The head had seen the human training labels. The other two had seen none. About 64 labels per team is where the head matches Nimble, and it stays at a few milliseconds. The 97.1% is the earlier fit. A refit scored 96.8%. The head's time is a batch of short notes, about 5 ms each. One note at a time is about 11 ms. The other times are medians.
+
+On fit rank for one candidate, the chat-wrapped reranker encoding tracked the teacher's ranks.
 
 The figures and the hardware are in the [experiment log](https://github.com/Catalyst-Forge-LLC/jjm/blob/main/docs/EXPERIMENT_LOG.md).
 

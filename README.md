@@ -6,7 +6,7 @@ An open-source judgment runtime. Just judgment. Your application makes the decis
 
 ## PE:TL;DR
 
-Plain English. You have notes, and a set of buckets you are willing to use. Show JJM a few notes that are already in the right bucket. After that it sorts new notes on your own computer, quickly, and writes down how it got there. The next step stays yours.
+Plain English. The payoff is a fast answer in buckets you already trust. Show JJM a few notes that are already sorted. The next note comes back in a few milliseconds, on your computer, with a number for every bucket and a receipt for how it got there. A chat model can pick a bucket too. It writes a paragraph, and it takes longer. You still make the call.
 
 ## What you might hand it
 
@@ -43,7 +43,50 @@ uv run jjm evaluate --request examples/export-completed.json
 uv run pytest
 ```
 
-The `synthetic` profile is a contract demonstration. Its weights are a hash of the input, so they carry no meaning. In the first example it picks `technical` for a billing ticket, and the result is held because its top weight is below the requested 0.5. In the second example the required `export-receipt` evidence is missing, so the criterion abstains before any evaluation runs.
+The `synthetic` profile is a contract demonstration. Its weights are a hash of the input, so they carry no meaning. On the current build the first example selects `billing` at about 0.892 and the check passes the requested 0.5. That pass is the hash clearing a threshold, not a judgment that the ticket is billing. In the second example the required `export-receipt` evidence is missing, so the criterion abstains before any evaluation runs.
+
+The request, shortened:
+
+```json
+{
+  "state": {
+    "content": {
+      "ticket": "I was charged twice for the same subscription."
+    }
+  },
+  "criteria": [{
+    "id": "route-ticket",
+    "kind": "choice",
+    "question": "Which team should own this ticket?",
+    "options": [
+      { "id": "billing" },
+      { "id": "technical" },
+      { "id": "other" }
+    ]
+  }],
+  "requirements": { "min_top_mass": 0.5 }
+}
+```
+
+The return, shortened and rounded. The command prints the full envelope, including digests and checks.
+
+```json
+{
+  "results": [{
+    "criterion_id": "route-ticket",
+    "prediction": {
+      "weights": { "billing": 0.892, "technical": 0.005, "other": 0.103 },
+      "semantics": "normalized_readout",
+      "selected": "billing"
+    },
+    "acceptance": { "status": "pass" },
+    "provenance": {
+      "method": "mock:normalized",
+      "model": { "id": "jjm/synthetic-no-model" }
+    }
+  }]
+}
+```
 
 Requests can also come on stdin: `uv run jjm evaluate < request.json`.
 
@@ -123,7 +166,15 @@ These were run with Qwen3-1.7B at revision `70d244cc`, in bfloat16 on a 12 GB RT
   - With the model held fixed, JJM's readout beat letting Qwen3-4B write the rank from Sonnet's own prompt. Within one rank was 89% against 69%, weighted kappa 0.19 against 0.10, and rank correlation 0.38 against 0.14.
   - One forward pass is much faster and, zero-shot, orders jobs about as well. A 0.6B reranker's yes/no probability has rank correlation 0.43 with Sonnet at 186 ms, against the 4B readout's 0.43 at 5 s. A small head trained on Sonnet's ranks (cross-validated) reaches weighted kappa 0.45 at that same 186 ms. That head is distillation, not an independent judge.
   - Details are in `trials/fit_rank/README.md`.
-- **Banking77 routing, eight teams, against human labels** (`trials/routing/README.md`): a Qwen3-Embedding-0.6B head reached 97.1% on 3,080 test messages, at about 5 ms per message in bulk and 11 ms per request through `evaluate_batch`. On a 400-message subset, qwen3.5:9b asked directly got 88% at about 400 ms, and the AnyJev readout on Qwen3-1.7B got 75%. At about 64 labelled messages per team the embedding head is even with Nimble's 92.5% on that subset. On the full test set Nimble, with no labels, scores 91.6% at about 700 ms. The comparison is in `docs/EXPERIMENT_LOG.md`.
+- **Banking77 routing, eight teams, against human labels** (`trials/routing/README.md`), on one laptop GPU:
+
+  | | Right | Time per note |
+  | --- | --- | --- |
+  | Fitted head | 97.1% of 3,080 | a few milliseconds |
+  | Nimble, a 9B decision model | 91.6% of 3,080 | 694 ms |
+  | qwen3.5:9b, asked to pick | 88% of 400 | 390 ms |
+
+  The head had seen the human training labels. Nimble and the chat model had seen none. About 64 labelled messages per team is where the embedding head matches Nimble's 92.5% on the 400-message subset, and the time stays a few milliseconds. The 97.1% is the earlier fit. A refit scored 96.8%. In a batch the head is about 5 ms per message. One note at a time through `evaluate_batch` is about 11 ms. The other times are medians. The AnyJev readout on Qwen3-1.7B got 75% of that 400. The comparison is in `docs/EXPERIMENT_LOG.md`.
 
 ## Layout
 
