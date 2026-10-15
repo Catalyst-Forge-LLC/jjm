@@ -40,7 +40,7 @@ JJM (Just Judgment Machine) is an open-source, local judgment runtime. An applic
 - Banking77 zero-shot through Ollama 0.35 `/v1/systemone`, same 400-message subset: Nimble 92.5% at 482 ms, Tev1 4B 89.3% at 389 ms, Tev1 0.8B 79.5% at 370 ms. The fitted embedding head on that subset is 96.5%.
 - The experiment log is `docs/EXPERIMENT_LOG.md`. Trial tables stay in the two README files above.
 - 124 tests pass.
-- The GitHub repo is public as an alpha (https://github.com/Catalyst-Forge-LLC/jjm). The JJM.dev site is still a specification, and `jjm-engine` is not on PyPI. `BRAND.json` keeps `repository_url` null because the spec-pack identity check still treats that field as unverified.
+- The GitHub repo is public as an alpha (https://github.com/Catalyst-Forge-LLC/jjm). The alpha page is `site/` and is deployed to the Pages project `jjm`. `jjm.dev` is attached and still needs the apex DNS record. `jjm-engine` is not on PyPI. `BRAND.json` keeps `repository_url` null and `deployment_status` `not_verified` because the spec-pack identity check still requires those values.
 
 ## Useful commands
 

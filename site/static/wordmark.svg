@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 254 100" fill="#1a1916" role="img" aria-label="JJM">
+  <title>JJM</title>
+  <defs>
+    <clipPath id="m-clip">
+      <rect width="90" height="100"/>
+    </clipPath>
+  </defs>
+  <g id="j">
+    <rect x="20" y="0" width="34" height="14"/>
+    <rect x="36" y="21" width="18" height="79"/>
+    <rect y="82" width="54" height="18"/>
+  </g>
+  <use href="#j" x="80"/>
+  <g transform="translate(164)" clip-path="url(#m-clip)">
+    <rect width="18" height="100"/>
+    <rect x="72" width="18" height="100"/>
+    <path d="M4 -16 L45 70 L86 -16" fill="none" stroke="#1a1916" stroke-width="18" stroke-linejoin="miter" stroke-miterlimit="8"/>
+  </g>
+</svg>

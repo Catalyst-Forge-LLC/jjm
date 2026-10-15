@@ -23,4 +23,4 @@
 
 ## Later
 
-- The GitHub repo is public: https://github.com/Catalyst-Forge-LLC/jjm. The JJM.dev site and a PyPI upload of `jjm-engine` still wait for a clean-machine run of the fitted-head try-it.
+- The GitHub repo is public: https://github.com/Catalyst-Forge-LLC/jjm. The alpha page is on Cloudflare Pages (`jjm-eru.pages.dev`). `jjm.dev` is attached and still needs the apex DNS record before the domain answers. A PyPI upload of `jjm-engine` still waits for a clean-machine run of the fitted-head try-it.

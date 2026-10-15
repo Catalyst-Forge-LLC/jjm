@@ -1,0 +1,29 @@
+{
+	"name": "jjm-site",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "filepress dev",
+		"build": "filepress build && node ./scripts/large-social-card.mjs",
+		"preview": "filepress preview",
+		"check": "filepress check",
+		"ship": "pnpm build && wrangler pages deploy build --project-name jjm --branch main"
+	},
+	"devDependencies": {
+		"getfilepress": "^0.1.50",
+		"wrangler": "^4.28.0"
+	},
+	"pnpm": {
+		"overrides": {
+			"sharp": "0.35.4",
+			"cookie@<0.7.0": "0.7.2",
+			"js-yaml": "3.15.2"
+		},
+		"onlyBuiltDependencies": [
+			"esbuild",
+			"getfilepress",
+			"workerd"
+		]
+	}
+}

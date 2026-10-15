@@ -4,6 +4,10 @@ An open-source judgment runtime. Just judgment. Your application makes the decis
 
 **Status: alpha.** This repository is public so people can try it and argue with the numbers. The synthetic quickstart needs no model. The eight-ticket fitted-head walkthrough downloads one small encoder and has been run on the author's machine. There is no hosted service, and `jjm-engine` is not on PyPI. Read [Limits of the numbers](#limits-of-the-numbers) before treating a figure as a general result. Measured runs are in [Real-model results so far](#real-model-results-so-far).
 
+## PE:TL;DR
+
+Plain English. You have notes, and a set of buckets you are willing to use. Show JJM a few notes that are already in the right bucket. After that it sorts new notes on your own computer, quickly, and writes down how it got there. The next step stays yours.
+
 ## What it does
 
 Your application sends a JSON request with a state snapshot and explicit criteria. JJM returns a JSON envelope. For each criterion, the envelope reports:
