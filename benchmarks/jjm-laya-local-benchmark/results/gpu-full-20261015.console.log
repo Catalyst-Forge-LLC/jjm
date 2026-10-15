@@ -1,0 +1,10 @@
+Running tfidf: 9603 train, 400 validation, 3080 test
+tfidf: accuracy 0.956, p50 0.4 ms
+Running jjm: 9603 train, 400 validation, 3080 test
+jjm: accuracy 0.967, p50 36.4 ms
+Running laya: 9603 train, 400 validation, 3080 test
+W1015 14:05:28.740000 70508 .venv\Lib\site-packages\torch\utils\flop_counter.py:113] triton not found; flop counting will not work for triton kernels
+Z:\workspace\jjm\benchmarks\jjm-laya-local-benchmark\.venv\Lib\site-packages\laya\agent.py:2143: RuntimeWarning: laya: this checkpoint ships invalid temperatures or values outside [0.5, 5]; using choice:11+=0.10058280825614929 -> 0.5. Treat confidence from the affected entries as uncalibrated.
+  return Agent(model_id_or_path, device=device, token=token, subfolder=subfolder, fast=fast,
+laya: accuracy 0.553, p50 38.9 ms
+Saved results\gpu-full-20261015\REPORT.md

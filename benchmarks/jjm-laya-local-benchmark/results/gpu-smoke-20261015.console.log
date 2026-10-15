@@ -1,0 +1,11 @@
+Running tfidf: 64 train, 16 validation, 32 test
+tfidf: accuracy 0.500, p50 0.4 ms
+Running jjm: 64 train, 16 validation, 32 test
+jjm: accuracy 0.781, p50 36.3 ms
+Running laya: 64 train, 16 validation, 32 test
+Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+W1015 14:02:59.067000 69492 .venv\Lib\site-packages\torch\utils\flop_counter.py:113] triton not found; flop counting will not work for triton kernels
+Z:\workspace\jjm\benchmarks\jjm-laya-local-benchmark\.venv\Lib\site-packages\laya\agent.py:2143: RuntimeWarning: laya: this checkpoint ships invalid temperatures or values outside [0.5, 5]; using choice:11+=0.10058280825614929 -> 0.5. Treat confidence from the affected entries as uncalibrated.
+  return Agent(model_id_or_path, device=device, token=token, subfolder=subfolder, fast=fast,
+laya: accuracy 0.688, p50 23.9 ms
+Saved results\gpu-smoke-20261015\REPORT.md

@@ -1,0 +1,424 @@
+{
+  "gpu-512-labels-20261015": {
+    "paired_tests": {
+      "jjm_vs_laya": {
+        "first_only_correct": 122,
+        "second_only_correct": 7,
+        "exact_two_sided_p": 3.1128320466458535e-28,
+        "log10_p": -27.50684431111401
+      },
+      "jjm_vs_tfidf": {
+        "first_only_correct": 53,
+        "second_only_correct": 11,
+        "exact_two_sided_p": 1.0058579844832594e-07,
+        "log10_p": -6.997463332310987
+      },
+      "laya_vs_tfidf": {
+        "first_only_correct": 30,
+        "second_only_correct": 103,
+        "exact_two_sided_p": 1.4519005345745496e-10,
+        "log10_p": -9.838063134851447
+      }
+    },
+    "top_confusions": {
+      "jjm": [
+        {
+          "truth": "fees_fx",
+          "prediction": "transfers",
+          "count": 3
+        },
+        {
+          "truth": "cards",
+          "prediction": "cash",
+          "count": 3
+        },
+        {
+          "truth": "account",
+          "prediction": "cards",
+          "count": 3
+        },
+        {
+          "truth": "cards",
+          "prediction": "security",
+          "count": 2
+        },
+        {
+          "truth": "transfers",
+          "prediction": "payments",
+          "count": 2
+        },
+        {
+          "truth": "top_up",
+          "prediction": "cash",
+          "count": 2
+        },
+        {
+          "truth": "top_up",
+          "prediction": "transfers",
+          "count": 2
+        },
+        {
+          "truth": "transfers",
+          "prediction": "fees_fx",
+          "count": 2
+        },
+        {
+          "truth": "fees_fx",
+          "prediction": "cash",
+          "count": 2
+        },
+        {
+          "truth": "fees_fx",
+          "prediction": "payments",
+          "count": 1
+        },
+        {
+          "truth": "fees_fx",
+          "prediction": "security",
+          "count": 1
+        },
+        {
+          "truth": "cards",
+          "prediction": "fees_fx",
+          "count": 1
+        }
+      ],
+      "laya": [
+        {
+          "truth": "security",
+          "prediction": "payments",
+          "count": 32
+        },
+        {
+          "truth": "account",
+          "prediction": "payments",
+          "count": 22
+        },
+        {
+          "truth": "fees_fx",
+          "prediction": "payments",
+          "count": 18
+        },
+        {
+          "truth": "transfers",
+          "prediction": "payments",
+          "count": 13
+        },
+        {
+          "truth": "cards",
+          "prediction": "payments",
+          "count": 11
+        },
+        {
+          "truth": "cards",
+          "prediction": "security",
+          "count": 7
+        },
+        {
+          "truth": "cards",
+          "prediction": "cash",
+          "count": 6
+        },
+        {
+          "truth": "account",
+          "prediction": "cards",
+          "count": 5
+        },
+        {
+          "truth": "security",
+          "prediction": "cash",
+          "count": 5
+        },
+        {
+          "truth": "cash",
+          "prediction": "payments",
+          "count": 4
+        },
+        {
+          "truth": "fees_fx",
+          "prediction": "transfers",
+          "count": 4
+        },
+        {
+          "truth": "top_up",
+          "prediction": "transfers",
+          "count": 4
+        }
+      ],
+      "tfidf": [
+        {
+          "truth": "fees_fx",
+          "prediction": "transfers",
+          "count": 5
+        },
+        {
+          "truth": "account",
+          "prediction": "cards",
+          "count": 5
+        },
+        {
+          "truth": "cards",
+          "prediction": "cash",
+          "count": 4
+        },
+        {
+          "truth": "fees_fx",
+          "prediction": "cash",
+          "count": 4
+        },
+        {
+          "truth": "security",
+          "prediction": "cash",
+          "count": 4
+        },
+        {
+          "truth": "transfers",
+          "prediction": "payments",
+          "count": 4
+        },
+        {
+          "truth": "security",
+          "prediction": "payments",
+          "count": 3
+        },
+        {
+          "truth": "security",
+          "prediction": "account",
+          "count": 3
+        },
+        {
+          "truth": "payments",
+          "prediction": "transfers",
+          "count": 3
+        },
+        {
+          "truth": "transfers",
+          "prediction": "account",
+          "count": 3
+        },
+        {
+          "truth": "cards",
+          "prediction": "top_up",
+          "count": 3
+        },
+        {
+          "truth": "fees_fx",
+          "prediction": "security",
+          "count": 2
+        }
+      ]
+    },
+    "jjm_laya_prediction_disagreements": 139
+  },
+  "gpu-full-20261015": {
+    "paired_tests": {
+      "jjm_vs_laya": {
+        "first_only_correct": 1299,
+        "second_only_correct": 25,
+        "exact_two_sided_p": 0.0,
+        "log10_p": -345.49672168876486
+      },
+      "jjm_vs_tfidf": {
+        "first_only_correct": 78,
+        "second_only_correct": 46,
+        "exact_two_sided_p": 0.005161224901988052,
+        "log10_p": -2.287247215999913
+      },
+      "laya_vs_tfidf": {
+        "first_only_correct": 50,
+        "second_only_correct": 1292,
+        "exact_two_sided_p": 6.9030694189e-313,
+        "log10_p": -312.16095775922247
+      }
+    },
+    "top_confusions": {
+      "jjm": [
+        {
+          "truth": "transfers",
+          "prediction": "payments",
+          "count": 8
+        },
+        {
+          "truth": "cards",
+          "prediction": "security",
+          "count": 7
+        },
+        {
+          "truth": "transfers",
+          "prediction": "top_up",
+          "count": 7
+        },
+        {
+          "truth": "fees_fx",
+          "prediction": "transfers",
+          "count": 5
+        },
+        {
+          "truth": "top_up",
+          "prediction": "fees_fx",
+          "count": 5
+        },
+        {
+          "truth": "cards",
+          "prediction": "fees_fx",
+          "count": 5
+        },
+        {
+          "truth": "transfers",
+          "prediction": "fees_fx",
+          "count": 5
+        },
+        {
+          "truth": "cards",
+          "prediction": "cash",
+          "count": 5
+        },
+        {
+          "truth": "security",
+          "prediction": "cash",
+          "count": 5
+        },
+        {
+          "truth": "fees_fx",
+          "prediction": "payments",
+          "count": 4
+        },
+        {
+          "truth": "top_up",
+          "prediction": "transfers",
+          "count": 4
+        },
+        {
+          "truth": "security",
+          "prediction": "cards",
+          "count": 3
+        }
+      ],
+      "laya": [
+        {
+          "truth": "cards",
+          "prediction": "payments",
+          "count": 265
+        },
+        {
+          "truth": "fees_fx",
+          "prediction": "payments",
+          "count": 190
+        },
+        {
+          "truth": "account",
+          "prediction": "payments",
+          "count": 148
+        },
+        {
+          "truth": "security",
+          "prediction": "payments",
+          "count": 144
+        },
+        {
+          "truth": "transfers",
+          "prediction": "payments",
+          "count": 101
+        },
+        {
+          "truth": "cards",
+          "prediction": "security",
+          "count": 68
+        },
+        {
+          "truth": "cards",
+          "prediction": "top_up",
+          "count": 62
+        },
+        {
+          "truth": "cards",
+          "prediction": "cash",
+          "count": 53
+        },
+        {
+          "truth": "fees_fx",
+          "prediction": "top_up",
+          "count": 39
+        },
+        {
+          "truth": "security",
+          "prediction": "cash",
+          "count": 28
+        },
+        {
+          "truth": "cards",
+          "prediction": "fees_fx",
+          "count": 25
+        },
+        {
+          "truth": "account",
+          "prediction": "cards",
+          "count": 24
+        }
+      ],
+      "tfidf": [
+        {
+          "truth": "transfers",
+          "prediction": "fees_fx",
+          "count": 8
+        },
+        {
+          "truth": "security",
+          "prediction": "cards",
+          "count": 7
+        },
+        {
+          "truth": "cash",
+          "prediction": "cards",
+          "count": 7
+        },
+        {
+          "truth": "fees_fx",
+          "prediction": "transfers",
+          "count": 6
+        },
+        {
+          "truth": "transfers",
+          "prediction": "payments",
+          "count": 6
+        },
+        {
+          "truth": "payments",
+          "prediction": "cards",
+          "count": 6
+        },
+        {
+          "truth": "transfers",
+          "prediction": "top_up",
+          "count": 6
+        },
+        {
+          "truth": "top_up",
+          "prediction": "fees_fx",
+          "count": 5
+        },
+        {
+          "truth": "transfers",
+          "prediction": "cards",
+          "count": 5
+        },
+        {
+          "truth": "account",
+          "prediction": "cards",
+          "count": 5
+        },
+        {
+          "truth": "fees_fx",
+          "prediction": "cards",
+          "count": 4
+        },
+        {
+          "truth": "top_up",
+          "prediction": "transfers",
+          "count": 4
+        }
+      ]
+    },
+    "jjm_laya_prediction_disagreements": 1356
+  }
+}

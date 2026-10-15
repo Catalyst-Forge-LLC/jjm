@@ -1,0 +1,5728 @@
+{
+  "purpose": "Post-run diagnostic only; no prompt, threshold, precision or model changes.",
+  "full_latency_sample_n": 200,
+  "extra_cross_run_flip_ids": [
+    "test:209",
+    "test:461"
+  ],
+  "compared_n": 202,
+  "direct_vs_full_batch_changed_winners": 3,
+  "direct_vs_full_batch_max_abs_delta": 0.04276545654565456,
+  "cross_run_common_rows": 400,
+  "cross_run_changed_winners": 2,
+  "cross_run_max_abs_delta": 0.021763910217639126,
+  "cross_run_flips": [
+    {
+      "row_id": "test:209",
+      "text": "Are you sure when the withdrawal will show?",
+      "team": "cash",
+      "batch16_prediction": "cash",
+      "batch32_prediction": "payments",
+      "batch16_weights": {
+        "cards": 0.039192161567686463,
+        "payments": 0.30453909218156366,
+        "transfers": 0.05378924215156969,
+        "top_up": 0.07478504299140172,
+        "cash": 0.31543691261747653,
+        "fees_fx": 0.08118376324735052,
+        "security": 0.10787842431513697,
+        "account": 0.023195360927814435
+      },
+      "batch32_weights": {
+        "cards": 0.037996200379962,
+        "payments": 0.31296870312968705,
+        "transfers": 0.05359464053594641,
+        "top_up": 0.0738926107389261,
+        "cash": 0.31056894310568944,
+        "fees_fx": 0.07929207079292071,
+        "security": 0.10878912108789121,
+        "account": 0.022897710228977103
+      }
+    },
+    {
+      "row_id": "test:461",
+      "text": "Someone stole my wallet earlier today, not sure exactly when, probably on Piccadilly circus. Can you check if there were any attempts to use the card and obviously block it?",
+      "team": "security",
+      "batch16_prediction": "security",
+      "batch32_prediction": "payments",
+      "batch16_weights": {
+        "cards": 0.039996000399960006,
+        "payments": 0.31786821317868214,
+        "transfers": 0.06929307069293071,
+        "top_up": 0.0816918308169183,
+        "cash": 0.11478852114788521,
+        "fees_fx": 0.020397960203979604,
+        "security": 0.33706629337066296,
+        "account": 0.0188981101889811
+      },
+      "batch32_weights": {
+        "cards": 0.0401,
+        "payments": 0.3277,
+        "transfers": 0.0682,
+        "top_up": 0.0825,
+        "cash": 0.1148,
+        "fees_fx": 0.0205,
+        "security": 0.3277,
+        "account": 0.0185
+      }
+    }
+  ],
+  "rows": [
+    {
+      "row_id": "test:741",
+      "team": "top_up",
+      "text": "When I top up what are the amoutn limits.",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.0053994600539946005,
+        "payments": 0.010998900109989001,
+        "transfers": 0.0034996500349965005,
+        "top_up": 0.9577042295770423,
+        "cash": 0.0031996800319968005,
+        "fees_fx": 0.007499250074992501,
+        "security": 0.007499250074992501,
+        "account": 0.004199580041995801
+      },
+      "direct_weights": {
+        "cards": 0.0052994700529947,
+        "payments": 0.0105989401059894,
+        "transfers": 0.0033996600339966003,
+        "top_up": 0.958904109589041,
+        "cash": 0.0031996800319968005,
+        "fees_fx": 0.0072992700729927005,
+        "security": 0.0071992800719928,
+        "account": 0.0040995900409959
+      },
+      "max_abs_delta": 0.0011998800119987774
+    },
+    {
+      "row_id": "test:3052",
+      "team": "account",
+      "text": "Do you support the EU?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0644,
+        "payments": 0.2046,
+        "transfers": 0.0999,
+        "top_up": 0.2006,
+        "cash": 0.0814,
+        "fees_fx": 0.1663,
+        "security": 0.1219,
+        "account": 0.0609
+      },
+      "direct_weights": {
+        "cards": 0.06359364063593641,
+        "payments": 0.206979302069793,
+        "transfers": 0.09839016098390162,
+        "top_up": 0.19678032196780323,
+        "cash": 0.08249175082491751,
+        "fees_fx": 0.17098290170982902,
+        "security": 0.12078792120787922,
+        "account": 0.059994000599940006
+      },
+      "max_abs_delta": 0.004682901709829018
+    },
+    {
+      "row_id": "test:1702",
+      "team": "payments",
+      "text": "How do I cancel a previous purchase",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0694,
+        "payments": 0.3272,
+        "transfers": 0.0801,
+        "top_up": 0.1051,
+        "cash": 0.0827,
+        "fees_fx": 0.1139,
+        "security": 0.1745,
+        "account": 0.0471
+      },
+      "direct_weights": {
+        "cards": 0.0671,
+        "payments": 0.332,
+        "transfers": 0.0802,
+        "top_up": 0.1041,
+        "cash": 0.0819,
+        "fees_fx": 0.1178,
+        "security": 0.1716,
+        "account": 0.0453
+      },
+      "max_abs_delta": 0.0048000000000000265
+    },
+    {
+      "row_id": "test:1564",
+      "team": "cash",
+      "text": "Why was my ATM transaction cancelled?",
+      "direct_prediction": "cash",
+      "full_batch_prediction": "cash",
+      "full_batch_weights": {
+        "cards": 0.059994000599940006,
+        "payments": 0.30936906309369067,
+        "transfers": 0.023897610238976102,
+        "top_up": 0.043495650434956505,
+        "cash": 0.36176382361763826,
+        "fees_fx": 0.05909409059094091,
+        "security": 0.11148885111488852,
+        "account": 0.030896910308969103
+      },
+      "direct_weights": {
+        "cards": 0.06030603060306031,
+        "payments": 0.30843084308430846,
+        "transfers": 0.023602360236023603,
+        "top_up": 0.04440444044404441,
+        "cash": 0.3578357835783578,
+        "fees_fx": 0.0607060706070607,
+        "security": 0.1132113211321132,
+        "account": 0.0315031503150315
+      },
+      "max_abs_delta": 0.003928040039280434
+    },
+    {
+      "row_id": "test:1874",
+      "team": "transfers",
+      "text": "Why is a money transfer not showing?",
+      "direct_prediction": "transfers",
+      "full_batch_prediction": "transfers",
+      "full_batch_weights": {
+        "cards": 0.0148,
+        "payments": 0.0796,
+        "transfers": 0.6958,
+        "top_up": 0.0474,
+        "cash": 0.0324,
+        "fees_fx": 0.0374,
+        "security": 0.077,
+        "account": 0.0156
+      },
+      "direct_weights": {
+        "cards": 0.015001500150015001,
+        "payments": 0.078007800780078,
+        "transfers": 0.7009700970097009,
+        "top_up": 0.04610461046104611,
+        "cash": 0.0321032103210321,
+        "fees_fx": 0.036203620362036205,
+        "security": 0.07620762076207621,
+        "account": 0.015401540154015401
+      },
+      "max_abs_delta": 0.005170097009700947
+    },
+    {
+      "row_id": "test:670",
+      "team": "top_up",
+      "text": "My top up hasn't worked, it's been stuck in pending for the last couple hours",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 9.999000099990002e-05,
+        "payments": 0.0007999200079992001,
+        "transfers": 9.999000099990002e-05,
+        "top_up": 0.9983001699830016,
+        "cash": 9.999000099990002e-05,
+        "fees_fx": 0.00029997000299970003,
+        "security": 0.00019998000199980003,
+        "account": 9.999000099990002e-05
+      },
+      "direct_weights": {
+        "cards": 9.999000099990002e-05,
+        "payments": 0.0007999200079992001,
+        "transfers": 9.999000099990002e-05,
+        "top_up": 0.9983001699830016,
+        "cash": 9.999000099990002e-05,
+        "fees_fx": 0.00029997000299970003,
+        "security": 0.00019998000199980003,
+        "account": 9.999000099990002e-05
+      },
+      "max_abs_delta": 0.0
+    },
+    {
+      "row_id": "test:1712",
+      "team": "payments",
+      "text": "I am chatting about an order from a long while back.  I never got it to this day and am deeply upset by this!  I want all of my money back!  I just can not accept paying for something I never got.",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0305,
+        "payments": 0.364,
+        "transfers": 0.0841,
+        "top_up": 0.1268,
+        "cash": 0.1448,
+        "fees_fx": 0.1268,
+        "security": 0.0946,
+        "account": 0.0284
+      },
+      "direct_weights": {
+        "cards": 0.0318,
+        "payments": 0.3594,
+        "transfers": 0.0837,
+        "top_up": 0.1267,
+        "cash": 0.1452,
+        "fees_fx": 0.1277,
+        "security": 0.0956,
+        "account": 0.0299
+      },
+      "max_abs_delta": 0.004599999999999993
+    },
+    {
+      "row_id": "test:855",
+      "team": "transfers",
+      "text": "The receipient doesn't see my money transfer.",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0285,
+        "payments": 0.2684,
+        "transfers": 0.2531,
+        "top_up": 0.1023,
+        "cash": 0.073,
+        "fees_fx": 0.1065,
+        "security": 0.1428,
+        "account": 0.0254
+      },
+      "direct_weights": {
+        "cards": 0.0286,
+        "payments": 0.2649,
+        "transfers": 0.2588,
+        "top_up": 0.1008,
+        "cash": 0.0713,
+        "fees_fx": 0.1073,
+        "security": 0.1435,
+        "account": 0.0248
+      },
+      "max_abs_delta": 0.005699999999999983
+    },
+    {
+      "row_id": "test:254",
+      "team": "fees_fx",
+      "text": "Do you offer additional currency options?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0809,
+        "payments": 0.2101,
+        "transfers": 0.0971,
+        "top_up": 0.1749,
+        "cash": 0.0985,
+        "fees_fx": 0.1898,
+        "security": 0.1193,
+        "account": 0.0294
+      },
+      "direct_weights": {
+        "cards": 0.08029197080291971,
+        "payments": 0.2101789821017898,
+        "transfers": 0.09799020097990202,
+        "top_up": 0.18088191180881913,
+        "cash": 0.10088991100889912,
+        "fees_fx": 0.1787821217878212,
+        "security": 0.12168783121687832,
+        "account": 0.0292970702929707
+      },
+      "max_abs_delta": 0.011017878212178783
+    },
+    {
+      "row_id": "test:1825",
+      "team": "payments",
+      "text": "My card payment didn't work, can you help?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.029002900290029006,
+        "payments": 0.7666766676667667,
+        "transfers": 0.008100810081008101,
+        "top_up": 0.018501850185018504,
+        "cash": 0.010401040104010401,
+        "fees_fx": 0.017301730173017303,
+        "security": 0.14401440144014402,
+        "account": 0.006000600060006001
+      },
+      "direct_weights": {
+        "cards": 0.0276027602760276,
+        "payments": 0.7722772277227723,
+        "transfers": 0.0081008100810081,
+        "top_up": 0.018801880188018802,
+        "cash": 0.010301030103010301,
+        "fees_fx": 0.017501750175017504,
+        "security": 0.13951395139513953,
+        "account": 0.005900590059005901
+      },
+      "max_abs_delta": 0.005600560056005621
+    },
+    {
+      "row_id": "test:1590",
+      "team": "cash",
+      "text": "i tried to withdraw money from an atm and i was declined on front of my friends. Why did this happen?",
+      "direct_prediction": "cash",
+      "full_batch_prediction": "cash",
+      "full_batch_weights": {
+        "cards": 0.0045,
+        "payments": 0.03,
+        "transfers": 0.008,
+        "top_up": 0.006,
+        "cash": 0.9287,
+        "fees_fx": 0.0039,
+        "security": 0.0145,
+        "account": 0.0044
+      },
+      "direct_weights": {
+        "cards": 0.0045004500450045,
+        "payments": 0.0294029402940294,
+        "transfers": 0.007700770077007701,
+        "top_up": 0.0058005800580058,
+        "cash": 0.9303930393039304,
+        "fees_fx": 0.0038003800380038005,
+        "security": 0.014101410141014101,
+        "account": 0.004300430043004301
+      },
+      "max_abs_delta": 0.0016930393039303882
+    },
+    {
+      "row_id": "test:1371",
+      "team": "cards",
+      "text": "How many card payments can I use on a disposable card?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.03659268146370726,
+        "payments": 0.6791641671665667,
+        "transfers": 0.02419516096780644,
+        "top_up": 0.0600879824035193,
+        "cash": 0.03819236152769446,
+        "fees_fx": 0.07788442311537692,
+        "security": 0.06888622275544891,
+        "account": 0.014997000599880024
+      },
+      "direct_weights": {
+        "cards": 0.035,
+        "payments": 0.69,
+        "transfers": 0.0234,
+        "top_up": 0.058,
+        "cash": 0.0376,
+        "fees_fx": 0.075,
+        "security": 0.066,
+        "account": 0.015
+      },
+      "max_abs_delta": 0.010835832833433257
+    },
+    {
+      "row_id": "test:294",
+      "team": "cards",
+      "text": "Can it be delivered by a specific date?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.094,
+        "payments": 0.2207,
+        "transfers": 0.1076,
+        "top_up": 0.1653,
+        "cash": 0.1329,
+        "fees_fx": 0.1306,
+        "security": 0.104,
+        "account": 0.0449
+      },
+      "direct_weights": {
+        "cards": 0.0951,
+        "payments": 0.2155,
+        "transfers": 0.1075,
+        "top_up": 0.1685,
+        "cash": 0.1375,
+        "fees_fx": 0.1298,
+        "security": 0.102,
+        "account": 0.0441
+      },
+      "max_abs_delta": 0.00520000000000001
+    },
+    {
+      "row_id": "test:1924",
+      "team": "cards",
+      "text": "HOw do I get my card back after the ATM has pulled it in?",
+      "direct_prediction": "cash",
+      "full_batch_prediction": "cash",
+      "full_batch_weights": {
+        "cards": 0.0641935806419358,
+        "payments": 0.14458554144585542,
+        "transfers": 0.037896210378962104,
+        "top_up": 0.0634936506349365,
+        "cash": 0.5266473352664733,
+        "fees_fx": 0.06879312068793121,
+        "security": 0.07279272072792721,
+        "account": 0.021597840215978402
+      },
+      "direct_weights": {
+        "cards": 0.061,
+        "payments": 0.1387,
+        "transfers": 0.0369,
+        "top_up": 0.0626,
+        "cash": 0.5443,
+        "fees_fx": 0.066,
+        "security": 0.0699,
+        "account": 0.0206
+      },
+      "max_abs_delta": 0.01765266473352667
+    },
+    {
+      "row_id": "test:152",
+      "team": "fees_fx",
+      "text": "I paid for something in foreign currency but noticed the exchange rate is incorrect.",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0274,
+        "payments": 0.4498,
+        "transfers": 0.0888,
+        "top_up": 0.0523,
+        "cash": 0.081,
+        "fees_fx": 0.2047,
+        "security": 0.0758,
+        "account": 0.0202
+      },
+      "direct_weights": {
+        "cards": 0.0274,
+        "payments": 0.4527,
+        "transfers": 0.0914,
+        "top_up": 0.0524,
+        "cash": 0.0818,
+        "fees_fx": 0.197,
+        "security": 0.0771,
+        "account": 0.0202
+      },
+      "max_abs_delta": 0.007699999999999985
+    },
+    {
+      "row_id": "test:1657",
+      "team": "security",
+      "text": "my phone was taken! can you place cancel my account so no one uses it",
+      "direct_prediction": "security",
+      "full_batch_prediction": "security",
+      "full_batch_weights": {
+        "cards": 0.049095090490950906,
+        "payments": 0.1608839116088391,
+        "transfers": 0.06869313068693131,
+        "top_up": 0.10368963103689631,
+        "cash": 0.0967903209679032,
+        "fees_fx": 0.046795320467953205,
+        "security": 0.42385761423857615,
+        "account": 0.05019498050194981
+      },
+      "direct_weights": {
+        "cards": 0.0478952104789521,
+        "payments": 0.15948405159484053,
+        "transfers": 0.06779322067793221,
+        "top_up": 0.09809019098090192,
+        "cash": 0.09599040095990401,
+        "fees_fx": 0.0463953604639536,
+        "security": 0.43355664433556645,
+        "account": 0.050794920507949204
+      },
+      "max_abs_delta": 0.009699030096990302
+    },
+    {
+      "row_id": "test:610",
+      "team": "fees_fx",
+      "text": "Do I have to pay any fees in order to receive money?",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.00020002000200020003,
+        "payments": 0.0008000800080008001,
+        "transfers": 0.0003000300030003,
+        "top_up": 0.00040004000400040005,
+        "cash": 0.0003000300030003,
+        "fees_fx": 0.9977997799779978,
+        "security": 0.00010001000100010001,
+        "account": 0.00010001000100010001
+      },
+      "direct_weights": {
+        "cards": 0.0002,
+        "payments": 0.0008,
+        "transfers": 0.0003,
+        "top_up": 0.0004,
+        "cash": 0.0003,
+        "fees_fx": 0.9977,
+        "security": 0.0002,
+        "account": 0.0001
+      },
+      "max_abs_delta": 9.99899989999e-05
+    },
+    {
+      "row_id": "test:1035",
+      "team": "top_up",
+      "text": "Has my top up been reverted?",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.0018,
+        "payments": 0.0104,
+        "transfers": 0.0013,
+        "top_up": 0.9766,
+        "cash": 0.0014,
+        "fees_fx": 0.0025,
+        "security": 0.004,
+        "account": 0.002
+      },
+      "direct_weights": {
+        "cards": 0.002000200020002,
+        "payments": 0.0112011201120112,
+        "transfers": 0.0014001400140014,
+        "top_up": 0.9748974897489748,
+        "cash": 0.0014001400140014,
+        "fees_fx": 0.0026002600260026003,
+        "security": 0.004300430043004301,
+        "account": 0.0022002200220022005
+      },
+      "max_abs_delta": 0.001702510251025191
+    },
+    {
+      "row_id": "test:594",
+      "team": "cards",
+      "text": "How can I fix a problem where contactless isn't working?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0547,
+        "payments": 0.2669,
+        "transfers": 0.0975,
+        "top_up": 0.1374,
+        "cash": 0.1038,
+        "fees_fx": 0.1044,
+        "security": 0.1976,
+        "account": 0.0377
+      },
+      "direct_weights": {
+        "cards": 0.0548,
+        "payments": 0.2676,
+        "transfers": 0.0955,
+        "top_up": 0.1333,
+        "cash": 0.1045,
+        "fees_fx": 0.104,
+        "security": 0.2028,
+        "account": 0.0375
+      },
+      "max_abs_delta": 0.00520000000000001
+    },
+    {
+      "row_id": "test:1670",
+      "team": "security",
+      "text": "I am not able to use the app since I forgot my phone at the hotel I was staying at.",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0625062506250625,
+        "payments": 0.33793379337933793,
+        "transfers": 0.08710871087108711,
+        "top_up": 0.1294129412941294,
+        "cash": 0.12031203120312031,
+        "fees_fx": 0.08830883088308832,
+        "security": 0.14591459145914593,
+        "account": 0.028502850285028504
+      },
+      "direct_weights": {
+        "cards": 0.0623,
+        "payments": 0.3288,
+        "transfers": 0.0882,
+        "top_up": 0.1382,
+        "cash": 0.1214,
+        "fees_fx": 0.0856,
+        "security": 0.146,
+        "account": 0.0295
+      },
+      "max_abs_delta": 0.009133793379337951
+    },
+    {
+      "row_id": "test:1530",
+      "team": "account",
+      "text": "Can I be given a new passcode?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.10418958104189581,
+        "payments": 0.17738226177382263,
+        "transfers": 0.11848815118488151,
+        "top_up": 0.17498250174982502,
+        "cash": 0.1151884811518848,
+        "fees_fx": 0.12298770122987701,
+        "security": 0.11978802119788022,
+        "account": 0.06699330066993302
+      },
+      "direct_weights": {
+        "cards": 0.1048,
+        "payments": 0.1781,
+        "transfers": 0.1202,
+        "top_up": 0.1757,
+        "cash": 0.1137,
+        "fees_fx": 0.1192,
+        "security": 0.1206,
+        "account": 0.0677
+      },
+      "max_abs_delta": 0.0037877012298770107
+    },
+    {
+      "row_id": "test:1016",
+      "team": "top_up",
+      "text": "I think my top-up was cancelled.",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.0027,
+        "payments": 0.0137,
+        "transfers": 0.0018,
+        "top_up": 0.9667,
+        "cash": 0.0025,
+        "fees_fx": 0.005,
+        "security": 0.0048,
+        "account": 0.0028
+      },
+      "direct_weights": {
+        "cards": 0.0027,
+        "payments": 0.0144,
+        "transfers": 0.0019,
+        "top_up": 0.9656,
+        "cash": 0.0025,
+        "fees_fx": 0.0051,
+        "security": 0.005,
+        "account": 0.0028
+      },
+      "max_abs_delta": 0.0010999999999999899
+    },
+    {
+      "row_id": "test:2457",
+      "team": "top_up",
+      "text": "I'm looking for the option to top up by cheque.",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.004000400040004,
+        "payments": 0.010301030103010301,
+        "transfers": 0.0037003700370037006,
+        "top_up": 0.961096109610961,
+        "cash": 0.0049004900490049,
+        "fees_fx": 0.0069006900690069,
+        "security": 0.0069006900690069,
+        "account": 0.0022002200220022005
+      },
+      "direct_weights": {
+        "cards": 0.004300430043004301,
+        "payments": 0.011101110111011102,
+        "transfers": 0.0039003900390039,
+        "top_up": 0.9580958095809581,
+        "cash": 0.0053005300530053,
+        "fees_fx": 0.007400740074007401,
+        "security": 0.007500750075007501,
+        "account": 0.0024002400240024
+      },
+      "max_abs_delta": 0.003000300030002956
+    },
+    {
+      "row_id": "test:2608",
+      "team": "cards",
+      "text": "How do I use a disposable virtual card?",
+      "direct_prediction": "cards",
+      "full_batch_prediction": "cards",
+      "full_batch_weights": {
+        "cards": 0.3454,
+        "payments": 0.1213,
+        "transfers": 0.0887,
+        "top_up": 0.1357,
+        "cash": 0.1047,
+        "fees_fx": 0.1199,
+        "security": 0.0511,
+        "account": 0.0332
+      },
+      "direct_weights": {
+        "cards": 0.3418,
+        "payments": 0.1214,
+        "transfers": 0.0888,
+        "top_up": 0.1367,
+        "cash": 0.103,
+        "fees_fx": 0.1236,
+        "security": 0.0516,
+        "account": 0.0331
+      },
+      "max_abs_delta": 0.003699999999999995
+    },
+    {
+      "row_id": "test:1223",
+      "team": "account",
+      "text": "The app doesn't believe that I am me",
+      "direct_prediction": "account",
+      "full_batch_prediction": "account",
+      "full_batch_weights": {
+        "cards": 0.0603,
+        "payments": 0.2104,
+        "transfers": 0.0907,
+        "top_up": 0.0875,
+        "cash": 0.0719,
+        "fees_fx": 0.0496,
+        "security": 0.1893,
+        "account": 0.2403
+      },
+      "direct_weights": {
+        "cards": 0.0611,
+        "payments": 0.2174,
+        "transfers": 0.0866,
+        "top_up": 0.085,
+        "cash": 0.0708,
+        "fees_fx": 0.0483,
+        "security": 0.1948,
+        "account": 0.236
+      },
+      "max_abs_delta": 0.007000000000000006
+    },
+    {
+      "row_id": "test:2736",
+      "team": "security",
+      "text": "I am seeing in the App a some cash withdrawal that its not mine",
+      "direct_prediction": "cash",
+      "full_batch_prediction": "cash",
+      "full_batch_weights": {
+        "cards": 0.017798220177982202,
+        "payments": 0.0846915308469153,
+        "transfers": 0.0235976402359764,
+        "top_up": 0.0264973502649735,
+        "cash": 0.7383261673832616,
+        "fees_fx": 0.019598040195980403,
+        "security": 0.0652934706529347,
+        "account": 0.0241975802419758
+      },
+      "direct_weights": {
+        "cards": 0.018001800180018,
+        "payments": 0.08260826082608261,
+        "transfers": 0.023602360236023603,
+        "top_up": 0.025702570257025704,
+        "cash": 0.7438743874387439,
+        "fees_fx": 0.0191019101910191,
+        "security": 0.0634063406340634,
+        "account": 0.0237023702370237
+      },
+      "max_abs_delta": 0.005548220055482278
+    },
+    {
+      "row_id": "test:697",
+      "team": "transfers",
+      "text": "Is there a way to revert my transaction from this morning?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.031296870312968704,
+        "payments": 0.43495650434956507,
+        "transfers": 0.09159084091590841,
+        "top_up": 0.11438856114388561,
+        "cash": 0.060993900609939006,
+        "fees_fx": 0.10978902109789021,
+        "security": 0.1310868913108689,
+        "account": 0.025897410258974102
+      },
+      "direct_weights": {
+        "cards": 0.0326032603260326,
+        "payments": 0.43334333433343336,
+        "transfers": 0.0892089208920892,
+        "top_up": 0.11311131113111311,
+        "cash": 0.061706170617061705,
+        "fees_fx": 0.11171117111711171,
+        "security": 0.13271327132713273,
+        "account": 0.025602560256025603
+      },
+      "max_abs_delta": 0.002381920023819206
+    },
+    {
+      "row_id": "test:1084",
+      "team": "security",
+      "text": "An unauthorized payment is in my app",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0122,
+        "payments": 0.8518,
+        "transfers": 0.0088,
+        "top_up": 0.0191,
+        "cash": 0.0175,
+        "fees_fx": 0.0161,
+        "security": 0.0645,
+        "account": 0.01
+      },
+      "direct_weights": {
+        "cards": 0.0127,
+        "payments": 0.8464,
+        "transfers": 0.009,
+        "top_up": 0.0202,
+        "cash": 0.0181,
+        "fees_fx": 0.0159,
+        "security": 0.0671,
+        "account": 0.0106
+      },
+      "max_abs_delta": 0.00539999999999996
+    },
+    {
+      "row_id": "test:2678",
+      "team": "top_up",
+      "text": "why isnt top up working",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.0005000500050005,
+        "payments": 0.0015001500150015003,
+        "transfers": 0.0003000300030003,
+        "top_up": 0.9947994799479948,
+        "cash": 0.0003000300030003,
+        "fees_fx": 0.0009000900090009,
+        "security": 0.001000100010001,
+        "account": 0.0007000700070007
+      },
+      "direct_weights": {
+        "cards": 0.0005,
+        "payments": 0.0014,
+        "transfers": 0.0003,
+        "top_up": 0.9949,
+        "cash": 0.0003,
+        "fees_fx": 0.0009,
+        "security": 0.001,
+        "account": 0.0007
+      },
+      "max_abs_delta": 0.00010052005200522629
+    },
+    {
+      "row_id": "test:2768",
+      "team": "fees_fx",
+      "text": "How much does it cost to exchange currencies?",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.056894310568943104,
+        "payments": 0.2688731126887311,
+        "transfers": 0.1292870712928707,
+        "top_up": 0.1277872212778722,
+        "cash": 0.0730926907309269,
+        "fees_fx": 0.27797220277972207,
+        "security": 0.047595240475952406,
+        "account": 0.0184981501849815
+      },
+      "direct_weights": {
+        "cards": 0.0564,
+        "payments": 0.2691,
+        "transfers": 0.1284,
+        "top_up": 0.1284,
+        "cash": 0.0742,
+        "fees_fx": 0.2782,
+        "security": 0.0471,
+        "account": 0.0182
+      },
+      "max_abs_delta": 0.001107309269073098
+    },
+    {
+      "row_id": "test:238",
+      "team": "cash",
+      "text": "Why is my cash withdrawal from the ATM still not yet showing as confirmed in my account?",
+      "direct_prediction": "cash",
+      "full_batch_prediction": "cash",
+      "full_batch_weights": {
+        "cards": 0.0049,
+        "payments": 0.0325,
+        "transfers": 0.0056,
+        "top_up": 0.0099,
+        "cash": 0.9278,
+        "fees_fx": 0.0043,
+        "security": 0.0115,
+        "account": 0.0035
+      },
+      "direct_weights": {
+        "cards": 0.005200520052005201,
+        "payments": 0.034503450345034506,
+        "transfers": 0.005900590059005901,
+        "top_up": 0.010501050105010502,
+        "cash": 0.9238923892389238,
+        "fees_fx": 0.0046004600460046,
+        "security": 0.011801180118011801,
+        "account": 0.0036003600360036
+      },
+      "max_abs_delta": 0.003907610761076152
+    },
+    {
+      "row_id": "test:3031",
+      "team": "account",
+      "text": "What do you need so I can verify my identity?",
+      "direct_prediction": "account",
+      "full_batch_prediction": "account",
+      "full_batch_weights": {
+        "cards": 0.0378,
+        "payments": 0.0898,
+        "transfers": 0.0478,
+        "top_up": 0.0613,
+        "cash": 0.0454,
+        "fees_fx": 0.0425,
+        "security": 0.0506,
+        "account": 0.6248
+      },
+      "direct_weights": {
+        "cards": 0.038,
+        "payments": 0.093,
+        "transfers": 0.0493,
+        "top_up": 0.0632,
+        "cash": 0.0462,
+        "fees_fx": 0.0435,
+        "security": 0.0517,
+        "account": 0.6151
+      },
+      "max_abs_delta": 0.009700000000000042
+    },
+    {
+      "row_id": "test:2783",
+      "team": "fees_fx",
+      "text": "What is the exchange fee?",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.0007000700070007,
+        "payments": 0.0054005400540054005,
+        "transfers": 0.0014001400140014,
+        "top_up": 0.0018001800180018,
+        "cash": 0.0009000900090009,
+        "fees_fx": 0.9885988598859886,
+        "security": 0.0007000700070007,
+        "account": 0.0005000500050005
+      },
+      "direct_weights": {
+        "cards": 0.0006000600060006,
+        "payments": 0.004000400040004,
+        "transfers": 0.001000100010001,
+        "top_up": 0.0014001400140014,
+        "cash": 0.0007000700070007,
+        "fees_fx": 0.9913991399139913,
+        "security": 0.0005000500050005,
+        "account": 0.00040004000400040005
+      },
+      "max_abs_delta": 0.0028002800280026996
+    },
+    {
+      "row_id": "test:1306",
+      "team": "cards",
+      "text": "Hello. Can you tell me if you use Visa or Mastercard?",
+      "direct_prediction": "account",
+      "full_batch_prediction": "account",
+      "full_batch_weights": {
+        "cards": 0.1226122612261226,
+        "payments": 0.1933193319331933,
+        "transfers": 0.09500950095009501,
+        "top_up": 0.11061106110611062,
+        "cash": 0.09500950095009501,
+        "fees_fx": 0.08240824082408241,
+        "security": 0.10241024102410241,
+        "account": 0.1986198619861986
+      },
+      "direct_weights": {
+        "cards": 0.1216,
+        "payments": 0.1944,
+        "transfers": 0.0946,
+        "top_up": 0.1132,
+        "cash": 0.0962,
+        "fees_fx": 0.0824,
+        "security": 0.1025,
+        "account": 0.1951
+      },
+      "max_abs_delta": 0.003519861986198608
+    },
+    {
+      "row_id": "test:1317",
+      "team": "cards",
+      "text": "Can you let me know if Visa is among the card scheme assignments?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.1021,
+        "payments": 0.2523,
+        "transfers": 0.0872,
+        "top_up": 0.1249,
+        "cash": 0.0983,
+        "fees_fx": 0.1284,
+        "security": 0.1458,
+        "account": 0.061
+      },
+      "direct_weights": {
+        "cards": 0.10258974102589741,
+        "payments": 0.2556744325567443,
+        "transfers": 0.08639136086391361,
+        "top_up": 0.12538746125387462,
+        "cash": 0.0952904709529047,
+        "fees_fx": 0.1275872412758724,
+        "security": 0.14658534146585342,
+        "account": 0.060493950604939506
+      },
+      "max_abs_delta": 0.0033744325567443
+    },
+    {
+      "row_id": "test:2818",
+      "team": "fees_fx",
+      "text": "Will there be any extra fees for European bank card for top up?",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.0017998200179982,
+        "payments": 0.0046995300469953,
+        "transfers": 0.0011998800119988001,
+        "top_up": 0.05529447055294471,
+        "cash": 0.0006999300069993001,
+        "fees_fx": 0.9351064893510649,
+        "security": 0.0005999400059994001,
+        "account": 0.0005999400059994001
+      },
+      "direct_weights": {
+        "cards": 0.002,
+        "payments": 0.0052,
+        "transfers": 0.0013,
+        "top_up": 0.0612,
+        "cash": 0.0007,
+        "fees_fx": 0.9282,
+        "security": 0.0007,
+        "account": 0.0007
+      },
+      "max_abs_delta": 0.0069064893510648595
+    },
+    {
+      "row_id": "test:1185",
+      "team": "account",
+      "text": "Why do you require so many identity details?",
+      "direct_prediction": "account",
+      "full_batch_prediction": "account",
+      "full_batch_weights": {
+        "cards": 0.06220622062206221,
+        "payments": 0.18211821182118212,
+        "transfers": 0.08740874087408741,
+        "top_up": 0.1074107410741074,
+        "cash": 0.0968096809680968,
+        "fees_fx": 0.10571057105710571,
+        "security": 0.09550955095509552,
+        "account": 0.2628262826282628
+      },
+      "direct_weights": {
+        "cards": 0.0623,
+        "payments": 0.1775,
+        "transfers": 0.087,
+        "top_up": 0.1053,
+        "cash": 0.0955,
+        "fees_fx": 0.103,
+        "security": 0.0924,
+        "account": 0.277
+      },
+      "max_abs_delta": 0.014173717371737227
+    },
+    {
+      "row_id": "test:2161",
+      "team": "transfers",
+      "text": "I've transferred money before without issue but now I am encountering an error stating that it isn't possible. Why is that?",
+      "direct_prediction": "transfers",
+      "full_batch_prediction": "transfers",
+      "full_batch_weights": {
+        "cards": 0.019,
+        "payments": 0.0689,
+        "transfers": 0.7301,
+        "top_up": 0.0415,
+        "cash": 0.0241,
+        "fees_fx": 0.0338,
+        "security": 0.0671,
+        "account": 0.0155
+      },
+      "direct_weights": {
+        "cards": 0.02,
+        "payments": 0.0764,
+        "transfers": 0.7091,
+        "top_up": 0.0443,
+        "cash": 0.0258,
+        "fees_fx": 0.0369,
+        "security": 0.0715,
+        "account": 0.016
+      },
+      "max_abs_delta": 0.02100000000000002
+    },
+    {
+      "row_id": "test:919",
+      "team": "fees_fx",
+      "text": "Which cards and currencies do you support?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.1476852314768523,
+        "payments": 0.2632736726327367,
+        "transfers": 0.12168783121687832,
+        "top_up": 0.19168083191680832,
+        "cash": 0.1063893610638936,
+        "fees_fx": 0.06949305069493052,
+        "security": 0.07779222077792221,
+        "account": 0.021997800219978002
+      },
+      "direct_weights": {
+        "cards": 0.1513151315131513,
+        "payments": 0.26402640264026406,
+        "transfers": 0.11921192119211921,
+        "top_up": 0.19071907190719073,
+        "cash": 0.10771077107710772,
+        "fees_fx": 0.06790679067906791,
+        "security": 0.0776077607760776,
+        "account": 0.0215021502150215
+      },
+      "max_abs_delta": 0.003629900036298983
+    },
+    {
+      "row_id": "test:2554",
+      "team": "cards",
+      "text": "My virtual card won't work.",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.1043,
+        "payments": 0.2361,
+        "transfers": 0.0666,
+        "top_up": 0.1074,
+        "cash": 0.125,
+        "fees_fx": 0.1342,
+        "security": 0.1899,
+        "account": 0.0365
+      },
+      "direct_weights": {
+        "cards": 0.10561056105610561,
+        "payments": 0.23612361236123613,
+        "transfers": 0.0659065906590659,
+        "top_up": 0.10681068106810682,
+        "cash": 0.12541254125412543,
+        "fees_fx": 0.1341134113411341,
+        "security": 0.18931893189318932,
+        "account": 0.03670367036703671
+      },
+      "max_abs_delta": 0.001310561056105608
+    },
+    {
+      "row_id": "test:1532",
+      "team": "account",
+      "text": "I don't remember my code to get into the app.",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.06879312068793121,
+        "payments": 0.12148785121487851,
+        "transfers": 0.09909009099090091,
+        "top_up": 0.18258174182581743,
+        "cash": 0.17778222177782224,
+        "fees_fx": 0.07429257074292571,
+        "security": 0.12208779122087791,
+        "account": 0.15388461153884614
+      },
+      "direct_weights": {
+        "cards": 0.0673,
+        "payments": 0.1245,
+        "transfers": 0.0997,
+        "top_up": 0.1801,
+        "cash": 0.1754,
+        "fees_fx": 0.0742,
+        "security": 0.1201,
+        "account": 0.1587
+      },
+      "max_abs_delta": 0.004815388461153869
+    },
+    {
+      "row_id": "test:1257",
+      "team": "cards",
+      "text": "I received my card but not my PIN.",
+      "direct_prediction": "security",
+      "full_batch_prediction": "security",
+      "full_batch_weights": {
+        "cards": 0.11158884111588842,
+        "payments": 0.21087891210878912,
+        "transfers": 0.0908909109089091,
+        "top_up": 0.1314868513148685,
+        "cash": 0.10308969103089691,
+        "fees_fx": 0.06309369063093691,
+        "security": 0.24077592240775922,
+        "account": 0.0481951804819518
+      },
+      "direct_weights": {
+        "cards": 0.1088,
+        "payments": 0.2106,
+        "transfers": 0.0925,
+        "top_up": 0.1306,
+        "cash": 0.1048,
+        "fees_fx": 0.0647,
+        "security": 0.2405,
+        "account": 0.0475
+      },
+      "max_abs_delta": 0.002788841115888424
+    },
+    {
+      "row_id": "test:2915",
+      "team": "fees_fx",
+      "text": "Was charged an ATM fee despite it being a small withdrawal on the 1st day of the month. I thought I was allowed 200 per month?",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.0011,
+        "payments": 0.0083,
+        "transfers": 0.0014,
+        "top_up": 0.0021,
+        "cash": 0.0072,
+        "fees_fx": 0.9785,
+        "security": 0.0008,
+        "account": 0.0006
+      },
+      "direct_weights": {
+        "cards": 0.0008999100089991,
+        "payments": 0.0072992700729927005,
+        "transfers": 0.0011998800119988001,
+        "top_up": 0.0017998200179982,
+        "cash": 0.005699430056994301,
+        "fees_fx": 0.9819018098190181,
+        "security": 0.0006999300069993001,
+        "account": 0.0004999500049995
+      },
+      "max_abs_delta": 0.0034018098190180535
+    },
+    {
+      "row_id": "test:2676",
+      "team": "top_up",
+      "text": "How do I know if my top up was unsuccessful?",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.0011998800119988001,
+        "payments": 0.004999500049995001,
+        "transfers": 0.0006999300069993001,
+        "top_up": 0.9865013498650136,
+        "cash": 0.0010998900109989002,
+        "fees_fx": 0.0013998600139986002,
+        "security": 0.0029997000299970002,
+        "account": 0.0010998900109989002
+      },
+      "direct_weights": {
+        "cards": 0.0012,
+        "payments": 0.005,
+        "transfers": 0.0007,
+        "top_up": 0.9865,
+        "cash": 0.0011,
+        "fees_fx": 0.0014,
+        "security": 0.003,
+        "account": 0.0011
+      },
+      "max_abs_delta": 1.3498650135446155e-06
+    },
+    {
+      "row_id": "test:1255",
+      "team": "cards",
+      "text": "And what about the Card's PIN?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0957,
+        "payments": 0.2519,
+        "transfers": 0.0662,
+        "top_up": 0.1288,
+        "cash": 0.1008,
+        "fees_fx": 0.0909,
+        "security": 0.1857,
+        "account": 0.08
+      },
+      "direct_weights": {
+        "cards": 0.0969,
+        "payments": 0.244,
+        "transfers": 0.0659,
+        "top_up": 0.1315,
+        "cash": 0.1021,
+        "fees_fx": 0.0908,
+        "security": 0.1886,
+        "account": 0.0802
+      },
+      "max_abs_delta": 0.007900000000000018
+    },
+    {
+      "row_id": "test:2066",
+      "team": "transfers",
+      "text": "Approximately how long will an urgent transfer from China take?",
+      "direct_prediction": "transfers",
+      "full_batch_prediction": "transfers",
+      "full_batch_weights": {
+        "cards": 0.0328,
+        "payments": 0.1163,
+        "transfers": 0.5549,
+        "top_up": 0.0847,
+        "cash": 0.0623,
+        "fees_fx": 0.0748,
+        "security": 0.0568,
+        "account": 0.0174
+      },
+      "direct_weights": {
+        "cards": 0.03330333033303331,
+        "payments": 0.11981198119811981,
+        "transfers": 0.5484548454845485,
+        "top_up": 0.0853085308530853,
+        "cash": 0.06320632063206322,
+        "fees_fx": 0.07510751075107511,
+        "security": 0.05720572057205721,
+        "account": 0.017601760176017604
+      },
+      "max_abs_delta": 0.006445154515451468
+    },
+    {
+      "row_id": "test:668",
+      "team": "top_up",
+      "text": "Why is my top-up still outstanding?",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.0007,
+        "payments": 0.0054,
+        "transfers": 0.0008,
+        "top_up": 0.9867,
+        "cash": 0.0011,
+        "fees_fx": 0.0023,
+        "security": 0.0016,
+        "account": 0.0014
+      },
+      "direct_weights": {
+        "cards": 0.0007,
+        "payments": 0.0055,
+        "transfers": 0.0008,
+        "top_up": 0.9866,
+        "cash": 0.0011,
+        "fees_fx": 0.0024,
+        "security": 0.0015,
+        "account": 0.0014
+      },
+      "max_abs_delta": 0.00010000000000000005
+    },
+    {
+      "row_id": "test:817",
+      "team": "fees_fx",
+      "text": "I have been charged a fee for paying with card",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.0003,
+        "payments": 0.0037,
+        "transfers": 0.0002,
+        "top_up": 0.0003,
+        "cash": 0.0003,
+        "fees_fx": 0.9949,
+        "security": 0.0002,
+        "account": 0.0001
+      },
+      "direct_weights": {
+        "cards": 0.00029997000299970003,
+        "payments": 0.0035996400359964,
+        "transfers": 0.00019998000199980003,
+        "top_up": 0.00029997000299970003,
+        "cash": 0.00029997000299970003,
+        "fees_fx": 0.995000499950005,
+        "security": 0.00019998000199980003,
+        "account": 9.999000099990002e-05
+      },
+      "max_abs_delta": 0.00010049995000493972
+    },
+    {
+      "row_id": "test:1241",
+      "team": "cards",
+      "text": "Is the PIN delivered separately?",
+      "direct_prediction": "security",
+      "full_batch_prediction": "security",
+      "full_batch_weights": {
+        "cards": 0.0737,
+        "payments": 0.1852,
+        "transfers": 0.1041,
+        "top_up": 0.1323,
+        "cash": 0.1373,
+        "fees_fx": 0.1191,
+        "security": 0.1987,
+        "account": 0.0496
+      },
+      "direct_weights": {
+        "cards": 0.074,
+        "payments": 0.1832,
+        "transfers": 0.1029,
+        "top_up": 0.1325,
+        "cash": 0.1398,
+        "fees_fx": 0.1202,
+        "security": 0.1981,
+        "account": 0.0493
+      },
+      "max_abs_delta": 0.0025000000000000022
+    },
+    {
+      "row_id": "test:320",
+      "team": "top_up",
+      "text": "When traveling, can I auto top-up my card at certain times?",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.0106010601060106,
+        "payments": 0.014901490149014901,
+        "transfers": 0.005200520052005201,
+        "top_up": 0.9392939293929393,
+        "cash": 0.006700670067006701,
+        "fees_fx": 0.007900790079007902,
+        "security": 0.0112011201120112,
+        "account": 0.0042004200420042
+      },
+      "direct_weights": {
+        "cards": 0.011401140114011402,
+        "payments": 0.0159015901590159,
+        "transfers": 0.0055005500550055,
+        "top_up": 0.9350935093509352,
+        "cash": 0.0070007000700070005,
+        "fees_fx": 0.008600860086008601,
+        "security": 0.012001200120012002,
+        "account": 0.0045004500450045
+      },
+      "max_abs_delta": 0.00420042004200416
+    },
+    {
+      "row_id": "test:1037",
+      "team": "top_up",
+      "text": "My top-up has been cancelled.",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.0025,
+        "payments": 0.0107,
+        "transfers": 0.0015,
+        "top_up": 0.9704,
+        "cash": 0.002,
+        "fees_fx": 0.0054,
+        "security": 0.0049,
+        "account": 0.0026
+      },
+      "direct_weights": {
+        "cards": 0.0021995600879824036,
+        "payments": 0.008598280343931213,
+        "transfers": 0.0013997200559888023,
+        "top_up": 0.9747050589882024,
+        "cash": 0.001799640071985603,
+        "fees_fx": 0.0046990601879624075,
+        "security": 0.004299140171965607,
+        "account": 0.002299540091981604
+      },
+      "max_abs_delta": 0.004305058988202326
+    },
+    {
+      "row_id": "test:2820",
+      "team": "fees_fx",
+      "text": "I want to use a European bank card for a top up. Must I pay?",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.017998200179982,
+        "payments": 0.0534946505349465,
+        "transfers": 0.012898710128987101,
+        "top_up": 0.8478152184781522,
+        "cash": 0.014298570142985701,
+        "fees_fx": 0.0207979202079792,
+        "security": 0.025397460253974602,
+        "account": 0.0072992700729927005
+      },
+      "direct_weights": {
+        "cards": 0.0195,
+        "payments": 0.0573,
+        "transfers": 0.0136,
+        "top_up": 0.8385,
+        "cash": 0.015,
+        "fees_fx": 0.0217,
+        "security": 0.0268,
+        "account": 0.0076
+      },
+      "max_abs_delta": 0.009315218478152199
+    },
+    {
+      "row_id": "test:2644",
+      "team": "top_up",
+      "text": "Why did the app deny my top up?",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.0011,
+        "payments": 0.0019,
+        "transfers": 0.0005,
+        "top_up": 0.9931,
+        "cash": 0.0005,
+        "fees_fx": 0.0009,
+        "security": 0.0013,
+        "account": 0.0007
+      },
+      "direct_weights": {
+        "cards": 0.001000100010001,
+        "payments": 0.0018001800180018,
+        "transfers": 0.00040004000400040005,
+        "top_up": 0.9936993699369937,
+        "cash": 0.00040004000400040005,
+        "fees_fx": 0.0009000900090009,
+        "security": 0.0012001200120012,
+        "account": 0.0006000600060006
+      },
+      "max_abs_delta": 0.0005993699369937211
+    },
+    {
+      "row_id": "test:2476",
+      "team": "top_up",
+      "text": "I want to top-up using cash",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.0036996300369963007,
+        "payments": 0.009899010098990102,
+        "transfers": 0.0022997700229977,
+        "top_up": 0.9579042095790421,
+        "cash": 0.010198980101989802,
+        "fees_fx": 0.0071992800719928,
+        "security": 0.006699330066993301,
+        "account": 0.0020997900209979003
+      },
+      "direct_weights": {
+        "cards": 0.003999600039996,
+        "payments": 0.0106989301069893,
+        "transfers": 0.0024997500249975004,
+        "top_up": 0.955004499550045,
+        "cash": 0.010998900109989001,
+        "fees_fx": 0.0073992600739926015,
+        "security": 0.0071992800719928,
+        "account": 0.0021997800219978004
+      },
+      "max_abs_delta": 0.002899710028997138
+    },
+    {
+      "row_id": "test:2026",
+      "team": "account",
+      "text": "I need to validate the source of my funds.",
+      "direct_prediction": "account",
+      "full_batch_prediction": "account",
+      "full_batch_weights": {
+        "cards": 0.0271,
+        "payments": 0.1476,
+        "transfers": 0.0602,
+        "top_up": 0.0669,
+        "cash": 0.0566,
+        "fees_fx": 0.0249,
+        "security": 0.0681,
+        "account": 0.5486
+      },
+      "direct_weights": {
+        "cards": 0.026702670267026704,
+        "payments": 0.14511451145114512,
+        "transfers": 0.06060606060606061,
+        "top_up": 0.06820682068206821,
+        "cash": 0.055905590559055904,
+        "fees_fx": 0.025302530253025302,
+        "security": 0.06830683068306831,
+        "account": 0.5498549854985498
+      },
+      "max_abs_delta": 0.002485488548854886
+    },
+    {
+      "row_id": "test:1167",
+      "team": "account",
+      "text": "Can I use my account without verifying my identity?",
+      "direct_prediction": "account",
+      "full_batch_prediction": "account",
+      "full_batch_weights": {
+        "cards": 0.0297,
+        "payments": 0.0607,
+        "transfers": 0.0504,
+        "top_up": 0.059,
+        "cash": 0.0381,
+        "fees_fx": 0.0293,
+        "security": 0.0499,
+        "account": 0.6829
+      },
+      "direct_weights": {
+        "cards": 0.0292970702929707,
+        "payments": 0.05889411058894111,
+        "transfers": 0.04899510048995101,
+        "top_up": 0.0580941905809419,
+        "cash": 0.0375962403759624,
+        "fees_fx": 0.028597140285971403,
+        "security": 0.04899510048995101,
+        "account": 0.6895310468953104
+      },
+      "max_abs_delta": 0.006631046895310466
+    },
+    {
+      "row_id": "test:2080",
+      "team": "payments",
+      "text": "I think my card payment has been stopped",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0038003800380038005,
+        "payments": 0.968096809680968,
+        "transfers": 0.0015001500150015003,
+        "top_up": 0.0024002400240024,
+        "cash": 0.002000200020002,
+        "fees_fx": 0.0027002700270027003,
+        "security": 0.018301830183018303,
+        "account": 0.0012001200120012
+      },
+      "direct_weights": {
+        "cards": 0.0035,
+        "payments": 0.9693,
+        "transfers": 0.0014,
+        "top_up": 0.0024,
+        "cash": 0.0019,
+        "fees_fx": 0.0026,
+        "security": 0.0177,
+        "account": 0.0012
+      },
+      "max_abs_delta": 0.0012031903190320437
+    },
+    {
+      "row_id": "test:3007",
+      "team": "account",
+      "text": "Is there a specific type you need for identity verification?",
+      "direct_prediction": "account",
+      "full_batch_prediction": "account",
+      "full_batch_weights": {
+        "cards": 0.0656,
+        "payments": 0.1815,
+        "transfers": 0.0939,
+        "top_up": 0.1114,
+        "cash": 0.0828,
+        "fees_fx": 0.0966,
+        "security": 0.1221,
+        "account": 0.2461
+      },
+      "direct_weights": {
+        "cards": 0.0656934306569343,
+        "payments": 0.1837816218378162,
+        "transfers": 0.09559044095590441,
+        "top_up": 0.11118888111188881,
+        "cash": 0.0832916708329167,
+        "fees_fx": 0.10218978102189781,
+        "security": 0.1250874912508749,
+        "account": 0.2331766823317668
+      },
+      "max_abs_delta": 0.012923317668233208
+    },
+    {
+      "row_id": "test:2260",
+      "team": "transfers",
+      "text": "Can I directly transfer my salary onto here?",
+      "direct_prediction": "transfers",
+      "full_batch_prediction": "transfers",
+      "full_batch_weights": {
+        "cards": 0.041195880411958805,
+        "payments": 0.13658634136586342,
+        "transfers": 0.2296770322967703,
+        "top_up": 0.21747825217478253,
+        "cash": 0.0942905709429057,
+        "fees_fx": 0.09559044095590441,
+        "security": 0.1482851714828517,
+        "account": 0.036896310368963105
+      },
+      "direct_weights": {
+        "cards": 0.0422957704229577,
+        "payments": 0.14188581141885812,
+        "transfers": 0.22327767223277672,
+        "top_up": 0.21307869213078692,
+        "cash": 0.0956904309569043,
+        "fees_fx": 0.0957904209579042,
+        "security": 0.15108489151084892,
+        "account": 0.036896310368963105
+      },
+      "max_abs_delta": 0.006399360063993581
+    },
+    {
+      "row_id": "test:2589",
+      "team": "fees_fx",
+      "text": "Can you explain your exchange rate policy? I don't think I received the correct amount of cash in my ATM transaction.",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0372,
+        "payments": 0.3068,
+        "transfers": 0.0463,
+        "top_up": 0.0876,
+        "cash": 0.3044,
+        "fees_fx": 0.1654,
+        "security": 0.0309,
+        "account": 0.0214
+      },
+      "direct_weights": {
+        "cards": 0.03670367036703671,
+        "payments": 0.3026302630263026,
+        "transfers": 0.045004500450045004,
+        "top_up": 0.08770877087708771,
+        "cash": 0.3015301530153015,
+        "fees_fx": 0.17431743174317432,
+        "security": 0.030903090309030903,
+        "account": 0.0212021202120212
+      },
+      "max_abs_delta": 0.008917431743174331
+    },
+    {
+      "row_id": "test:1864",
+      "team": "transfers",
+      "text": "When will the transfer be completed?",
+      "direct_prediction": "transfers",
+      "full_batch_prediction": "transfers",
+      "full_batch_weights": {
+        "cards": 0.0309,
+        "payments": 0.2307,
+        "transfers": 0.2625,
+        "top_up": 0.192,
+        "cash": 0.0754,
+        "fees_fx": 0.0963,
+        "security": 0.0874,
+        "account": 0.0248
+      },
+      "direct_weights": {
+        "cards": 0.0312,
+        "payments": 0.2305,
+        "transfers": 0.2674,
+        "top_up": 0.1896,
+        "cash": 0.0751,
+        "fees_fx": 0.0958,
+        "security": 0.0859,
+        "account": 0.0245
+      },
+      "max_abs_delta": 0.0049000000000000155
+    },
+    {
+      "row_id": "test:2774",
+      "team": "fees_fx",
+      "text": "Is there a fee for exchanging foreign currencies?",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.001,
+        "payments": 0.0053,
+        "transfers": 0.0018,
+        "top_up": 0.0017,
+        "cash": 0.0014,
+        "fees_fx": 0.9878,
+        "security": 0.0006,
+        "account": 0.0004
+      },
+      "direct_weights": {
+        "cards": 0.0009000900090009,
+        "payments": 0.0048004800480048,
+        "transfers": 0.0017001700170017002,
+        "top_up": 0.0016001600160016002,
+        "cash": 0.0013001300130013002,
+        "fees_fx": 0.9887988798879888,
+        "security": 0.0006000600060006,
+        "account": 0.0003000300030003
+      },
+      "max_abs_delta": 0.0009988798879887462
+    },
+    {
+      "row_id": "test:402",
+      "team": "fees_fx",
+      "text": "Can I change from one currency to another?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0877,
+        "payments": 0.2283,
+        "transfers": 0.1693,
+        "top_up": 0.1617,
+        "cash": 0.0873,
+        "fees_fx": 0.1725,
+        "security": 0.0639,
+        "account": 0.0293
+      },
+      "direct_weights": {
+        "cards": 0.0872,
+        "payments": 0.2275,
+        "transfers": 0.1689,
+        "top_up": 0.165,
+        "cash": 0.0872,
+        "fees_fx": 0.1715,
+        "security": 0.0633,
+        "account": 0.0294
+      },
+      "max_abs_delta": 0.0032999999999999974
+    },
+    {
+      "row_id": "test:2913",
+      "team": "fees_fx",
+      "text": "Why did you charge me for a cash withdrawal?",
+      "direct_prediction": "cash",
+      "full_batch_prediction": "cash",
+      "full_batch_weights": {
+        "cards": 0.0241024102410241,
+        "payments": 0.1562156215621562,
+        "transfers": 0.0312031203120312,
+        "top_up": 0.037703770377037704,
+        "cash": 0.39573957395739573,
+        "fees_fx": 0.285028502850285,
+        "security": 0.0571057105710571,
+        "account": 0.0129012901290129
+      },
+      "direct_weights": {
+        "cards": 0.024702470247024703,
+        "payments": 0.16001600160016002,
+        "transfers": 0.032303230323032305,
+        "top_up": 0.040004000400040006,
+        "cash": 0.36633663366336633,
+        "fees_fx": 0.3061306130613061,
+        "security": 0.0573057305730573,
+        "account": 0.013201320132013201
+      },
+      "max_abs_delta": 0.0294029402940294
+    },
+    {
+      "row_id": "test:1988",
+      "team": "payments",
+      "text": "Can you explain why there is a payment showing twice?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.00019998000199980003,
+        "payments": 0.9971002899710029,
+        "transfers": 0.00019998000199980003,
+        "top_up": 0.00039996000399960006,
+        "cash": 0.00039996000399960006,
+        "fees_fx": 0.0005999400059994001,
+        "security": 0.0007999200079992001,
+        "account": 0.00029997000299970003
+      },
+      "direct_weights": {
+        "cards": 0.0001,
+        "payments": 0.9974,
+        "transfers": 0.0002,
+        "top_up": 0.0004,
+        "cash": 0.0004,
+        "fees_fx": 0.0005,
+        "security": 0.0007,
+        "account": 0.0003
+      },
+      "max_abs_delta": 0.0002997100289970911
+    },
+    {
+      "row_id": "test:1474",
+      "team": "cash",
+      "text": "At which ATMs can I use this card?",
+      "direct_prediction": "cash",
+      "full_batch_prediction": "cash",
+      "full_batch_weights": {
+        "cards": 0.030603060306030605,
+        "payments": 0.08850885088508852,
+        "transfers": 0.020102010201020103,
+        "top_up": 0.023802380238023807,
+        "cash": 0.7767776777677768,
+        "fees_fx": 0.017801780178017805,
+        "security": 0.022202220222022204,
+        "account": 0.020202020202020204
+      },
+      "direct_weights": {
+        "cards": 0.0297,
+        "payments": 0.0882,
+        "transfers": 0.0192,
+        "top_up": 0.0224,
+        "cash": 0.7829,
+        "fees_fx": 0.017,
+        "security": 0.0216,
+        "account": 0.019
+      },
+      "max_abs_delta": 0.0061223222322231985
+    },
+    {
+      "row_id": "test:992",
+      "team": "cards",
+      "text": "Does every place of business accept this card?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.1297870212978702,
+        "payments": 0.28677132286771323,
+        "transfers": 0.07279272072792721,
+        "top_up": 0.12638736126387362,
+        "cash": 0.08689131086891312,
+        "fees_fx": 0.07829217078292171,
+        "security": 0.13598640135986403,
+        "account": 0.0830916908309169
+      },
+      "direct_weights": {
+        "cards": 0.13348665133486654,
+        "payments": 0.2808719128087191,
+        "transfers": 0.07289271072892711,
+        "top_up": 0.1274872512748725,
+        "cash": 0.08589141085891411,
+        "fees_fx": 0.0763923607639236,
+        "security": 0.13958604139586042,
+        "account": 0.08339166083391661
+      },
+      "max_abs_delta": 0.005899410058994137
+    },
+    {
+      "row_id": "test:2021",
+      "team": "account",
+      "text": "How can I lookup where funds came from?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0319031903190319,
+        "payments": 0.30523052305230525,
+        "transfers": 0.06600660066006601,
+        "top_up": 0.1074107410741074,
+        "cash": 0.11011101110111012,
+        "fees_fx": 0.06270627062706272,
+        "security": 0.16761676167616762,
+        "account": 0.149014901490149
+      },
+      "direct_weights": {
+        "cards": 0.0326,
+        "payments": 0.303,
+        "transfers": 0.0661,
+        "top_up": 0.1056,
+        "cash": 0.1099,
+        "fees_fx": 0.063,
+        "security": 0.1644,
+        "account": 0.1554
+      },
+      "max_abs_delta": 0.0063850985098510005
+    },
+    {
+      "row_id": "test:870",
+      "team": "transfers",
+      "text": "I sent some money and the receiver can't access it.",
+      "direct_prediction": "transfers",
+      "full_batch_prediction": "transfers",
+      "full_batch_weights": {
+        "cards": 0.0284,
+        "payments": 0.2092,
+        "transfers": 0.3104,
+        "top_up": 0.0918,
+        "cash": 0.1057,
+        "fees_fx": 0.0773,
+        "security": 0.117,
+        "account": 0.0602
+      },
+      "direct_weights": {
+        "cards": 0.0286,
+        "payments": 0.2118,
+        "transfers": 0.3094,
+        "top_up": 0.0908,
+        "cash": 0.1053,
+        "fees_fx": 0.0785,
+        "security": 0.1142,
+        "account": 0.0614
+      },
+      "max_abs_delta": 0.002800000000000011
+    },
+    {
+      "row_id": "test:630",
+      "team": "fees_fx",
+      "text": "Please tell me about SWIFT transfers at this bank.",
+      "direct_prediction": "transfers",
+      "full_batch_prediction": "transfers",
+      "full_batch_weights": {
+        "cards": 0.0458,
+        "payments": 0.1515,
+        "transfers": 0.3414,
+        "top_up": 0.1256,
+        "cash": 0.0571,
+        "fees_fx": 0.148,
+        "security": 0.0982,
+        "account": 0.0324
+      },
+      "direct_weights": {
+        "cards": 0.046,
+        "payments": 0.151,
+        "transfers": 0.3455,
+        "top_up": 0.1213,
+        "cash": 0.0569,
+        "fees_fx": 0.1492,
+        "security": 0.0976,
+        "account": 0.0325
+      },
+      "max_abs_delta": 0.004299999999999984
+    },
+    {
+      "row_id": "test:1244",
+      "team": "cards",
+      "text": "I cannot seem to find my PIN. Where is it?",
+      "direct_prediction": "security",
+      "full_batch_prediction": "security",
+      "full_batch_weights": {
+        "cards": 0.0764,
+        "payments": 0.1851,
+        "transfers": 0.0966,
+        "top_up": 0.1361,
+        "cash": 0.1486,
+        "fees_fx": 0.0726,
+        "security": 0.2308,
+        "account": 0.0538
+      },
+      "direct_weights": {
+        "cards": 0.0778,
+        "payments": 0.1849,
+        "transfers": 0.0975,
+        "top_up": 0.1342,
+        "cash": 0.1527,
+        "fees_fx": 0.0722,
+        "security": 0.2281,
+        "account": 0.0526
+      },
+      "max_abs_delta": 0.0040999999999999925
+    },
+    {
+      "row_id": "test:1778",
+      "team": "payments",
+      "text": "Where can I see the refund in my account",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0321032103210321,
+        "payments": 0.29552955295529554,
+        "transfers": 0.05340534053405341,
+        "top_up": 0.0619061906190619,
+        "cash": 0.1669166916691669,
+        "fees_fx": 0.1629162916291629,
+        "security": 0.16761676167616762,
+        "account": 0.059605960596059604
+      },
+      "direct_weights": {
+        "cards": 0.0318968103189681,
+        "payments": 0.29717028297170284,
+        "transfers": 0.05479452054794521,
+        "top_up": 0.061993800619938005,
+        "cash": 0.17228277172282772,
+        "fees_fx": 0.15738426157384264,
+        "security": 0.16478352164783522,
+        "account": 0.05969403059694031
+      },
+      "max_abs_delta": 0.0055320300553202695
+    },
+    {
+      "row_id": "test:1412",
+      "team": "security",
+      "text": "How can I stop fraud on my account right now?",
+      "direct_prediction": "security",
+      "full_batch_prediction": "security",
+      "full_batch_weights": {
+        "cards": 0.045604560456045606,
+        "payments": 0.1336133613361336,
+        "transfers": 0.07670767076707671,
+        "top_up": 0.1258125812581258,
+        "cash": 0.0629062906290629,
+        "fees_fx": 0.06030603060306031,
+        "security": 0.44854485448544856,
+        "account": 0.0465046504650465
+      },
+      "direct_weights": {
+        "cards": 0.0462046204620462,
+        "payments": 0.1341134113411341,
+        "transfers": 0.0775077507750775,
+        "top_up": 0.125012501250125,
+        "cash": 0.0633063306330633,
+        "fees_fx": 0.061506150615061504,
+        "security": 0.44574457445744575,
+        "account": 0.0466046604660466
+      },
+      "max_abs_delta": 0.0028002800280028106
+    },
+    {
+      "row_id": "test:2927",
+      "team": "cards",
+      "text": "how long and how much does it cost for new card",
+      "direct_prediction": "cards",
+      "full_batch_prediction": "cards",
+      "full_batch_weights": {
+        "cards": 0.5511448855114489,
+        "payments": 0.08549145085491451,
+        "transfers": 0.036896310368963105,
+        "top_up": 0.060493950604939506,
+        "cash": 0.03829617038296171,
+        "fees_fx": 0.17618238176182383,
+        "security": 0.036896310368963105,
+        "account": 0.014598540145985401
+      },
+      "direct_weights": {
+        "cards": 0.5646,
+        "payments": 0.0826,
+        "transfers": 0.0355,
+        "top_up": 0.0578,
+        "cash": 0.0368,
+        "fees_fx": 0.1736,
+        "security": 0.0351,
+        "account": 0.014
+      },
+      "max_abs_delta": 0.013455114488551079
+    },
+    {
+      "row_id": "test:2470",
+      "team": "top_up",
+      "text": "How do I deposit cash into my account?",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.0236,
+        "payments": 0.0579,
+        "transfers": 0.126,
+        "top_up": 0.5803,
+        "cash": 0.1467,
+        "fees_fx": 0.0213,
+        "security": 0.024,
+        "account": 0.0202
+      },
+      "direct_weights": {
+        "cards": 0.0253,
+        "payments": 0.0607,
+        "transfers": 0.1324,
+        "top_up": 0.5597,
+        "cash": 0.1518,
+        "fees_fx": 0.0225,
+        "security": 0.026,
+        "account": 0.0216
+      },
+      "max_abs_delta": 0.020600000000000063
+    },
+    {
+      "row_id": "test:575",
+      "team": "cards",
+      "text": "What can I do if contactless doesn't work?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0711,
+        "payments": 0.2656,
+        "transfers": 0.0816,
+        "top_up": 0.1116,
+        "cash": 0.0979,
+        "fees_fx": 0.0907,
+        "security": 0.2554,
+        "account": 0.0261
+      },
+      "direct_weights": {
+        "cards": 0.0697,
+        "payments": 0.2634,
+        "transfers": 0.0816,
+        "top_up": 0.1165,
+        "cash": 0.098,
+        "fees_fx": 0.0887,
+        "security": 0.2563,
+        "account": 0.0258
+      },
+      "max_abs_delta": 0.004900000000000002
+    },
+    {
+      "row_id": "test:35",
+      "team": "cards",
+      "text": "I ordered a card and I still haven't received it. It's been two weeks. What can I do?",
+      "direct_prediction": "cards",
+      "full_batch_prediction": "cards",
+      "full_batch_weights": {
+        "cards": 0.448,
+        "payments": 0.1601,
+        "transfers": 0.0487,
+        "top_up": 0.0873,
+        "cash": 0.074,
+        "fees_fx": 0.1022,
+        "security": 0.0618,
+        "account": 0.0179
+      },
+      "direct_weights": {
+        "cards": 0.45874587458745875,
+        "payments": 0.1604160416041604,
+        "transfers": 0.04780478047804781,
+        "top_up": 0.0837083708370837,
+        "cash": 0.0701070107010701,
+        "fees_fx": 0.1025102510251025,
+        "security": 0.05920592059205921,
+        "account": 0.017501750175017504
+      },
+      "max_abs_delta": 0.010745874587458737
+    },
+    {
+      "row_id": "test:234",
+      "team": "cash",
+      "text": "How long with my cash withdrawal stay pending for?",
+      "direct_prediction": "cash",
+      "full_batch_prediction": "cash",
+      "full_batch_weights": {
+        "cards": 0.011098890110988902,
+        "payments": 0.06999300069993002,
+        "transfers": 0.0132986701329867,
+        "top_up": 0.0120987901209879,
+        "cash": 0.8596140385961404,
+        "fees_fx": 0.0080991900809919,
+        "security": 0.0211978802119788,
+        "account": 0.0045995400459954
+      },
+      "direct_weights": {
+        "cards": 0.0105,
+        "payments": 0.0654,
+        "transfers": 0.0127,
+        "top_up": 0.0118,
+        "cash": 0.8679,
+        "fees_fx": 0.0075,
+        "security": 0.0199,
+        "account": 0.0043
+      },
+      "max_abs_delta": 0.00828596140385962
+    },
+    {
+      "row_id": "test:1758",
+      "team": "transfers",
+      "text": "I was attempting to purchase a golf club off eBay yesterday, but my credit card was declined. I tried multiple times, and again this morning. Can you check into my card please?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.034,
+        "payments": 0.5322,
+        "transfers": 0.0533,
+        "top_up": 0.0847,
+        "cash": 0.0819,
+        "fees_fx": 0.0764,
+        "security": 0.1035,
+        "account": 0.034
+      },
+      "direct_weights": {
+        "cards": 0.0337,
+        "payments": 0.5358,
+        "transfers": 0.0535,
+        "top_up": 0.0851,
+        "cash": 0.0809,
+        "fees_fx": 0.075,
+        "security": 0.102,
+        "account": 0.034
+      },
+      "max_abs_delta": 0.0036000000000000476
+    },
+    {
+      "row_id": "test:2773",
+      "team": "fees_fx",
+      "text": "Does it cost extra to exchange currencies?",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.0439,
+        "payments": 0.1741,
+        "transfers": 0.0776,
+        "top_up": 0.0859,
+        "cash": 0.0533,
+        "fees_fx": 0.522,
+        "security": 0.0264,
+        "account": 0.0168
+      },
+      "direct_weights": {
+        "cards": 0.0421,
+        "payments": 0.1683,
+        "transfers": 0.074,
+        "top_up": 0.0855,
+        "cash": 0.0516,
+        "fees_fx": 0.538,
+        "security": 0.0246,
+        "account": 0.0159
+      },
+      "max_abs_delta": 0.016000000000000014
+    },
+    {
+      "row_id": "test:267",
+      "team": "fees_fx",
+      "text": "Which country's currency do you support?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.09149085091490851,
+        "payments": 0.28997100289971,
+        "transfers": 0.15438456154384564,
+        "top_up": 0.1675832416758324,
+        "cash": 0.15318468153184683,
+        "fees_fx": 0.04029597040295971,
+        "security": 0.07889211078892111,
+        "account": 0.0241975802419758
+      },
+      "direct_weights": {
+        "cards": 0.09,
+        "payments": 0.2913,
+        "transfers": 0.1537,
+        "top_up": 0.1698,
+        "cash": 0.1501,
+        "fees_fx": 0.0425,
+        "security": 0.0788,
+        "account": 0.0238
+      },
+      "max_abs_delta": 0.0030846815318468224
+    },
+    {
+      "row_id": "test:2521",
+      "team": "cards",
+      "text": "My disposable virtual card doesn't seem to work",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "security",
+      "full_batch_weights": {
+        "cards": 0.16268373162683733,
+        "payments": 0.21107889211078892,
+        "transfers": 0.056694330566943306,
+        "top_up": 0.10428957104289571,
+        "cash": 0.1262873712628737,
+        "fees_fx": 0.10188981101889812,
+        "security": 0.2141785821417858,
+        "account": 0.022897710228977103
+      },
+      "direct_weights": {
+        "cards": 0.15973194638927787,
+        "payments": 0.21664332866573313,
+        "transfers": 0.05821164232846569,
+        "top_up": 0.10422084416883376,
+        "cash": 0.1272254450890178,
+        "fees_fx": 0.10142028405681136,
+        "security": 0.20954190838167633,
+        "account": 0.023004600920184037
+      },
+      "max_abs_delta": 0.005564436554944208
+    },
+    {
+      "row_id": "test:868",
+      "team": "transfers",
+      "text": "Is there a reason why my transaction is taking so long?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.029902990299029902,
+        "payments": 0.5051505150515051,
+        "transfers": 0.08500850085008502,
+        "top_up": 0.0857085708570857,
+        "cash": 0.05580558055805581,
+        "fees_fx": 0.12231223122312232,
+        "security": 0.093009300930093,
+        "account": 0.0231023102310231
+      },
+      "direct_weights": {
+        "cards": 0.029202920292029203,
+        "payments": 0.5097509750975098,
+        "transfers": 0.08240824082408241,
+        "top_up": 0.0853085308530853,
+        "cash": 0.05670567056705671,
+        "fees_fx": 0.12181218121812182,
+        "security": 0.0919091909190919,
+        "account": 0.022902290229022904
+      },
+      "max_abs_delta": 0.004600460046004673
+    },
+    {
+      "row_id": "test:794",
+      "team": "cash",
+      "text": "The right amount of cash was not sent to me.",
+      "direct_prediction": "cash",
+      "full_batch_prediction": "cash",
+      "full_batch_weights": {
+        "cards": 0.0106,
+        "payments": 0.058,
+        "transfers": 0.0272,
+        "top_up": 0.0693,
+        "cash": 0.8042,
+        "fees_fx": 0.0102,
+        "security": 0.0125,
+        "account": 0.008
+      },
+      "direct_weights": {
+        "cards": 0.0108,
+        "payments": 0.061,
+        "transfers": 0.0273,
+        "top_up": 0.071,
+        "cash": 0.7987,
+        "fees_fx": 0.0103,
+        "security": 0.0126,
+        "account": 0.0083
+      },
+      "max_abs_delta": 0.00550000000000006
+    },
+    {
+      "row_id": "test:696",
+      "team": "transfers",
+      "text": "I want to reverse my transaction from earlier",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0462046204620462,
+        "payments": 0.31193119311931194,
+        "transfers": 0.10281028102810282,
+        "top_up": 0.1104110411041104,
+        "cash": 0.07920792079207921,
+        "fees_fx": 0.1538153815381538,
+        "security": 0.1572157215721572,
+        "account": 0.0384038403840384
+      },
+      "direct_weights": {
+        "cards": 0.045295470452954706,
+        "payments": 0.3146685331466853,
+        "transfers": 0.10078992100789921,
+        "top_up": 0.10968903109689032,
+        "cash": 0.08099190080991901,
+        "fees_fx": 0.15608439156084392,
+        "security": 0.15368463153684633,
+        "account": 0.03879612038796121
+      },
+      "max_abs_delta": 0.00353109003531088
+    },
+    {
+      "row_id": "test:1493",
+      "team": "security",
+      "text": "There was a transaction from two weeks ago from a business that I don't know. I'm fairly certain it wasn't me who made it, but is it an option to trace it to confirm?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.033,
+        "payments": 0.2666,
+        "transfers": 0.0871,
+        "top_up": 0.0997,
+        "cash": 0.0891,
+        "fees_fx": 0.0925,
+        "security": 0.2344,
+        "account": 0.0976
+      },
+      "direct_weights": {
+        "cards": 0.0331033103310331,
+        "payments": 0.2617261726172617,
+        "transfers": 0.08710871087108711,
+        "top_up": 0.0992099209920992,
+        "cash": 0.08890889088908892,
+        "fees_fx": 0.09080908090809081,
+        "security": 0.23372337233723373,
+        "account": 0.1054105410541054
+      },
+      "max_abs_delta": 0.007810541054105391
+    },
+    {
+      "row_id": "test:2772",
+      "team": "fees_fx",
+      "text": "Do I have to pay for exchanging currencies?",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.0019,
+        "payments": 0.0067,
+        "transfers": 0.0029,
+        "top_up": 0.0028,
+        "cash": 0.0016,
+        "fees_fx": 0.9817,
+        "security": 0.0016,
+        "account": 0.0008
+      },
+      "direct_weights": {
+        "cards": 0.0022002200220022005,
+        "payments": 0.007500750075007501,
+        "transfers": 0.0034003400340034003,
+        "top_up": 0.0033003300330033004,
+        "cash": 0.0019001900190019003,
+        "fees_fx": 0.978997899789979,
+        "security": 0.0018001800180018,
+        "account": 0.0009000900090009
+      },
+      "max_abs_delta": 0.002702100210021041
+    },
+    {
+      "row_id": "test:2437",
+      "team": "cards",
+      "text": "My daughter needs a card. Can I give her one of mine that's linked to my account?",
+      "direct_prediction": "cards",
+      "full_batch_prediction": "cards",
+      "full_batch_weights": {
+        "cards": 0.3161,
+        "payments": 0.1605,
+        "transfers": 0.0838,
+        "top_up": 0.1174,
+        "cash": 0.1085,
+        "fees_fx": 0.068,
+        "security": 0.1046,
+        "account": 0.0411
+      },
+      "direct_weights": {
+        "cards": 0.3206,
+        "payments": 0.156,
+        "transfers": 0.0838,
+        "top_up": 0.1164,
+        "cash": 0.1071,
+        "fees_fx": 0.0668,
+        "security": 0.1067,
+        "account": 0.0426
+      },
+      "max_abs_delta": 0.004500000000000004
+    },
+    {
+      "row_id": "test:2068",
+      "team": "transfers",
+      "text": "How long does it take to process transfers from Europe?",
+      "direct_prediction": "transfers",
+      "full_batch_prediction": "transfers",
+      "full_batch_weights": {
+        "cards": 0.019198080191980802,
+        "payments": 0.06879312068793121,
+        "transfers": 0.738026197380262,
+        "top_up": 0.044795520447955206,
+        "cash": 0.039196080391960805,
+        "fees_fx": 0.0446955304469553,
+        "security": 0.03449655034496551,
+        "account": 0.010798920107989201
+      },
+      "direct_weights": {
+        "cards": 0.0204,
+        "payments": 0.0712,
+        "transfers": 0.7233,
+        "top_up": 0.0486,
+        "cash": 0.0411,
+        "fees_fx": 0.0485,
+        "security": 0.036,
+        "account": 0.0109
+      },
+      "max_abs_delta": 0.01472619738026193
+    },
+    {
+      "row_id": "test:2276",
+      "team": "transfers",
+      "text": "Is my salary eligible for this?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0451954804519548,
+        "payments": 0.30646935306469353,
+        "transfers": 0.1048895110488951,
+        "top_up": 0.1728827117288271,
+        "cash": 0.1441855814418558,
+        "fees_fx": 0.0710928907109289,
+        "security": 0.11278872112788721,
+        "account": 0.042495750424957505
+      },
+      "direct_weights": {
+        "cards": 0.04440444044404441,
+        "payments": 0.3121312131213121,
+        "transfers": 0.10681068106810682,
+        "top_up": 0.172017201720172,
+        "cash": 0.14421442144214422,
+        "fees_fx": 0.06990699069906992,
+        "security": 0.10841084108410841,
+        "account": 0.0421042104210421
+      },
+      "max_abs_delta": 0.005661860056618562
+    },
+    {
+      "row_id": "test:321",
+      "team": "top_up",
+      "text": "Is there a limit when using auto top-up?",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.0139,
+        "payments": 0.038,
+        "transfers": 0.0102,
+        "top_up": 0.8704,
+        "cash": 0.0161,
+        "fees_fx": 0.0223,
+        "security": 0.0198,
+        "account": 0.0093
+      },
+      "direct_weights": {
+        "cards": 0.013,
+        "payments": 0.0368,
+        "transfers": 0.0096,
+        "top_up": 0.8773,
+        "cash": 0.015,
+        "fees_fx": 0.0207,
+        "security": 0.0189,
+        "account": 0.0087
+      },
+      "max_abs_delta": 0.006900000000000017
+    },
+    {
+      "row_id": "test:465",
+      "team": "security",
+      "text": "My bags were stolen. I need a new card but need to cancel the stolen one.",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.17211721172117211,
+        "payments": 0.24562456245624564,
+        "transfers": 0.0669066906690669,
+        "top_up": 0.09100910091009101,
+        "cash": 0.11161116111611162,
+        "fees_fx": 0.0813081308130813,
+        "security": 0.21092109210921092,
+        "account": 0.0205020502050205
+      },
+      "direct_weights": {
+        "cards": 0.17586482703459308,
+        "payments": 0.24415116976604678,
+        "transfers": 0.06768646270745851,
+        "top_up": 0.08958208358328335,
+        "cash": 0.11027794441111777,
+        "fees_fx": 0.08098380323935213,
+        "security": 0.20965806838632273,
+        "account": 0.021795640871825634
+      },
+      "max_abs_delta": 0.0037476153134209655
+    },
+    {
+      "row_id": "test:1934",
+      "team": "cards",
+      "text": "My ATM got stuck and I'm not sure what to do.",
+      "direct_prediction": "cash",
+      "full_batch_prediction": "cash",
+      "full_batch_weights": {
+        "cards": 0.0395,
+        "payments": 0.1742,
+        "transfers": 0.0354,
+        "top_up": 0.0519,
+        "cash": 0.5667,
+        "fees_fx": 0.0505,
+        "security": 0.0597,
+        "account": 0.0221
+      },
+      "direct_weights": {
+        "cards": 0.0404,
+        "payments": 0.1774,
+        "transfers": 0.0359,
+        "top_up": 0.0537,
+        "cash": 0.5572,
+        "fees_fx": 0.0504,
+        "security": 0.062,
+        "account": 0.023
+      },
+      "max_abs_delta": 0.009499999999999953
+    },
+    {
+      "row_id": "test:2950",
+      "team": "cards",
+      "text": "The expiration date of my card is approaching .",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.1267873212678732,
+        "payments": 0.35566443355664434,
+        "transfers": 0.06899310068993102,
+        "top_up": 0.11868813118688132,
+        "cash": 0.1376862313768623,
+        "fees_fx": 0.073992600739926,
+        "security": 0.0796920307969203,
+        "account": 0.03849615038496151
+      },
+      "direct_weights": {
+        "cards": 0.1219,
+        "payments": 0.3573,
+        "transfers": 0.0693,
+        "top_up": 0.1198,
+        "cash": 0.1354,
+        "fees_fx": 0.0782,
+        "security": 0.0794,
+        "account": 0.0387
+      },
+      "max_abs_delta": 0.00488732126787321
+    },
+    {
+      "row_id": "test:134",
+      "team": "fees_fx",
+      "text": "I bought an item and noticed the exchange rate was not correct.",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.029,
+        "payments": 0.3958,
+        "transfers": 0.111,
+        "top_up": 0.0897,
+        "cash": 0.0836,
+        "fees_fx": 0.2121,
+        "security": 0.0513,
+        "account": 0.0275
+      },
+      "direct_weights": {
+        "cards": 0.0287971202879712,
+        "payments": 0.39756024397560247,
+        "transfers": 0.10848915108489152,
+        "top_up": 0.09049095090490951,
+        "cash": 0.0836916308369163,
+        "fees_fx": 0.21257874212578742,
+        "security": 0.05089491050894911,
+        "account": 0.027497250274972504
+      },
+      "max_abs_delta": 0.002510848915108485
+    },
+    {
+      "row_id": "test:2512",
+      "team": "cards",
+      "text": "How can I get a real-life card of my own?",
+      "direct_prediction": "cards",
+      "full_batch_prediction": "cards",
+      "full_batch_weights": {
+        "cards": 0.6577657765776577,
+        "payments": 0.062106210621062106,
+        "transfers": 0.038303830383038306,
+        "top_up": 0.046704670467046704,
+        "cash": 0.04250425042504251,
+        "fees_fx": 0.0406040604060406,
+        "security": 0.0591059105910591,
+        "account": 0.052905290529052906
+      },
+      "direct_weights": {
+        "cards": 0.654965496549655,
+        "payments": 0.06220622062206221,
+        "transfers": 0.03860386038603861,
+        "top_up": 0.047104710471047105,
+        "cash": 0.0427042704270427,
+        "fees_fx": 0.0404040404040404,
+        "security": 0.06090609060906091,
+        "account": 0.05310531053105311
+      },
+      "max_abs_delta": 0.0028002800280026996
+    },
+    {
+      "row_id": "test:2312",
+      "team": "transfers",
+      "text": "I've now been trying to do a really standard transfer 5 times already. What's going on, is your system broken or something?!",
+      "direct_prediction": "transfers",
+      "full_batch_prediction": "transfers",
+      "full_batch_weights": {
+        "cards": 0.005,
+        "payments": 0.0162,
+        "transfers": 0.9105,
+        "top_up": 0.0197,
+        "cash": 0.01,
+        "fees_fx": 0.0139,
+        "security": 0.0181,
+        "account": 0.0066
+      },
+      "direct_weights": {
+        "cards": 0.004999500049995001,
+        "payments": 0.0161983801619838,
+        "transfers": 0.9104089591040896,
+        "top_up": 0.019698030196980302,
+        "cash": 0.009999000099990002,
+        "fees_fx": 0.013898610138986101,
+        "security": 0.018198180181981802,
+        "account": 0.0065993400659934
+      },
+      "max_abs_delta": 9.818018198180095e-05
+    },
+    {
+      "row_id": "test:2552",
+      "team": "cards",
+      "text": "Payments from my disposable virtual card don't work",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.022397760223977603,
+        "payments": 0.8342165783421658,
+        "transfers": 0.0112988701129887,
+        "top_up": 0.016998300169983004,
+        "cash": 0.0155984401559844,
+        "fees_fx": 0.03499650034996501,
+        "security": 0.05929407059294071,
+        "account": 0.0051994800519948
+      },
+      "direct_weights": {
+        "cards": 0.021095780843831236,
+        "payments": 0.8448310337932413,
+        "transfers": 0.010197960407918417,
+        "top_up": 0.015396920615876825,
+        "cash": 0.014297140571885624,
+        "fees_fx": 0.03459308138372325,
+        "security": 0.05478904219156169,
+        "account": 0.004799040191961607
+      },
+      "max_abs_delta": 0.010614455451075533
+    },
+    {
+      "row_id": "test:1730",
+      "team": "transfers",
+      "text": "The card got declined twice when I tried to use it to buy something online yesterday.",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.11901190119011901,
+        "payments": 0.49404940494049404,
+        "transfers": 0.03130313031303131,
+        "top_up": 0.0786078607860786,
+        "cash": 0.0638063806380638,
+        "fees_fx": 0.054105410541054104,
+        "security": 0.13851385138513853,
+        "account": 0.020602060206020602
+      },
+      "direct_weights": {
+        "cards": 0.11551155115511552,
+        "payments": 0.49294929492949296,
+        "transfers": 0.0315031503150315,
+        "top_up": 0.07920792079207921,
+        "cash": 0.06440644064406441,
+        "fees_fx": 0.0549054905490549,
+        "security": 0.1407140714071407,
+        "account": 0.020802080208020803
+      },
+      "max_abs_delta": 0.0035003500350034855
+    },
+    {
+      "row_id": "test:198",
+      "team": "fees_fx",
+      "text": "I'm quite confused as to what is going on. There is some odd extra pound charge on my statement in the app that's just listed as pending and doesn't go away since a couple days.",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.0013001300130013002,
+        "payments": 0.023602360236023603,
+        "transfers": 0.0022002200220022005,
+        "top_up": 0.0031003100310031,
+        "cash": 0.0032003200320032004,
+        "fees_fx": 0.9643964396439645,
+        "security": 0.0012001200120012,
+        "account": 0.001000100010001
+      },
+      "direct_weights": {
+        "cards": 0.0012001200120012,
+        "payments": 0.022102210221022104,
+        "transfers": 0.002000200020002,
+        "top_up": 0.0028002800280028,
+        "cash": 0.0030003000300030005,
+        "fees_fx": 0.9667966796679668,
+        "security": 0.0011001100110011003,
+        "account": 0.001000100010001
+      },
+      "max_abs_delta": 0.002400240024002298
+    },
+    {
+      "row_id": "test:2638",
+      "team": "cards",
+      "text": "What are disposable cards?",
+      "direct_prediction": "cards",
+      "full_batch_prediction": "cards",
+      "full_batch_weights": {
+        "cards": 0.2267,
+        "payments": 0.1801,
+        "transfers": 0.0512,
+        "top_up": 0.1269,
+        "cash": 0.0874,
+        "fees_fx": 0.1227,
+        "security": 0.1665,
+        "account": 0.0385
+      },
+      "direct_weights": {
+        "cards": 0.225,
+        "payments": 0.1844,
+        "transfers": 0.0508,
+        "top_up": 0.1275,
+        "cash": 0.0877,
+        "fees_fx": 0.1215,
+        "security": 0.1646,
+        "account": 0.0385
+      },
+      "max_abs_delta": 0.004299999999999998
+    },
+    {
+      "row_id": "test:688",
+      "team": "transfers",
+      "text": "If I make a transaction can I cancel it?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.07889211078892111,
+        "payments": 0.22287771222877711,
+        "transfers": 0.08849115088491151,
+        "top_up": 0.09759024097590242,
+        "cash": 0.08679132086791322,
+        "fees_fx": 0.17908209179082094,
+        "security": 0.20617938206179381,
+        "account": 0.0400959904009599
+      },
+      "direct_weights": {
+        "cards": 0.07839216078392161,
+        "payments": 0.2263773622637736,
+        "transfers": 0.0837916208379162,
+        "top_up": 0.0967903209679032,
+        "cash": 0.08869113088691132,
+        "fees_fx": 0.1797820217978202,
+        "security": 0.204979502049795,
+        "account": 0.041195880411958805
+      },
+      "max_abs_delta": 0.004699530046995304
+    },
+    {
+      "row_id": "test:2123",
+      "team": "cards",
+      "text": "If I am overseas, how do I change my pin?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.1043104310431043,
+        "payments": 0.22712271227122713,
+        "transfers": 0.1132113211321132,
+        "top_up": 0.16491649164916491,
+        "cash": 0.10941094109410941,
+        "fees_fx": 0.08670867086708671,
+        "security": 0.1098109810981098,
+        "account": 0.08450845084508452
+      },
+      "direct_weights": {
+        "cards": 0.10461046104610461,
+        "payments": 0.22902290229022904,
+        "transfers": 0.1137113711371137,
+        "top_up": 0.1614161416141614,
+        "cash": 0.10861086108610861,
+        "fees_fx": 0.08640864086408641,
+        "security": 0.11341134113411341,
+        "account": 0.08280828082808281
+      },
+      "max_abs_delta": 0.0036003600360036137
+    },
+    {
+      "row_id": "test:1391",
+      "team": "cards",
+      "text": "How many virtual cards do I get?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.1411141114111411,
+        "payments": 0.16661666166616662,
+        "transfers": 0.1026102610261026,
+        "top_up": 0.1616161616161616,
+        "cash": 0.1209120912091209,
+        "fees_fx": 0.1275127512751275,
+        "security": 0.13851385138513853,
+        "account": 0.0411041104110411
+      },
+      "direct_weights": {
+        "cards": 0.140985901409859,
+        "payments": 0.16378362163783622,
+        "transfers": 0.10368963103689631,
+        "top_up": 0.16248375162483752,
+        "cash": 0.12238776122387761,
+        "fees_fx": 0.1280871912808719,
+        "security": 0.13778622137786223,
+        "account": 0.04079592040795921
+      },
+      "max_abs_delta": 0.0028330400283304025
+    },
+    {
+      "row_id": "test:1250",
+      "team": "cards",
+      "text": "Where in the app can I find my PIN?",
+      "direct_prediction": "cash",
+      "full_batch_prediction": "cash",
+      "full_batch_weights": {
+        "cards": 0.07428514297140573,
+        "payments": 0.1968606278744251,
+        "transfers": 0.10167966406718656,
+        "top_up": 0.10277944411117777,
+        "cash": 0.22885422915416917,
+        "fees_fx": 0.06558688262347531,
+        "security": 0.17686462707458508,
+        "account": 0.053089382123575286
+      },
+      "direct_weights": {
+        "cards": 0.0750924907509249,
+        "payments": 0.19748025197480254,
+        "transfers": 0.09999000099990002,
+        "top_up": 0.10208979102089791,
+        "cash": 0.22907709229077092,
+        "fees_fx": 0.0653934606539346,
+        "security": 0.17768223177682232,
+        "account": 0.0531946805319468
+      },
+      "max_abs_delta": 0.0016896630672865454
+    },
+    {
+      "row_id": "test:1675",
+      "team": "security",
+      "text": "I lost my phone!",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0511,
+        "payments": 0.2987,
+        "transfers": 0.1058,
+        "top_up": 0.1709,
+        "cash": 0.1162,
+        "fees_fx": 0.0579,
+        "security": 0.1812,
+        "account": 0.0182
+      },
+      "direct_weights": {
+        "cards": 0.051,
+        "payments": 0.2969,
+        "transfers": 0.1067,
+        "top_up": 0.1766,
+        "cash": 0.1156,
+        "fees_fx": 0.056,
+        "security": 0.1787,
+        "account": 0.0185
+      },
+      "max_abs_delta": 0.005700000000000011
+    },
+    {
+      "row_id": "test:2208",
+      "team": "fees_fx",
+      "text": "I am being charged a transfer fee aren't they free?",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.0003000300030003,
+        "payments": 0.002000200020002,
+        "transfers": 0.0014001400140014,
+        "top_up": 0.0007000700070007,
+        "cash": 0.0005000500050005,
+        "fees_fx": 0.9946994699469948,
+        "security": 0.00020002000200020003,
+        "account": 0.00020002000200020003
+      },
+      "direct_weights": {
+        "cards": 0.0004,
+        "payments": 0.0022,
+        "transfers": 0.0015,
+        "top_up": 0.0008,
+        "cash": 0.0005,
+        "fees_fx": 0.9942,
+        "security": 0.0002,
+        "account": 0.0002
+      },
+      "max_abs_delta": 0.0004994699469947905
+    },
+    {
+      "row_id": "test:1389",
+      "team": "cards",
+      "text": "Are there any hindrances to using a disposable virtual card?",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.08919108089191082,
+        "payments": 0.16748325167483252,
+        "transfers": 0.08709129087091291,
+        "top_up": 0.1444855514448555,
+        "cash": 0.16248375162483752,
+        "fees_fx": 0.24007599240075994,
+        "security": 0.08189181081891811,
+        "account": 0.027297270272972705
+      },
+      "direct_weights": {
+        "cards": 0.0894,
+        "payments": 0.1665,
+        "transfers": 0.0876,
+        "top_up": 0.1455,
+        "cash": 0.1604,
+        "fees_fx": 0.241,
+        "security": 0.0827,
+        "account": 0.0269
+      },
+      "max_abs_delta": 0.0020837516248375376
+    },
+    {
+      "row_id": "test:1794",
+      "team": "payments",
+      "text": "Why doesn't a return show up im my account from a purchase I made?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0511,
+        "payments": 0.3056,
+        "transfers": 0.0476,
+        "top_up": 0.0862,
+        "cash": 0.127,
+        "fees_fx": 0.1508,
+        "security": 0.1798,
+        "account": 0.0519
+      },
+      "direct_weights": {
+        "cards": 0.0503,
+        "payments": 0.3035,
+        "transfers": 0.0476,
+        "top_up": 0.0882,
+        "cash": 0.1289,
+        "fees_fx": 0.1501,
+        "security": 0.1779,
+        "account": 0.0535
+      },
+      "max_abs_delta": 0.0020999999999999908
+    },
+    {
+      "row_id": "test:951",
+      "team": "cards",
+      "text": "Can I order a virtual card?",
+      "direct_prediction": "cards",
+      "full_batch_prediction": "cards",
+      "full_batch_weights": {
+        "cards": 0.3182,
+        "payments": 0.0895,
+        "transfers": 0.1029,
+        "top_up": 0.1355,
+        "cash": 0.0817,
+        "fees_fx": 0.144,
+        "security": 0.1055,
+        "account": 0.0227
+      },
+      "direct_weights": {
+        "cards": 0.3101,
+        "payments": 0.0897,
+        "transfers": 0.1042,
+        "top_up": 0.1379,
+        "cash": 0.0826,
+        "fees_fx": 0.1437,
+        "security": 0.1084,
+        "account": 0.0234
+      },
+      "max_abs_delta": 0.008099999999999996
+    },
+    {
+      "row_id": "test:3066",
+      "team": "account",
+      "text": "I need a card, but I'm in the US at the moment.",
+      "direct_prediction": "cards",
+      "full_batch_prediction": "cards",
+      "full_batch_weights": {
+        "cards": 0.7277272272772722,
+        "payments": 0.0720927907209279,
+        "transfers": 0.025897410258974102,
+        "top_up": 0.0357964203579642,
+        "cash": 0.03369663033696631,
+        "fees_fx": 0.04939506049395061,
+        "security": 0.038396160383961604,
+        "account": 0.016998300169983004
+      },
+      "direct_weights": {
+        "cards": 0.7239,
+        "payments": 0.0738,
+        "transfers": 0.0268,
+        "top_up": 0.0358,
+        "cash": 0.0341,
+        "fees_fx": 0.0496,
+        "security": 0.0388,
+        "account": 0.0172
+      },
+      "max_abs_delta": 0.0038272272772722493
+    },
+    {
+      "row_id": "test:799",
+      "team": "cash",
+      "text": "Will declined funds I tried to withdraw be returned to me?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0418,
+        "payments": 0.3873,
+        "transfers": 0.0757,
+        "top_up": 0.1055,
+        "cash": 0.1653,
+        "fees_fx": 0.0647,
+        "security": 0.1242,
+        "account": 0.0355
+      },
+      "direct_weights": {
+        "cards": 0.041495850414958506,
+        "payments": 0.39066093390660933,
+        "transfers": 0.07629237076292371,
+        "top_up": 0.10258974102589741,
+        "cash": 0.16478352164783522,
+        "fees_fx": 0.0647935206479352,
+        "security": 0.12358764123587641,
+        "account": 0.0357964203579642
+      },
+      "max_abs_delta": 0.0033609339066093535
+    },
+    {
+      "row_id": "test:292",
+      "team": "cards",
+      "text": "Can I have my card delivered on a specific day?",
+      "direct_prediction": "cards",
+      "full_batch_prediction": "cards",
+      "full_batch_weights": {
+        "cards": 0.24152415241524153,
+        "payments": 0.21992199219921993,
+        "transfers": 0.073007300730073,
+        "top_up": 0.11611161116111611,
+        "cash": 0.11211121112111211,
+        "fees_fx": 0.0987098709870987,
+        "security": 0.10841084108410841,
+        "account": 0.030203020302030203
+      },
+      "direct_weights": {
+        "cards": 0.23882388238823885,
+        "payments": 0.22092209220922093,
+        "transfers": 0.07330733073307331,
+        "top_up": 0.11911191119111911,
+        "cash": 0.1114111411141114,
+        "fees_fx": 0.09830983098309831,
+        "security": 0.1074107410741074,
+        "account": 0.030703070307030705
+      },
+      "max_abs_delta": 0.0030003000300029975
+    },
+    {
+      "row_id": "test:1890",
+      "team": "account",
+      "text": "I am highly unsatisfied with this company and want to delete my account!",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.041195880411958805,
+        "payments": 0.2238776122387761,
+        "transfers": 0.10128987101289871,
+        "top_up": 0.10678932106789321,
+        "cash": 0.11778822117788222,
+        "fees_fx": 0.12218778122187782,
+        "security": 0.141985801419858,
+        "account": 0.14488551144885511
+      },
+      "direct_weights": {
+        "cards": 0.0418,
+        "payments": 0.2262,
+        "transfers": 0.1006,
+        "top_up": 0.1046,
+        "cash": 0.1187,
+        "fees_fx": 0.1242,
+        "security": 0.1413,
+        "account": 0.1426
+      },
+      "max_abs_delta": 0.0023223877612238986
+    },
+    {
+      "row_id": "test:2495",
+      "team": "cards",
+      "text": "Where can you deliver cards?",
+      "direct_prediction": "cards",
+      "full_batch_prediction": "cards",
+      "full_batch_weights": {
+        "cards": 0.4205579442055794,
+        "payments": 0.0736926307369263,
+        "transfers": 0.07139286071392861,
+        "top_up": 0.1315868413158684,
+        "cash": 0.1250874912508749,
+        "fees_fx": 0.0446955304469553,
+        "security": 0.09949005099490052,
+        "account": 0.03349665033496651
+      },
+      "direct_weights": {
+        "cards": 0.4134413441344134,
+        "payments": 0.0747074707470747,
+        "transfers": 0.07160716071607161,
+        "top_up": 0.1329132913291329,
+        "cash": 0.1263126312631263,
+        "fees_fx": 0.045104510451045104,
+        "security": 0.10131013101310131,
+        "account": 0.0346034603460346
+      },
+      "max_abs_delta": 0.0071166000711659905
+    },
+    {
+      "row_id": "test:2351",
+      "team": "transfers",
+      "text": "How does a transfer work?",
+      "direct_prediction": "transfers",
+      "full_batch_prediction": "transfers",
+      "full_batch_weights": {
+        "cards": 0.0471952804719528,
+        "payments": 0.11478852114788521,
+        "transfers": 0.43555644435556445,
+        "top_up": 0.1381861813818618,
+        "cash": 0.06009399060093991,
+        "fees_fx": 0.0862913708629137,
+        "security": 0.08979102089791022,
+        "account": 0.028097190280971903
+      },
+      "direct_weights": {
+        "cards": 0.0478,
+        "payments": 0.1162,
+        "transfers": 0.4343,
+        "top_up": 0.134,
+        "cash": 0.0606,
+        "fees_fx": 0.0898,
+        "security": 0.0895,
+        "account": 0.0278
+      },
+      "max_abs_delta": 0.004186181381861803
+    },
+    {
+      "row_id": "test:2196",
+      "team": "transfers",
+      "text": "why isnt my account allowing transfers",
+      "direct_prediction": "transfers",
+      "full_batch_prediction": "transfers",
+      "full_batch_weights": {
+        "cards": 0.0195,
+        "payments": 0.1055,
+        "transfers": 0.6257,
+        "top_up": 0.053,
+        "cash": 0.0464,
+        "fees_fx": 0.0419,
+        "security": 0.0637,
+        "account": 0.0443
+      },
+      "direct_weights": {
+        "cards": 0.019,
+        "payments": 0.1032,
+        "transfers": 0.6286,
+        "top_up": 0.0532,
+        "cash": 0.0459,
+        "fees_fx": 0.0413,
+        "security": 0.0648,
+        "account": 0.044
+      },
+      "max_abs_delta": 0.0029000000000000137
+    },
+    {
+      "row_id": "test:36",
+      "team": "cards",
+      "text": "I'm starting to think my card is lost because it still hasn't arrived, can you help?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.09358128374325135,
+        "payments": 0.5017996400719856,
+        "transfers": 0.056788642271545696,
+        "top_up": 0.06558688262347531,
+        "cash": 0.11157768446310738,
+        "fees_fx": 0.04059188162367526,
+        "security": 0.1205758848230354,
+        "account": 0.009498100379924015
+      },
+      "direct_weights": {
+        "cards": 0.0908,
+        "payments": 0.5023,
+        "transfers": 0.0564,
+        "top_up": 0.0651,
+        "cash": 0.1103,
+        "fees_fx": 0.0406,
+        "security": 0.1247,
+        "account": 0.0098
+      },
+      "max_abs_delta": 0.004124115176964607
+    },
+    {
+      "row_id": "test:2780",
+      "team": "fees_fx",
+      "text": "If I need to exchange currency is there an extra fee?",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.0007,
+        "payments": 0.0044,
+        "transfers": 0.0012,
+        "top_up": 0.001,
+        "cash": 0.0009,
+        "fees_fx": 0.9912,
+        "security": 0.0003,
+        "account": 0.0003
+      },
+      "direct_weights": {
+        "cards": 0.0008998200359928015,
+        "payments": 0.005598880223955209,
+        "transfers": 0.0014997000599880025,
+        "top_up": 0.0013997200559888023,
+        "cash": 0.0011997600479904018,
+        "fees_fx": 0.9886022795440912,
+        "security": 0.0003999200159968007,
+        "account": 0.0003999200159968007
+      },
+      "max_abs_delta": 0.0025977204559087808
+    },
+    {
+      "row_id": "test:964",
+      "team": "cards",
+      "text": "Where can the card be used?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.09360936093609361,
+        "payments": 0.2958295829582958,
+        "transfers": 0.06320632063206322,
+        "top_up": 0.1069106910691069,
+        "cash": 0.1604160416041604,
+        "fees_fx": 0.0642064206420642,
+        "security": 0.17611761176117613,
+        "account": 0.039703970397039705
+      },
+      "direct_weights": {
+        "cards": 0.093,
+        "payments": 0.2943,
+        "transfers": 0.0624,
+        "top_up": 0.1086,
+        "cash": 0.1628,
+        "fees_fx": 0.0617,
+        "security": 0.1788,
+        "account": 0.0384
+      },
+      "max_abs_delta": 0.0026823882388238574
+    },
+    {
+      "row_id": "test:1247",
+      "team": "cards",
+      "text": "is my card PIN saved in the app",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0966903309669033,
+        "payments": 0.21547845215478453,
+        "transfers": 0.08699130086991301,
+        "top_up": 0.12398760123987601,
+        "cash": 0.13798620137986203,
+        "fees_fx": 0.0807919208079192,
+        "security": 0.19848015198480154,
+        "account": 0.05959404059594041
+      },
+      "direct_weights": {
+        "cards": 0.09661932386477295,
+        "payments": 0.21394278855771154,
+        "transfers": 0.08641728345669134,
+        "top_up": 0.1227245449089818,
+        "cash": 0.14062812562512503,
+        "fees_fx": 0.08041608321664333,
+        "security": 0.19863972794558912,
+        "account": 0.060612122424484896
+      },
+      "max_abs_delta": 0.0026419242452629943
+    },
+    {
+      "row_id": "test:2211",
+      "team": "fees_fx",
+      "text": "Why am I being charged a fee for transferring money?",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.0002,
+        "payments": 0.0013,
+        "transfers": 0.0007,
+        "top_up": 0.0004,
+        "cash": 0.0004,
+        "fees_fx": 0.9966,
+        "security": 0.0002,
+        "account": 0.0002
+      },
+      "direct_weights": {
+        "cards": 0.00020002000200020003,
+        "payments": 0.0012001200120012,
+        "transfers": 0.0007000700070007,
+        "top_up": 0.00040004000400040005,
+        "cash": 0.00040004000400040005,
+        "fees_fx": 0.9966996699669968,
+        "security": 0.00020002000200020003,
+        "account": 0.00020002000200020003
+      },
+      "max_abs_delta": 9.987998799879994e-05
+    },
+    {
+      "row_id": "test:2720",
+      "team": "security",
+      "text": "Think someone has took money out with my card. What shall I do?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.07881576315263052,
+        "payments": 0.369873974794959,
+        "transfers": 0.09371874374874975,
+        "top_up": 0.08371674334866973,
+        "cash": 0.07771554310862173,
+        "fees_fx": 0.059411882376475295,
+        "security": 0.21654330866173235,
+        "account": 0.02020404080816163
+      },
+      "direct_weights": {
+        "cards": 0.0766,
+        "payments": 0.3627,
+        "transfers": 0.0958,
+        "top_up": 0.0852,
+        "cash": 0.0774,
+        "fees_fx": 0.0611,
+        "security": 0.2209,
+        "account": 0.0203
+      },
+      "max_abs_delta": 0.007173974794958959
+    },
+    {
+      "row_id": "test:2852",
+      "team": "cards",
+      "text": "WHAT CAN I DO AFTER THE CARD MISSING",
+      "direct_prediction": "security",
+      "full_batch_prediction": "security",
+      "full_batch_weights": {
+        "cards": 0.2143,
+        "payments": 0.1749,
+        "transfers": 0.0617,
+        "top_up": 0.1257,
+        "cash": 0.066,
+        "fees_fx": 0.0851,
+        "security": 0.2418,
+        "account": 0.0305
+      },
+      "direct_weights": {
+        "cards": 0.21617838216178384,
+        "payments": 0.17228277172282772,
+        "transfers": 0.06159384061593841,
+        "top_up": 0.12318768123187682,
+        "cash": 0.0658934106589341,
+        "fees_fx": 0.0835916408359164,
+        "security": 0.24687531246875313,
+        "account": 0.030396960303969604
+      },
+      "max_abs_delta": 0.005075312468753146
+    },
+    {
+      "row_id": "test:2245",
+      "team": "transfers",
+      "text": "Is there a problem with receiving my salary in GBP?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0301,
+        "payments": 0.4127,
+        "transfers": 0.0595,
+        "top_up": 0.137,
+        "cash": 0.1623,
+        "fees_fx": 0.0656,
+        "security": 0.0941,
+        "account": 0.0387
+      },
+      "direct_weights": {
+        "cards": 0.0294,
+        "payments": 0.4055,
+        "transfers": 0.0589,
+        "top_up": 0.1396,
+        "cash": 0.1619,
+        "fees_fx": 0.0657,
+        "security": 0.1004,
+        "account": 0.0386
+      },
+      "max_abs_delta": 0.007199999999999984
+    },
+    {
+      "row_id": "test:43",
+      "team": "cards",
+      "text": "I have received my card, can you help me put it in the app?",
+      "direct_prediction": "cards",
+      "full_batch_prediction": "cards",
+      "full_batch_weights": {
+        "cards": 0.40175982401759824,
+        "payments": 0.20357964203579643,
+        "transfers": 0.05429457054294571,
+        "top_up": 0.09129087091290872,
+        "cash": 0.07709229077092292,
+        "fees_fx": 0.064993500649935,
+        "security": 0.08549145085491451,
+        "account": 0.0214978502149785
+      },
+      "direct_weights": {
+        "cards": 0.3877,
+        "payments": 0.2108,
+        "transfers": 0.0564,
+        "top_up": 0.0927,
+        "cash": 0.0766,
+        "fees_fx": 0.0666,
+        "security": 0.087,
+        "account": 0.0222
+      },
+      "max_abs_delta": 0.014059824017598255
+    },
+    {
+      "row_id": "test:812",
+      "team": "fees_fx",
+      "text": "im not sure what this charge is for",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.008299170082991702,
+        "payments": 0.1316868313168683,
+        "transfers": 0.013798620137986202,
+        "top_up": 0.019198080191980802,
+        "cash": 0.0184981501849815,
+        "fees_fx": 0.7942205779422058,
+        "security": 0.009099090090990901,
+        "account": 0.0051994800519948
+      },
+      "direct_weights": {
+        "cards": 0.009100910091009102,
+        "payments": 0.14421442144214422,
+        "transfers": 0.015601560156015602,
+        "top_up": 0.021202120212021204,
+        "cash": 0.020302030203020304,
+        "fees_fx": 0.7736773677367738,
+        "security": 0.010401040104010401,
+        "account": 0.005500550055005501
+      },
+      "max_abs_delta": 0.02054321020543204
+    },
+    {
+      "row_id": "test:1360",
+      "team": "cards",
+      "text": "How can i get multiple disposble cards.",
+      "direct_prediction": "cards",
+      "full_batch_prediction": "cards",
+      "full_batch_weights": {
+        "cards": 0.6545654565456546,
+        "payments": 0.0503050305030503,
+        "transfers": 0.039003900390039,
+        "top_up": 0.08820882088208822,
+        "cash": 0.045404540454045406,
+        "fees_fx": 0.056305630563056305,
+        "security": 0.04610461046104611,
+        "account": 0.0201020102010201
+      },
+      "direct_weights": {
+        "cards": 0.6118,
+        "payments": 0.0562,
+        "transfers": 0.0447,
+        "top_up": 0.0978,
+        "cash": 0.052,
+        "fees_fx": 0.0635,
+        "security": 0.051,
+        "account": 0.023
+      },
+      "max_abs_delta": 0.04276545654565456
+    },
+    {
+      "row_id": "test:1314",
+      "team": "cards",
+      "text": "Is it possible to receive a Visa and a MasterCard?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.1629162916291629,
+        "payments": 0.1857185718571857,
+        "transfers": 0.12811281128112811,
+        "top_up": 0.12361236123612361,
+        "cash": 0.13751375137513752,
+        "fees_fx": 0.1265126512651265,
+        "security": 0.08010801080108011,
+        "account": 0.0555055505550555
+      },
+      "direct_weights": {
+        "cards": 0.16218378162183783,
+        "payments": 0.1870812918708129,
+        "transfers": 0.1275872412758724,
+        "top_up": 0.12358764123587641,
+        "cash": 0.13848615138486153,
+        "fees_fx": 0.1252874712528747,
+        "security": 0.08049195080491951,
+        "account": 0.05529447055294471
+      },
+      "max_abs_delta": 0.0013627200136271944
+    },
+    {
+      "row_id": "test:2135",
+      "team": "cards",
+      "text": "How do I update my PIN to a new number?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.09119088091190881,
+        "payments": 0.18818118188181182,
+        "transfers": 0.1060893910608939,
+        "top_up": 0.1508849115088491,
+        "cash": 0.1126887311268873,
+        "fees_fx": 0.10878912108789121,
+        "security": 0.15158484151584842,
+        "account": 0.09059094090590941
+      },
+      "direct_weights": {
+        "cards": 0.0909,
+        "payments": 0.1914,
+        "transfers": 0.1082,
+        "top_up": 0.1518,
+        "cash": 0.1128,
+        "fees_fx": 0.1101,
+        "security": 0.1463,
+        "account": 0.0885
+      },
+      "max_abs_delta": 0.005284841515848404
+    },
+    {
+      "row_id": "test:1806",
+      "team": "payments",
+      "text": "Why did it decline my payment?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0026,
+        "payments": 0.9688,
+        "transfers": 0.0024,
+        "top_up": 0.0041,
+        "cash": 0.0038,
+        "fees_fx": 0.0037,
+        "security": 0.0119,
+        "account": 0.0027
+      },
+      "direct_weights": {
+        "cards": 0.0026,
+        "payments": 0.9684,
+        "transfers": 0.0024,
+        "top_up": 0.0042,
+        "cash": 0.0038,
+        "fees_fx": 0.0037,
+        "security": 0.0122,
+        "account": 0.0027
+      },
+      "max_abs_delta": 0.00039999999999995595
+    },
+    {
+      "row_id": "test:617",
+      "team": "fees_fx",
+      "text": "Will I be charged if someone needs to send me money?",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.0337,
+        "payments": 0.1028,
+        "transfers": 0.1354,
+        "top_up": 0.0867,
+        "cash": 0.0569,
+        "fees_fx": 0.4856,
+        "security": 0.0764,
+        "account": 0.0225
+      },
+      "direct_weights": {
+        "cards": 0.0343,
+        "payments": 0.1052,
+        "transfers": 0.1391,
+        "top_up": 0.0874,
+        "cash": 0.0587,
+        "fees_fx": 0.4759,
+        "security": 0.0766,
+        "account": 0.0228
+      },
+      "max_abs_delta": 0.009699999999999986
+    },
+    {
+      "row_id": "test:2735",
+      "team": "security",
+      "text": "i think someone is using my card to withdraw money. Someone stole my wallet. What can I do? it is urgent.",
+      "direct_prediction": "security",
+      "full_batch_prediction": "security",
+      "full_batch_weights": {
+        "cards": 0.0402040204020402,
+        "payments": 0.24072407240724072,
+        "transfers": 0.0886088608860886,
+        "top_up": 0.07530753075307531,
+        "cash": 0.21412141214121413,
+        "fees_fx": 0.030803080308030802,
+        "security": 0.28032803280328034,
+        "account": 0.029902990299029902
+      },
+      "direct_weights": {
+        "cards": 0.04129587041295871,
+        "payments": 0.24017598240175983,
+        "transfers": 0.08859114088591141,
+        "top_up": 0.074992500749925,
+        "cash": 0.20707929207079293,
+        "fees_fx": 0.0318968103189681,
+        "security": 0.2852714728527147,
+        "account": 0.030696930306969305
+      },
+      "max_abs_delta": 0.0070421200704212095
+    },
+    {
+      "row_id": "test:654",
+      "team": "top_up",
+      "text": "Can you please make my top up go through as soon as possible. I really need the money and it has been pending for an hour already.",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.00019996000799840034,
+        "payments": 0.0015996800639872027,
+        "transfers": 0.0004999000199960008,
+        "top_up": 0.9961007798440312,
+        "cash": 0.00029994001199760045,
+        "fees_fx": 0.0004999000199960008,
+        "security": 0.0005998800239952009,
+        "account": 0.00019996000799840034
+      },
+      "direct_weights": {
+        "cards": 0.00019998000199980003,
+        "payments": 0.0015998400159984002,
+        "transfers": 0.0004999500049995,
+        "top_up": 0.9961003899610039,
+        "cash": 0.00029997000299970003,
+        "fees_fx": 0.0004999500049995,
+        "security": 0.0005999400059994001,
+        "account": 0.00019998000199980003
+      },
+      "max_abs_delta": 3.898830273074694e-07
+    },
+    {
+      "row_id": "test:619",
+      "team": "fees_fx",
+      "text": "Will topping up by transfer lead to a charge on my account?",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.032203220322032204,
+        "payments": 0.10681068106810682,
+        "transfers": 0.07520752075207521,
+        "top_up": 0.47714771477147716,
+        "cash": 0.023002300230023,
+        "fees_fx": 0.23812381238123811,
+        "security": 0.030003000300030003,
+        "account": 0.017501750175017504
+      },
+      "direct_weights": {
+        "cards": 0.0322,
+        "payments": 0.1052,
+        "transfers": 0.0771,
+        "top_up": 0.4809,
+        "cash": 0.0232,
+        "fees_fx": 0.2335,
+        "security": 0.0298,
+        "account": 0.0181
+      },
+      "max_abs_delta": 0.0046238123812381016
+    },
+    {
+      "row_id": "test:1823",
+      "team": "payments",
+      "text": "My card was not accepted.",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.21917808219178084,
+        "payments": 0.38166183381661833,
+        "transfers": 0.0446955304469553,
+        "top_up": 0.0751924807519248,
+        "cash": 0.0761923807619238,
+        "fees_fx": 0.0524947505249475,
+        "security": 0.1265873412658734,
+        "account": 0.023997600239976002
+      },
+      "direct_weights": {
+        "cards": 0.2045204520452045,
+        "payments": 0.39123912391239124,
+        "transfers": 0.046004600460046,
+        "top_up": 0.07570757075707571,
+        "cash": 0.0786078607860786,
+        "fees_fx": 0.0527052705270527,
+        "security": 0.127012701270127,
+        "account": 0.0242024202420242
+      },
+      "max_abs_delta": 0.01465763014657634
+    },
+    {
+      "row_id": "test:179",
+      "team": "fees_fx",
+      "text": "What would be the reason there's an extra fee on my statement?",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.00020002000200020003,
+        "payments": 0.0013001300130013002,
+        "transfers": 0.0003000300030003,
+        "top_up": 0.0003000300030003,
+        "cash": 0.0003000300030003,
+        "fees_fx": 0.9972997299729973,
+        "security": 0.00010001000100010001,
+        "account": 0.00020002000200020003
+      },
+      "direct_weights": {
+        "cards": 0.0003,
+        "payments": 0.0016,
+        "transfers": 0.0004,
+        "top_up": 0.0004,
+        "cash": 0.0004,
+        "fees_fx": 0.9965,
+        "security": 0.0002,
+        "account": 0.0002
+      },
+      "max_abs_delta": 0.0007997299729972651
+    },
+    {
+      "row_id": "test:2413",
+      "team": "cards",
+      "text": "I need to get some more physical cards.",
+      "direct_prediction": "cards",
+      "full_batch_prediction": "cards",
+      "full_batch_weights": {
+        "cards": 0.2595,
+        "payments": 0.1675,
+        "transfers": 0.0878,
+        "top_up": 0.1096,
+        "cash": 0.1024,
+        "fees_fx": 0.1123,
+        "security": 0.116,
+        "account": 0.0449
+      },
+      "direct_weights": {
+        "cards": 0.2499,
+        "payments": 0.1714,
+        "transfers": 0.0872,
+        "top_up": 0.1099,
+        "cash": 0.1042,
+        "fees_fx": 0.115,
+        "security": 0.1164,
+        "account": 0.046
+      },
+      "max_abs_delta": 0.009599999999999997
+    },
+    {
+      "row_id": "test:1331",
+      "team": "top_up",
+      "text": "Where's the money that got charged to my card? It's not showing up in my account balance",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0296,
+        "payments": 0.372,
+        "transfers": 0.0806,
+        "top_up": 0.1002,
+        "cash": 0.0808,
+        "fees_fx": 0.2265,
+        "security": 0.0867,
+        "account": 0.0236
+      },
+      "direct_weights": {
+        "cards": 0.030403040304030404,
+        "payments": 0.3795379537953795,
+        "transfers": 0.078007800780078,
+        "top_up": 0.09770977097709771,
+        "cash": 0.07880788078807881,
+        "fees_fx": 0.2231223122312231,
+        "security": 0.0881088108810881,
+        "account": 0.024302430243024302
+      },
+      "max_abs_delta": 0.007537953795379526
+    },
+    {
+      "row_id": "test:2438",
+      "team": "cards",
+      "text": "My child needs a card, how can I add them to the account I currently have?",
+      "direct_prediction": "cards",
+      "full_batch_prediction": "cards",
+      "full_batch_weights": {
+        "cards": 0.3747374737473747,
+        "payments": 0.15741574157415741,
+        "transfers": 0.10121012101210121,
+        "top_up": 0.14761476147614763,
+        "cash": 0.07560756075607561,
+        "fees_fx": 0.046704670467046704,
+        "security": 0.0667066706670667,
+        "account": 0.030003000300030003
+      },
+      "direct_weights": {
+        "cards": 0.37506249375062495,
+        "payments": 0.16008399160083991,
+        "transfers": 0.10078992100789921,
+        "top_up": 0.14488551144885511,
+        "cash": 0.0760923907609239,
+        "fees_fx": 0.0456954304569543,
+        "security": 0.0675932406759324,
+        "account": 0.029797020297970205
+      },
+      "max_abs_delta": 0.002729250027292518
+    },
+    {
+      "row_id": "test:918",
+      "team": "fees_fx",
+      "text": "What currencies or cards do you support for topping up?",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.011498850114988501,
+        "payments": 0.0190980901909809,
+        "transfers": 0.007499250074992501,
+        "top_up": 0.939106089391061,
+        "cash": 0.007699230076992301,
+        "fees_fx": 0.007099290070992901,
+        "security": 0.0058994100589941,
+        "account": 0.0020997900209979003
+      },
+      "direct_weights": {
+        "cards": 0.013701370137013702,
+        "payments": 0.0213021302130213,
+        "transfers": 0.008500850085008501,
+        "top_up": 0.9305930593059306,
+        "cash": 0.0089008900890089,
+        "fees_fx": 0.008000800080008,
+        "security": 0.006700670067006701,
+        "account": 0.0023002300230023
+      },
+      "max_abs_delta": 0.00851303008513038
+    },
+    {
+      "row_id": "test:798",
+      "team": "cash",
+      "text": "did not receive correct cash upon withdrawal",
+      "direct_prediction": "cash",
+      "full_batch_prediction": "cash",
+      "full_batch_weights": {
+        "cards": 0.0173,
+        "payments": 0.0747,
+        "transfers": 0.0242,
+        "top_up": 0.0299,
+        "cash": 0.7524,
+        "fees_fx": 0.0187,
+        "security": 0.0686,
+        "account": 0.0142
+      },
+      "direct_weights": {
+        "cards": 0.017,
+        "payments": 0.0758,
+        "transfers": 0.023,
+        "top_up": 0.0287,
+        "cash": 0.7569,
+        "fees_fx": 0.0181,
+        "security": 0.067,
+        "account": 0.0135
+      },
+      "max_abs_delta": 0.0045000000000000595
+    },
+    {
+      "row_id": "test:2326",
+      "team": "transfers",
+      "text": "What do I need to do to transfer money into my account?",
+      "direct_prediction": "transfers",
+      "full_batch_prediction": "transfers",
+      "full_batch_weights": {
+        "cards": 0.032996700329967,
+        "payments": 0.0643935606439356,
+        "transfers": 0.3361663833616638,
+        "top_up": 0.3157684231576843,
+        "cash": 0.06969303069693031,
+        "fees_fx": 0.09779022097790221,
+        "security": 0.047995200479952004,
+        "account": 0.03519648035196481
+      },
+      "direct_weights": {
+        "cards": 0.03300330033003301,
+        "payments": 0.0663066306630663,
+        "transfers": 0.33423342334233425,
+        "top_up": 0.3165316531653165,
+        "cash": 0.07040704070407042,
+        "fees_fx": 0.0965096509650965,
+        "security": 0.048604860486048604,
+        "account": 0.034403440344034406
+      },
+      "max_abs_delta": 0.001932960019329577
+    },
+    {
+      "row_id": "test:2962",
+      "team": "cards",
+      "text": "My top-up for Google Pay isn't working",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.004999500049995001,
+        "payments": 0.012298770122987702,
+        "transfers": 0.004399560043995601,
+        "top_up": 0.9477052294770523,
+        "cash": 0.004399560043995601,
+        "fees_fx": 0.0093990600939906,
+        "security": 0.013498650134986502,
+        "account": 0.0032996700329967
+      },
+      "direct_weights": {
+        "cards": 0.0046004600460046,
+        "payments": 0.0112011201120112,
+        "transfers": 0.004000400040004,
+        "top_up": 0.9520952095209521,
+        "cash": 0.0039003900390039,
+        "fees_fx": 0.0087008700870087,
+        "security": 0.0124012401240124,
+        "account": 0.0031003100310031
+      },
+      "max_abs_delta": 0.004389980043899788
+    },
+    {
+      "row_id": "test:2533",
+      "team": "cards",
+      "text": "Why doesn't my disposable virtual card work?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.137,
+        "payments": 0.2075,
+        "transfers": 0.0642,
+        "top_up": 0.1181,
+        "cash": 0.1349,
+        "fees_fx": 0.1176,
+        "security": 0.1844,
+        "account": 0.0363
+      },
+      "direct_weights": {
+        "cards": 0.13617276544691062,
+        "payments": 0.20785842831433715,
+        "transfers": 0.06588682263547291,
+        "top_up": 0.11697660467906419,
+        "cash": 0.13517296540691862,
+        "fees_fx": 0.1211757648470306,
+        "security": 0.17976404719056188,
+        "account": 0.03699260147970406
+      },
+      "max_abs_delta": 0.004635952809438126
+    },
+    {
+      "row_id": "test:1960",
+      "team": "payments",
+      "text": "I got double charged for a payment so how do I fix that?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.006600660066006601,
+        "payments": 0.7203720372037205,
+        "transfers": 0.0087008700870087,
+        "top_up": 0.0133013301330133,
+        "cash": 0.017101710171017102,
+        "fees_fx": 0.18791879187918792,
+        "security": 0.0389038903890389,
+        "account": 0.007100710071007101
+      },
+      "direct_weights": {
+        "cards": 0.0065986802639472104,
+        "payments": 0.7114577084583084,
+        "transfers": 0.008698260347930413,
+        "top_up": 0.014197160567886424,
+        "cash": 0.01749650069986003,
+        "fees_fx": 0.19606078784243153,
+        "security": 0.03819236152769446,
+        "account": 0.007298540291941612
+      },
+      "max_abs_delta": 0.008914328745412092
+    },
+    {
+      "row_id": "test:720",
+      "team": "top_up",
+      "text": "can you limit my top up?",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.0046004600460046,
+        "payments": 0.0072007200720072,
+        "transfers": 0.0025002500250025004,
+        "top_up": 0.9693969396939695,
+        "cash": 0.0018001800180018,
+        "fees_fx": 0.0058005800580058,
+        "security": 0.0053005300530053,
+        "account": 0.0034003400340034003
+      },
+      "direct_weights": {
+        "cards": 0.0049,
+        "payments": 0.0079,
+        "transfers": 0.0027,
+        "top_up": 0.9667,
+        "cash": 0.002,
+        "fees_fx": 0.0064,
+        "security": 0.0057,
+        "account": 0.0037
+      },
+      "max_abs_delta": 0.0026969396939694468
+    },
+    {
+      "row_id": "test:352",
+      "team": "top_up",
+      "text": "Will it automatically top-up if there isn't much money left?",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.040695930406959305,
+        "payments": 0.08899110088991101,
+        "transfers": 0.039896010398960104,
+        "top_up": 0.5356464353564643,
+        "cash": 0.0740925907409259,
+        "fees_fx": 0.07169283071692831,
+        "security": 0.12328767123287672,
+        "account": 0.025697430256974303
+      },
+      "direct_weights": {
+        "cards": 0.03980796159231847,
+        "payments": 0.08751750350070013,
+        "transfers": 0.040008001600320066,
+        "top_up": 0.5374074814962992,
+        "cash": 0.0720144028805761,
+        "fees_fx": 0.07431486297259453,
+        "security": 0.1232246449289858,
+        "account": 0.02570514102820564
+      },
+      "max_abs_delta": 0.0026220322556662207
+    },
+    {
+      "row_id": "test:1202",
+      "team": "account",
+      "text": "Why doesn't the app believe I am who I say I am?",
+      "direct_prediction": "security",
+      "full_batch_prediction": "security",
+      "full_batch_weights": {
+        "cards": 0.0659065906590659,
+        "payments": 0.1908190819081908,
+        "transfers": 0.07880788078807881,
+        "top_up": 0.08450845084508452,
+        "cash": 0.0657065706570657,
+        "fees_fx": 0.0424042404240424,
+        "security": 0.3692369236923692,
+        "account": 0.1026102610261026
+      },
+      "direct_weights": {
+        "cards": 0.0635,
+        "payments": 0.1911,
+        "transfers": 0.0777,
+        "top_up": 0.087,
+        "cash": 0.0661,
+        "fees_fx": 0.0422,
+        "security": 0.3684,
+        "account": 0.104
+      },
+      "max_abs_delta": 0.002491549154915479
+    },
+    {
+      "row_id": "test:1736",
+      "team": "transfers",
+      "text": "Why was I unable to do a transfer?",
+      "direct_prediction": "transfers",
+      "full_batch_prediction": "transfers",
+      "full_batch_weights": {
+        "cards": 0.0227,
+        "payments": 0.0965,
+        "transfers": 0.6088,
+        "top_up": 0.0789,
+        "cash": 0.0442,
+        "fees_fx": 0.0437,
+        "security": 0.083,
+        "account": 0.0222
+      },
+      "direct_weights": {
+        "cards": 0.023897610238976102,
+        "payments": 0.103989601039896,
+        "transfers": 0.5869413058694131,
+        "top_up": 0.08499150084991501,
+        "cash": 0.04559544045595441,
+        "fees_fx": 0.0451954804519548,
+        "security": 0.08699130086991301,
+        "account": 0.022397760223977603
+      },
+      "max_abs_delta": 0.021858694130586942
+    },
+    {
+      "row_id": "test:231",
+      "team": "cash",
+      "text": "I received cash from the ATM earlier, but this shows up as pending in the app.  I've got the cash already.  How can this be still pending?",
+      "direct_prediction": "cash",
+      "full_batch_prediction": "cash",
+      "full_batch_weights": {
+        "cards": 0.010302060412082417,
+        "payments": 0.17583516703340668,
+        "transfers": 0.014302860572114422,
+        "top_up": 0.02080416083216643,
+        "cash": 0.7520504100820165,
+        "fees_fx": 0.008901780356071214,
+        "security": 0.010002000400080016,
+        "account": 0.007801560312062412
+      },
+      "direct_weights": {
+        "cards": 0.010798920107989201,
+        "payments": 0.18308169183081693,
+        "transfers": 0.014098590140985901,
+        "top_up": 0.0208979102089791,
+        "cash": 0.744025597440256,
+        "fees_fx": 0.009099090090990901,
+        "security": 0.009999000099990002,
+        "account": 0.007999200079992
+      },
+      "max_abs_delta": 0.00802481264176047
+    },
+    {
+      "row_id": "test:1192",
+      "team": "account",
+      "text": "What other methods are there to verify my identity?",
+      "direct_prediction": "account",
+      "full_batch_prediction": "account",
+      "full_batch_weights": {
+        "cards": 0.0363,
+        "payments": 0.1054,
+        "transfers": 0.051,
+        "top_up": 0.0707,
+        "cash": 0.0494,
+        "fees_fx": 0.0454,
+        "security": 0.0761,
+        "account": 0.5657
+      },
+      "direct_weights": {
+        "cards": 0.03730746149229846,
+        "payments": 0.11212242448489698,
+        "transfers": 0.05391078215643129,
+        "top_up": 0.07481496299259853,
+        "cash": 0.05201040208041608,
+        "fees_fx": 0.04810962192438487,
+        "security": 0.07941588317663532,
+        "account": 0.5423084616923385
+      },
+      "max_abs_delta": 0.023391538307661497
+    },
+    {
+      "row_id": "test:277",
+      "team": "fees_fx",
+      "text": "What kind of fiat currency can I used for holding and exchange?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.09079092090790922,
+        "payments": 0.2535746425357464,
+        "transfers": 0.18338166183381663,
+        "top_up": 0.19598040195980404,
+        "cash": 0.1060893910608939,
+        "fees_fx": 0.06799320067993202,
+        "security": 0.0628937106289371,
+        "account": 0.03929607039296071
+      },
+      "direct_weights": {
+        "cards": 0.09160916091609161,
+        "payments": 0.2506250625062506,
+        "transfers": 0.18441844184418443,
+        "top_up": 0.19631963196319632,
+        "cash": 0.10881088108810881,
+        "fees_fx": 0.06650665066506652,
+        "security": 0.0635063506350635,
+        "account": 0.0382038203820382
+      },
+      "max_abs_delta": 0.002949580029495802
+    },
+    {
+      "row_id": "test:1973",
+      "team": "payments",
+      "text": "It looks like this week I was double charged for a couple things. Is there any way that you can look into this for me and return the double charged items back to my card?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.022502250225022502,
+        "payments": 0.48854885488548855,
+        "transfers": 0.0527052705270527,
+        "top_up": 0.08680868086808681,
+        "cash": 0.0712071207120712,
+        "fees_fx": 0.15981598159815982,
+        "security": 0.09450945094509451,
+        "account": 0.023902390239023904
+      },
+      "direct_weights": {
+        "cards": 0.0221,
+        "payments": 0.4912,
+        "transfers": 0.0522,
+        "top_up": 0.0878,
+        "cash": 0.071,
+        "fees_fx": 0.1582,
+        "security": 0.0938,
+        "account": 0.0237
+      },
+      "max_abs_delta": 0.0026511451145114773
+    },
+    {
+      "row_id": "test:2649",
+      "team": "top_up",
+      "text": "Why didn`t my topup go through?",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.0018,
+        "payments": 0.005,
+        "transfers": 0.0014,
+        "top_up": 0.9838,
+        "cash": 0.001,
+        "fees_fx": 0.0018,
+        "security": 0.0036,
+        "account": 0.0016
+      },
+      "direct_weights": {
+        "cards": 0.0016,
+        "payments": 0.0046,
+        "transfers": 0.0013,
+        "top_up": 0.985,
+        "cash": 0.001,
+        "fees_fx": 0.0017,
+        "security": 0.0033,
+        "account": 0.0015
+      },
+      "max_abs_delta": 0.0011999999999999789
+    },
+    {
+      "row_id": "test:3042",
+      "team": "account",
+      "text": "Can I use your app if I am from the EU?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.10578942105789421,
+        "payments": 0.24007599240075994,
+        "transfers": 0.1264873512648735,
+        "top_up": 0.15958404159584041,
+        "cash": 0.10058994100589941,
+        "fees_fx": 0.08729127087291272,
+        "security": 0.08399160083991601,
+        "account": 0.0961903809619038
+      },
+      "direct_weights": {
+        "cards": 0.1035103510351035,
+        "payments": 0.24832483248324833,
+        "transfers": 0.1266126612661266,
+        "top_up": 0.16001600160016002,
+        "cash": 0.10081008100810081,
+        "fees_fx": 0.0842084208420842,
+        "security": 0.08500850085008502,
+        "account": 0.0915091509150915
+      },
+      "max_abs_delta": 0.008248840082488385
+    },
+    {
+      "row_id": "test:1299",
+      "team": "cards",
+      "text": "Am I able to choose my card?",
+      "direct_prediction": "cards",
+      "full_batch_prediction": "cards",
+      "full_batch_weights": {
+        "cards": 0.6175382461753826,
+        "payments": 0.07699230076992301,
+        "transfers": 0.036896310368963105,
+        "top_up": 0.06719328067193281,
+        "cash": 0.050594940505949405,
+        "fees_fx": 0.057394260573942604,
+        "security": 0.0570942905709429,
+        "account": 0.0362963703629637
+      },
+      "direct_weights": {
+        "cards": 0.615961596159616,
+        "payments": 0.07630763076307631,
+        "transfers": 0.0374037403740374,
+        "top_up": 0.06660666066606662,
+        "cash": 0.0503050305030503,
+        "fees_fx": 0.059005900590059,
+        "security": 0.05860586058605861,
+        "account": 0.035803580358035804
+      },
+      "max_abs_delta": 0.0016116400161163974
+    },
+    {
+      "row_id": "test:2526",
+      "team": "cards",
+      "text": "Are there restrictions for my disposable card since it does not seem to be working?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.177,
+        "payments": 0.2585,
+        "transfers": 0.0636,
+        "top_up": 0.117,
+        "cash": 0.0893,
+        "fees_fx": 0.1633,
+        "security": 0.0987,
+        "account": 0.0326
+      },
+      "direct_weights": {
+        "cards": 0.16713342668533707,
+        "payments": 0.270254050810162,
+        "transfers": 0.0639127825565113,
+        "top_up": 0.11782356471294259,
+        "cash": 0.09121824364872974,
+        "fees_fx": 0.15673134626925386,
+        "security": 0.10012002400480095,
+        "account": 0.03280656131226246
+      },
+      "max_abs_delta": 0.011754050810162009
+    },
+    {
+      "row_id": "test:2388",
+      "team": "top_up",
+      "text": "What is the importance of verifying the top-up?",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.010798920107989201,
+        "payments": 0.025897410258974102,
+        "transfers": 0.0071992800719928,
+        "top_up": 0.8825117488251175,
+        "cash": 0.010798920107989201,
+        "fees_fx": 0.023997600239976002,
+        "security": 0.018198180181981802,
+        "account": 0.020597940205979402
+      },
+      "direct_weights": {
+        "cards": 0.009799020097990201,
+        "payments": 0.022997700229977002,
+        "transfers": 0.0065993400659934,
+        "top_up": 0.8919108089191081,
+        "cash": 0.009999000099990002,
+        "fees_fx": 0.022297770222977704,
+        "security": 0.0168983101689831,
+        "account": 0.019498050194980503
+      },
+      "max_abs_delta": 0.009399060093990608
+    },
+    {
+      "row_id": "test:1983",
+      "team": "payments",
+      "text": "Please check payments on my card. There is a duplicate and I only bought it once.",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0207,
+        "payments": 0.8826,
+        "transfers": 0.0061,
+        "top_up": 0.0126,
+        "cash": 0.0121,
+        "fees_fx": 0.029,
+        "security": 0.0307,
+        "account": 0.0062
+      },
+      "direct_weights": {
+        "cards": 0.021002100210021003,
+        "payments": 0.8761876187618761,
+        "transfers": 0.006400640064006401,
+        "top_up": 0.0133013301330133,
+        "cash": 0.012801280128012802,
+        "fees_fx": 0.0312031203120312,
+        "security": 0.032803280328032806,
+        "account": 0.0063006300630063005
+      },
+      "max_abs_delta": 0.006412381238123932
+    },
+    {
+      "row_id": "test:907",
+      "team": "fees_fx",
+      "text": "Which credit or debit cards can I use to top up?",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.0051,
+        "payments": 0.0022,
+        "transfers": 0.0006,
+        "top_up": 0.9893,
+        "cash": 0.0006,
+        "fees_fx": 0.0008,
+        "security": 0.0009,
+        "account": 0.0005
+      },
+      "direct_weights": {
+        "cards": 0.0052,
+        "payments": 0.0023,
+        "transfers": 0.0006,
+        "top_up": 0.989,
+        "cash": 0.0006,
+        "fees_fx": 0.0009,
+        "security": 0.0009,
+        "account": 0.0005
+      },
+      "max_abs_delta": 0.00029999999999996696
+    },
+    {
+      "row_id": "test:1523",
+      "team": "account",
+      "text": "My passcode doesn't seem to be working",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0738926107389261,
+        "payments": 0.20437956204379562,
+        "transfers": 0.09319068093190681,
+        "top_up": 0.16448355164483552,
+        "cash": 0.1136886311368863,
+        "fees_fx": 0.10668933106689331,
+        "security": 0.17478252174782524,
+        "account": 0.06889311068893111
+      },
+      "direct_weights": {
+        "cards": 0.0752,
+        "payments": 0.2014,
+        "transfers": 0.0917,
+        "top_up": 0.1666,
+        "cash": 0.1133,
+        "fees_fx": 0.1045,
+        "security": 0.1763,
+        "account": 0.071
+      },
+      "max_abs_delta": 0.002979562043795625
+    },
+    {
+      "row_id": "test:2042",
+      "team": "transfers",
+      "text": "I need a fast transfer from China?  How fast will it be?",
+      "direct_prediction": "transfers",
+      "full_batch_prediction": "transfers",
+      "full_batch_weights": {
+        "cards": 0.0185,
+        "payments": 0.0471,
+        "transfers": 0.7668,
+        "top_up": 0.0471,
+        "cash": 0.029,
+        "fees_fx": 0.0451,
+        "security": 0.0337,
+        "account": 0.0127
+      },
+      "direct_weights": {
+        "cards": 0.017998200179982,
+        "payments": 0.045995400459954004,
+        "transfers": 0.772022797720228,
+        "top_up": 0.044795520447955206,
+        "cash": 0.028697130286971302,
+        "fees_fx": 0.04589541045895411,
+        "security": 0.0323967603239676,
+        "account": 0.012198780121987803
+      },
+      "max_abs_delta": 0.005222797720227934
+    },
+    {
+      "row_id": "test:1501",
+      "team": "security",
+      "text": "I am seeing a weird payment showing up that I know I did not make, how can I get it cancelled?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0013,
+        "payments": 0.9765,
+        "transfers": 0.001,
+        "top_up": 0.0019,
+        "cash": 0.0025,
+        "fees_fx": 0.0031,
+        "security": 0.012,
+        "account": 0.0017
+      },
+      "direct_weights": {
+        "cards": 0.0014001400140014,
+        "payments": 0.9752975297529752,
+        "transfers": 0.0011001100110011003,
+        "top_up": 0.002000200020002,
+        "cash": 0.0026002600260026003,
+        "fees_fx": 0.0033003300330033004,
+        "security": 0.012501250125012502,
+        "account": 0.0018001800180018
+      },
+      "max_abs_delta": 0.0012024702470248005
+    },
+    {
+      "row_id": "test:3077",
+      "team": "account",
+      "text": "What countries do you do business in?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.06331266253250649,
+        "payments": 0.2906581316263253,
+        "transfers": 0.11742348469693939,
+        "top_up": 0.16723344668933784,
+        "cash": 0.13952790558111625,
+        "fees_fx": 0.10462092418483697,
+        "security": 0.07911582316463293,
+        "account": 0.038107621524304865
+      },
+      "direct_weights": {
+        "cards": 0.065993400659934,
+        "payments": 0.28667133286671337,
+        "transfers": 0.11748825117488251,
+        "top_up": 0.1671832816718328,
+        "cash": 0.13878612138786123,
+        "fees_fx": 0.10768923107689232,
+        "security": 0.07719228077192282,
+        "account": 0.03899610038996101
+      },
+      "max_abs_delta": 0.0039867987596119425
+    },
+    {
+      "row_id": "test:446",
+      "team": "security",
+      "text": "Oh no!  I lost my card!  Help!",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0693,
+        "payments": 0.3279,
+        "transfers": 0.0934,
+        "top_up": 0.13,
+        "cash": 0.1062,
+        "fees_fx": 0.0712,
+        "security": 0.1769,
+        "account": 0.0251
+      },
+      "direct_weights": {
+        "cards": 0.0696069606960696,
+        "payments": 0.327032703270327,
+        "transfers": 0.0925092509250925,
+        "top_up": 0.12821282128212821,
+        "cash": 0.1075107510751075,
+        "fees_fx": 0.06880688068806881,
+        "security": 0.1813181318131813,
+        "account": 0.025002500250025005
+      },
+      "max_abs_delta": 0.004418131813181292
+    },
+    {
+      "row_id": "test:1976",
+      "team": "payments",
+      "text": "Why is there a transaction that shows multiple times?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0381961803819618,
+        "payments": 0.5148485151484852,
+        "transfers": 0.056194380561943806,
+        "top_up": 0.08439156084391561,
+        "cash": 0.08439156084391561,
+        "fees_fx": 0.07869213078692132,
+        "security": 0.10958904109589042,
+        "account": 0.03369663033696631
+      },
+      "direct_weights": {
+        "cards": 0.036996300369963,
+        "payments": 0.5221477852214779,
+        "transfers": 0.0560943905609439,
+        "top_up": 0.0816918308169183,
+        "cash": 0.0842915708429157,
+        "fees_fx": 0.0754924507549245,
+        "security": 0.10968903109689032,
+        "account": 0.033596640335966405
+      },
+      "max_abs_delta": 0.007299270072992692
+    },
+    {
+      "row_id": "test:1515",
+      "team": "security",
+      "text": "I have a direct debit transaction I have not set up, but would like to .",
+      "direct_prediction": "security",
+      "full_batch_prediction": "security",
+      "full_batch_weights": {
+        "cards": 0.06309369063093691,
+        "payments": 0.25177482251774824,
+        "transfers": 0.09859014098590141,
+        "top_up": 0.09839016098390162,
+        "cash": 0.051394860513948606,
+        "fees_fx": 0.10748925107489252,
+        "security": 0.30856914308569144,
+        "account": 0.0206979302069793
+      },
+      "direct_weights": {
+        "cards": 0.0637,
+        "payments": 0.2534,
+        "transfers": 0.1002,
+        "top_up": 0.0986,
+        "cash": 0.0519,
+        "fees_fx": 0.1041,
+        "security": 0.3069,
+        "account": 0.0212
+      },
+      "max_abs_delta": 0.0033892510748925186
+    },
+    {
+      "row_id": "test:1285",
+      "team": "cards",
+      "text": "Do you guys accept mastercard or visa?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.11401140114011402,
+        "payments": 0.26752675267526754,
+        "transfers": 0.0986098609860986,
+        "top_up": 0.16321632163216324,
+        "cash": 0.118011801180118,
+        "fees_fx": 0.10501050105010501,
+        "security": 0.0948094809480948,
+        "account": 0.0388038803880388
+      },
+      "direct_weights": {
+        "cards": 0.11301130113011301,
+        "payments": 0.26672667266726674,
+        "transfers": 0.0986098609860986,
+        "top_up": 0.16471647164716471,
+        "cash": 0.11881188118811882,
+        "fees_fx": 0.1043104310431043,
+        "security": 0.0948094809480948,
+        "account": 0.039003900390039
+      },
+      "max_abs_delta": 0.001500150015001478
+    },
+    {
+      "row_id": "test:2884",
+      "team": "fees_fx",
+      "text": "Why are fees charged on cash withdrawals? I went to withdraw some money earlier today after shopping. There's a fee that wasn't there before.",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.0005,
+        "payments": 0.0034,
+        "transfers": 0.0007,
+        "top_up": 0.0007,
+        "cash": 0.0034,
+        "fees_fx": 0.9906,
+        "security": 0.0004,
+        "account": 0.0003
+      },
+      "direct_weights": {
+        "cards": 0.0006,
+        "payments": 0.0042,
+        "transfers": 0.0008,
+        "top_up": 0.0008,
+        "cash": 0.0041,
+        "fees_fx": 0.9886,
+        "security": 0.0005,
+        "account": 0.0004
+      },
+      "max_abs_delta": 0.0020000000000000018
+    },
+    {
+      "row_id": "test:358",
+      "team": "top_up",
+      "text": "What is the highest limit for Auto Top?",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.0316968303169683,
+        "payments": 0.06509349065093491,
+        "transfers": 0.0254974502549745,
+        "top_up": 0.7166283371662834,
+        "cash": 0.0314968503149685,
+        "fees_fx": 0.0524947505249475,
+        "security": 0.05979402059794021,
+        "account": 0.017298270172982702
+      },
+      "direct_weights": {
+        "cards": 0.0321,
+        "payments": 0.0666,
+        "transfers": 0.0253,
+        "top_up": 0.7115,
+        "cash": 0.0319,
+        "fees_fx": 0.0553,
+        "security": 0.0604,
+        "account": 0.0169
+      },
+      "max_abs_delta": 0.005128337166283359
+    },
+    {
+      "row_id": "test:709",
+      "team": "transfers",
+      "text": "How do i cancel my transaction?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.045,
+        "payments": 0.4254,
+        "transfers": 0.0832,
+        "top_up": 0.0815,
+        "cash": 0.0617,
+        "fees_fx": 0.1141,
+        "security": 0.1653,
+        "account": 0.0238
+      },
+      "direct_weights": {
+        "cards": 0.0446044604460446,
+        "payments": 0.42654265426542654,
+        "transfers": 0.08110811081108112,
+        "top_up": 0.07880788078807881,
+        "cash": 0.06260626062606262,
+        "fees_fx": 0.11301130113011301,
+        "security": 0.1696169616961696,
+        "account": 0.0237023702370237
+      },
+      "max_abs_delta": 0.004316961696169602
+    },
+    {
+      "row_id": "test:1416",
+      "team": "security",
+      "text": "Can I use app to freeze account and dispute fraud?",
+      "direct_prediction": "security",
+      "full_batch_prediction": "security",
+      "full_batch_weights": {
+        "cards": 0.0577,
+        "payments": 0.1351,
+        "transfers": 0.1206,
+        "top_up": 0.1627,
+        "cash": 0.0653,
+        "fees_fx": 0.0793,
+        "security": 0.3172,
+        "account": 0.0621
+      },
+      "direct_weights": {
+        "cards": 0.05750575057505751,
+        "payments": 0.13611361136113612,
+        "transfers": 0.12011201120112011,
+        "top_up": 0.1619161916191619,
+        "cash": 0.0648064806480648,
+        "fees_fx": 0.07560756075607561,
+        "security": 0.3246324632463246,
+        "account": 0.0593059305930593
+      },
+      "max_abs_delta": 0.007432463246324628
+    },
+    {
+      "row_id": "test:2624",
+      "team": "cards",
+      "text": "What does a disposable virtual card do?",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.06950695069506951,
+        "payments": 0.20162016201620162,
+        "transfers": 0.0818081808180818,
+        "top_up": 0.1558155815581558,
+        "cash": 0.0991099109910991,
+        "fees_fx": 0.20972097209720972,
+        "security": 0.15221522152215222,
+        "account": 0.030203020302030203
+      },
+      "direct_weights": {
+        "cards": 0.0684,
+        "payments": 0.1984,
+        "transfers": 0.0798,
+        "top_up": 0.157,
+        "cash": 0.0983,
+        "fees_fx": 0.2188,
+        "security": 0.1498,
+        "account": 0.0295
+      },
+      "max_abs_delta": 0.009079027902790276
+    },
+    {
+      "row_id": "test:186",
+      "team": "fees_fx",
+      "text": "There is an extra charge on my app that I was not told about or I was aware of!",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.0161,
+        "payments": 0.0982,
+        "transfers": 0.0131,
+        "top_up": 0.0185,
+        "cash": 0.018,
+        "fees_fx": 0.8156,
+        "security": 0.0132,
+        "account": 0.0073
+      },
+      "direct_weights": {
+        "cards": 0.015801580158015804,
+        "payments": 0.09780978097809781,
+        "transfers": 0.012501250125012502,
+        "top_up": 0.0178017801780178,
+        "cash": 0.0173017301730173,
+        "fees_fx": 0.8191819181918192,
+        "security": 0.0124012401240124,
+        "account": 0.0072007200720072
+      },
+      "max_abs_delta": 0.003581918191819189
+    },
+    {
+      "row_id": "test:1658",
+      "team": "security",
+      "text": "I lost my phone and would like to freeze my accounts.",
+      "direct_prediction": "security",
+      "full_batch_prediction": "security",
+      "full_batch_weights": {
+        "cards": 0.0313968603139686,
+        "payments": 0.0963903609639036,
+        "transfers": 0.06749325067493252,
+        "top_up": 0.07659234076592342,
+        "cash": 0.0417958204179582,
+        "fees_fx": 0.0370962903709629,
+        "security": 0.6348365163483652,
+        "account": 0.0143985601439856
+      },
+      "direct_weights": {
+        "cards": 0.0314,
+        "payments": 0.1003,
+        "transfers": 0.0696,
+        "top_up": 0.0788,
+        "cash": 0.0418,
+        "fees_fx": 0.0381,
+        "security": 0.6252,
+        "account": 0.0148
+      },
+      "max_abs_delta": 0.009636516348365265
+    },
+    {
+      "row_id": "test:869",
+      "team": "transfers",
+      "text": "How long will it take for my transaction to be completed?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0456954304569543,
+        "payments": 0.3595640435956404,
+        "transfers": 0.11588841115888411,
+        "top_up": 0.1516848315168483,
+        "cash": 0.08099190080991901,
+        "fees_fx": 0.11788821117888212,
+        "security": 0.10978902109789021,
+        "account": 0.0184981501849815
+      },
+      "direct_weights": {
+        "cards": 0.0449,
+        "payments": 0.3742,
+        "transfers": 0.1158,
+        "top_up": 0.1446,
+        "cash": 0.0811,
+        "fees_fx": 0.1159,
+        "security": 0.1053,
+        "account": 0.0182
+      },
+      "max_abs_delta": 0.014635956404359551
+    },
+    {
+      "row_id": "test:2429",
+      "team": "cards",
+      "text": "Can i have a card to my daughter?",
+      "direct_prediction": "cards",
+      "full_batch_prediction": "cards",
+      "full_batch_weights": {
+        "cards": 0.18791879187918792,
+        "payments": 0.149014901490149,
+        "transfers": 0.11641164116411641,
+        "top_up": 0.13681368136813682,
+        "cash": 0.1623162316231623,
+        "fees_fx": 0.08670867086708671,
+        "security": 0.1035103510351035,
+        "account": 0.0573057305730573
+      },
+      "direct_weights": {
+        "cards": 0.18318168183181682,
+        "payments": 0.15208479152084792,
+        "transfers": 0.11448855114488551,
+        "top_up": 0.13808619138086192,
+        "cash": 0.1613838616138386,
+        "fees_fx": 0.08759124087591241,
+        "security": 0.105989401059894,
+        "account": 0.057194280571942806
+      },
+      "max_abs_delta": 0.004737110047371096
+    },
+    {
+      "row_id": "test:1335",
+      "team": "top_up",
+      "text": "How do I transfer money using a credit card?",
+      "direct_prediction": "transfers",
+      "full_batch_prediction": "transfers",
+      "full_batch_weights": {
+        "cards": 0.11191119111911191,
+        "payments": 0.15121512151215122,
+        "transfers": 0.2995299529952995,
+        "top_up": 0.142014201420142,
+        "cash": 0.0804080408040804,
+        "fees_fx": 0.104010401040104,
+        "security": 0.0779077907790779,
+        "account": 0.03300330033003301
+      },
+      "direct_weights": {
+        "cards": 0.1147,
+        "payments": 0.155,
+        "transfers": 0.2918,
+        "top_up": 0.1439,
+        "cash": 0.0807,
+        "fees_fx": 0.1027,
+        "security": 0.0779,
+        "account": 0.0333
+      },
+      "max_abs_delta": 0.007729952995299494
+    },
+    {
+      "row_id": "test:513",
+      "team": "account",
+      "text": "How old do my kids have to be to use your service?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.1357135713571357,
+        "payments": 0.34063406340634067,
+        "transfers": 0.09770977097709771,
+        "top_up": 0.1538153815381538,
+        "cash": 0.104010401040104,
+        "fees_fx": 0.0726072607260726,
+        "security": 0.0593059305930593,
+        "account": 0.036203620362036205
+      },
+      "direct_weights": {
+        "cards": 0.13661366136613662,
+        "payments": 0.34583458345834583,
+        "transfers": 0.09840984098409841,
+        "top_up": 0.153015301530153,
+        "cash": 0.1031103110311031,
+        "fees_fx": 0.0692069206920692,
+        "security": 0.057905790579057904,
+        "account": 0.035903590359035904
+      },
+      "max_abs_delta": 0.005200520052005164
+    },
+    {
+      "row_id": "test:2198",
+      "team": "transfers",
+      "text": "i tried to make a transfer to a beneficiary and it didn't go through",
+      "direct_prediction": "transfers",
+      "full_batch_prediction": "transfers",
+      "full_batch_weights": {
+        "cards": 0.039503950395039504,
+        "payments": 0.15491549154915493,
+        "transfers": 0.34113411341134114,
+        "top_up": 0.1354135413541354,
+        "cash": 0.0749074907490749,
+        "fees_fx": 0.0818081808180818,
+        "security": 0.12881288128812882,
+        "account": 0.0435043504350435
+      },
+      "direct_weights": {
+        "cards": 0.04030403040304031,
+        "payments": 0.15971597159715972,
+        "transfers": 0.34013401340134014,
+        "top_up": 0.1326132613261326,
+        "cash": 0.075007500750075,
+        "fees_fx": 0.0808080808080808,
+        "security": 0.12921292129212922,
+        "account": 0.04220422042204221
+      },
+      "max_abs_delta": 0.0048004800480047904
+    },
+    {
+      "row_id": "test:2998",
+      "team": "cards",
+      "text": "How do I use the top up app with my apple watch?",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.0141,
+        "payments": 0.0251,
+        "transfers": 0.0068,
+        "top_up": 0.9125,
+        "cash": 0.0083,
+        "fees_fx": 0.0171,
+        "security": 0.0093,
+        "account": 0.0068
+      },
+      "direct_weights": {
+        "cards": 0.014301430143014302,
+        "payments": 0.025202520252025202,
+        "transfers": 0.006800680068006801,
+        "top_up": 0.9113911391139113,
+        "cash": 0.0083008300830083,
+        "fees_fx": 0.0177017701770177,
+        "security": 0.009400940094009401,
+        "account": 0.0069006900690069
+      },
+      "max_abs_delta": 0.0011088608860886362
+    },
+    {
+      "row_id": "test:2816",
+      "team": "fees_fx",
+      "text": "What fee is included if I top up by card?",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.0001,
+        "payments": 0.0007,
+        "transfers": 0.0001,
+        "top_up": 0.0014,
+        "cash": 0.0001,
+        "fees_fx": 0.9974,
+        "security": 0.0001,
+        "account": 0.0001
+      },
+      "direct_weights": {
+        "cards": 0.0001,
+        "payments": 0.0007,
+        "transfers": 0.0001,
+        "top_up": 0.0014,
+        "cash": 0.0001,
+        "fees_fx": 0.9974,
+        "security": 0.0001,
+        "account": 0.0001
+      },
+      "max_abs_delta": 0.0
+    },
+    {
+      "row_id": "test:2088",
+      "team": "payments",
+      "text": "Please explain to me the circumstances in which my card payment would be reverted?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.014301430143014304,
+        "payments": 0.9127912791279128,
+        "transfers": 0.004500450045004501,
+        "top_up": 0.007000700070007001,
+        "cash": 0.008100810081008101,
+        "fees_fx": 0.016601660166016604,
+        "security": 0.032103210321032104,
+        "account": 0.004600460046004601
+      },
+      "direct_weights": {
+        "cards": 0.0141,
+        "payments": 0.9153,
+        "transfers": 0.0043,
+        "top_up": 0.0069,
+        "cash": 0.008,
+        "fees_fx": 0.016,
+        "security": 0.0309,
+        "account": 0.0045
+      },
+      "max_abs_delta": 0.0025087208720872
+    },
+    {
+      "row_id": "test:189",
+      "team": "fees_fx",
+      "text": "I am a new customer, and I happened to look at my app and there is a charge I am not familiar with.  Could you tell me why the extra charge is there?",
+      "direct_prediction": "fees_fx",
+      "full_batch_prediction": "fees_fx",
+      "full_batch_weights": {
+        "cards": 0.0202979702029797,
+        "payments": 0.1436856314368563,
+        "transfers": 0.020597940205979402,
+        "top_up": 0.032296770322967704,
+        "cash": 0.0225977402259774,
+        "fees_fx": 0.7324267573242677,
+        "security": 0.018098190180981903,
+        "account": 0.009999000099990002
+      },
+      "direct_weights": {
+        "cards": 0.018698130186981302,
+        "payments": 0.13948605139486053,
+        "transfers": 0.0190980901909809,
+        "top_up": 0.029497050294970503,
+        "cash": 0.0214978502149785,
+        "fees_fx": 0.7454254574542546,
+        "security": 0.0168983101689831,
+        "account": 0.0093990600939906
+      },
+      "max_abs_delta": 0.01299870012998694
+    },
+    {
+      "row_id": "test:1719",
+      "team": "payments",
+      "text": "I need to cancel a purchase I made.",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.04800480048004801,
+        "payments": 0.3035303530353035,
+        "transfers": 0.0711071107110711,
+        "top_up": 0.0841084108410841,
+        "cash": 0.0859085908590859,
+        "fees_fx": 0.1137113711371137,
+        "security": 0.25762576257625763,
+        "account": 0.036003600360036
+      },
+      "direct_weights": {
+        "cards": 0.04750475047504751,
+        "payments": 0.3015301530153015,
+        "transfers": 0.07240724072407241,
+        "top_up": 0.08500850085008502,
+        "cash": 0.0876087608760876,
+        "fees_fx": 0.11401140114011402,
+        "security": 0.25592559255925595,
+        "account": 0.036003600360036
+      },
+      "max_abs_delta": 0.0020002000200020076
+    },
+    {
+      "row_id": "test:1654",
+      "team": "security",
+      "text": "My phone is not on me.  How can I use the app?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0683,
+        "payments": 0.268,
+        "transfers": 0.1018,
+        "top_up": 0.1908,
+        "cash": 0.1303,
+        "fees_fx": 0.1074,
+        "security": 0.0966,
+        "account": 0.0368
+      },
+      "direct_weights": {
+        "cards": 0.067006700670067,
+        "payments": 0.27462746274627464,
+        "transfers": 0.10281028102810282,
+        "top_up": 0.18691869186918691,
+        "cash": 0.13271327132713273,
+        "fees_fx": 0.10781078107810782,
+        "security": 0.09180918091809182,
+        "account": 0.0363036303630363
+      },
+      "max_abs_delta": 0.006627462746274626
+    },
+    {
+      "row_id": "test:2480",
+      "team": "cards",
+      "text": "How do I receive my physical card",
+      "direct_prediction": "cards",
+      "full_batch_prediction": "cards",
+      "full_batch_weights": {
+        "cards": 0.2965296529652965,
+        "payments": 0.14531453145314532,
+        "transfers": 0.09720972097209721,
+        "top_up": 0.10851085108510851,
+        "cash": 0.12421242124212421,
+        "fees_fx": 0.08490849084908492,
+        "security": 0.1059105910591059,
+        "account": 0.0374037403740374
+      },
+      "direct_weights": {
+        "cards": 0.2932,
+        "payments": 0.1471,
+        "transfers": 0.0967,
+        "top_up": 0.106,
+        "cash": 0.1249,
+        "fees_fx": 0.0892,
+        "security": 0.1058,
+        "account": 0.0371
+      },
+      "max_abs_delta": 0.004291509150915085
+    },
+    {
+      "row_id": "test:1898",
+      "team": "account",
+      "text": "Delete this account!",
+      "direct_prediction": "security",
+      "full_batch_prediction": "security",
+      "full_batch_weights": {
+        "cards": 0.06850685068506851,
+        "payments": 0.1069106910691069,
+        "transfers": 0.15121512151215122,
+        "top_up": 0.15811581158115812,
+        "cash": 0.1001100110011001,
+        "fees_fx": 0.0992099209920992,
+        "security": 0.23322332233223322,
+        "account": 0.08270827082708271
+      },
+      "direct_weights": {
+        "cards": 0.0678,
+        "payments": 0.1081,
+        "transfers": 0.1486,
+        "top_up": 0.1606,
+        "cash": 0.0994,
+        "fees_fx": 0.1008,
+        "security": 0.231,
+        "account": 0.0837
+      },
+      "max_abs_delta": 0.0026151215121512084
+    },
+    {
+      "row_id": "test:721",
+      "team": "top_up",
+      "text": "Am I free to top-up as much as I want?",
+      "direct_prediction": "top_up",
+      "full_batch_prediction": "top_up",
+      "full_batch_weights": {
+        "cards": 0.0012,
+        "payments": 0.0026,
+        "transfers": 0.0007,
+        "top_up": 0.9893,
+        "cash": 0.0012,
+        "fees_fx": 0.0019,
+        "security": 0.0009,
+        "account": 0.0022
+      },
+      "direct_weights": {
+        "cards": 0.0010998900109989002,
+        "payments": 0.0023997600239976003,
+        "transfers": 0.0006999300069993001,
+        "top_up": 0.9899010098990101,
+        "cash": 0.0010998900109989002,
+        "fees_fx": 0.0017998200179982,
+        "security": 0.0008999100089991,
+        "account": 0.0020997900209979003
+      },
+      "max_abs_delta": 0.0006010098990101298
+    },
+    {
+      "row_id": "test:1385",
+      "team": "cards",
+      "text": "Are there any limits to how many disposable cards I can use?",
+      "direct_prediction": "cards",
+      "full_batch_prediction": "cards",
+      "full_batch_weights": {
+        "cards": 0.26647335266473354,
+        "payments": 0.1593840615938406,
+        "transfers": 0.07339266073392661,
+        "top_up": 0.14278572142785723,
+        "cash": 0.1053894610538946,
+        "fees_fx": 0.13738626137386262,
+        "security": 0.08999100089991001,
+        "account": 0.025197480251974803
+      },
+      "direct_weights": {
+        "cards": 0.2702729727027297,
+        "payments": 0.15828417158284172,
+        "transfers": 0.072992700729927,
+        "top_up": 0.1436856314368563,
+        "cash": 0.10288971102889712,
+        "fees_fx": 0.1381861813818618,
+        "security": 0.08949105089491051,
+        "account": 0.0241975802419758
+      },
+      "max_abs_delta": 0.0037996200379961653
+    },
+    {
+      "row_id": "test:1765",
+      "team": "payments",
+      "text": "I need help. I asked for a refund from a merchant a while ago, but I have not gotten my money back. I keep checking my account, but nothing is showing up. What should I do now?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.03500350035003501,
+        "payments": 0.3424342434243424,
+        "transfers": 0.09070907090709071,
+        "top_up": 0.14001400140014003,
+        "cash": 0.14341434143414342,
+        "fees_fx": 0.11181118111811181,
+        "security": 0.10551055105510551,
+        "account": 0.031103110311031103
+      },
+      "direct_weights": {
+        "cards": 0.0354,
+        "payments": 0.3412,
+        "transfers": 0.0933,
+        "top_up": 0.1411,
+        "cash": 0.1458,
+        "fees_fx": 0.108,
+        "security": 0.104,
+        "account": 0.0312
+      },
+      "max_abs_delta": 0.003811181118111809
+    },
+    {
+      "row_id": "test:3034",
+      "team": "account",
+      "text": "What will I need for identity verification?",
+      "direct_prediction": "account",
+      "full_batch_prediction": "account",
+      "full_batch_weights": {
+        "cards": 0.0514,
+        "payments": 0.1098,
+        "transfers": 0.061,
+        "top_up": 0.0646,
+        "cash": 0.0526,
+        "fees_fx": 0.0632,
+        "security": 0.0618,
+        "account": 0.5356
+      },
+      "direct_weights": {
+        "cards": 0.0507,
+        "payments": 0.108,
+        "transfers": 0.0601,
+        "top_up": 0.0632,
+        "cash": 0.0511,
+        "fees_fx": 0.0632,
+        "security": 0.0607,
+        "account": 0.543
+      },
+      "max_abs_delta": 0.007400000000000073
+    },
+    {
+      "row_id": "test:1918",
+      "team": "account",
+      "text": "Can you tell me how to close my account?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0682,
+        "payments": 0.1967,
+        "transfers": 0.1389,
+        "top_up": 0.177,
+        "cash": 0.1138,
+        "fees_fx": 0.1177,
+        "security": 0.0982,
+        "account": 0.0895
+      },
+      "direct_weights": {
+        "cards": 0.0666,
+        "payments": 0.1958,
+        "transfers": 0.1382,
+        "top_up": 0.1766,
+        "cash": 0.1152,
+        "fees_fx": 0.1229,
+        "security": 0.0971,
+        "account": 0.0876
+      },
+      "max_abs_delta": 0.005199999999999996
+    },
+    {
+      "row_id": "test:1370",
+      "team": "cards",
+      "text": "How many disposable cards per day am I allowed to have?",
+      "direct_prediction": "cards",
+      "full_batch_prediction": "cards",
+      "full_batch_weights": {
+        "cards": 0.21717828217178284,
+        "payments": 0.14998500149985,
+        "transfers": 0.06699330066993302,
+        "top_up": 0.1640835916408359,
+        "cash": 0.13848615138486153,
+        "fees_fx": 0.1058894110588941,
+        "security": 0.1282871712828717,
+        "account": 0.029097090290970903
+      },
+      "direct_weights": {
+        "cards": 0.2102789721027897,
+        "payments": 0.14858514148585142,
+        "transfers": 0.06749325067493252,
+        "top_up": 0.1655834416558344,
+        "cash": 0.1396860313968603,
+        "fees_fx": 0.10928907109289071,
+        "security": 0.1302869713028697,
+        "account": 0.0287971202879712
+      },
+      "max_abs_delta": 0.006899310068993136
+    },
+    {
+      "row_id": "test:3035",
+      "team": "account",
+      "text": "Is there any way to verify who I am?",
+      "direct_prediction": "account",
+      "full_batch_prediction": "account",
+      "full_batch_weights": {
+        "cards": 0.0211,
+        "payments": 0.0657,
+        "transfers": 0.0341,
+        "top_up": 0.0453,
+        "cash": 0.0306,
+        "fees_fx": 0.031,
+        "security": 0.0461,
+        "account": 0.7261
+      },
+      "direct_weights": {
+        "cards": 0.022904580916183238,
+        "payments": 0.0715143028605721,
+        "transfers": 0.03710742148429686,
+        "top_up": 0.049109821964392876,
+        "cash": 0.032606521304260845,
+        "fees_fx": 0.03360672134426885,
+        "security": 0.05031006201240248,
+        "account": 0.7028405681136227
+      },
+      "max_abs_delta": 0.023259431886377246
+    },
+    {
+      "row_id": "test:1228",
+      "team": "account",
+      "text": "I am experiencing difficulty providing my identity.",
+      "direct_prediction": "account",
+      "full_batch_prediction": "account",
+      "full_batch_weights": {
+        "cards": 0.03130313031303131,
+        "payments": 0.08400840084008401,
+        "transfers": 0.043104310431043104,
+        "top_up": 0.0516051605160516,
+        "cash": 0.0372037203720372,
+        "fees_fx": 0.03160316031603161,
+        "security": 0.0516051605160516,
+        "account": 0.6695669566956696
+      },
+      "direct_weights": {
+        "cards": 0.030303030303030304,
+        "payments": 0.0804080408040804,
+        "transfers": 0.0411041104110411,
+        "top_up": 0.049204920492049206,
+        "cash": 0.0354035403540354,
+        "fees_fx": 0.0305030503050305,
+        "security": 0.048604860486048604,
+        "account": 0.6844684468446844
+      },
+      "max_abs_delta": 0.014901490149014873
+    },
+    {
+      "row_id": "test:2155",
+      "team": "cards",
+      "text": "Show me how to change my pin?",
+      "direct_prediction": "payments",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.07660766076607661,
+        "payments": 0.17421742174217422,
+        "transfers": 0.10161016101610161,
+        "top_up": 0.15291529152915292,
+        "cash": 0.104010401040104,
+        "fees_fx": 0.09770977097709771,
+        "security": 0.1467146714671467,
+        "account": 0.1462146214621462
+      },
+      "direct_weights": {
+        "cards": 0.07660766076607661,
+        "payments": 0.17321732173217322,
+        "transfers": 0.10241024102410241,
+        "top_up": 0.15421542154215423,
+        "cash": 0.10341034103410342,
+        "fees_fx": 0.0959095909590959,
+        "security": 0.14811481148114813,
+        "account": 0.14611461146114613
+      },
+      "max_abs_delta": 0.0018001800180018068
+    },
+    {
+      "row_id": "test:769",
+      "team": "cash",
+      "text": "Hi. I just withdrew cash from an ATM and received the wrong amount. However, my app shows the correct amount I withdrew. How do I get the rest of the cash?",
+      "direct_prediction": "cash",
+      "full_batch_prediction": "cash",
+      "full_batch_weights": {
+        "cards": 0.0141,
+        "payments": 0.0867,
+        "transfers": 0.0194,
+        "top_up": 0.0308,
+        "cash": 0.7923,
+        "fees_fx": 0.0115,
+        "security": 0.0324,
+        "account": 0.0128
+      },
+      "direct_weights": {
+        "cards": 0.013698630136986302,
+        "payments": 0.0851914808519148,
+        "transfers": 0.019198080191980802,
+        "top_up": 0.030496950304969503,
+        "cash": 0.7955204479552045,
+        "fees_fx": 0.0112988701129887,
+        "security": 0.031996800319968,
+        "account": 0.012598740125987402
+      },
+      "max_abs_delta": 0.0032204479552044862
+    },
+    {
+      "row_id": "test:1753",
+      "team": "transfers",
+      "text": "Why would my transfer be declined? I've checked that I've put in all the right details, but it is still declined.",
+      "direct_prediction": "transfers",
+      "full_batch_prediction": "transfers",
+      "full_batch_weights": {
+        "cards": 0.0112988701129887,
+        "payments": 0.0660933906609339,
+        "transfers": 0.811018898110189,
+        "top_up": 0.031796820317968204,
+        "cash": 0.0173982601739826,
+        "fees_fx": 0.022297770222977704,
+        "security": 0.0282971702829717,
+        "account": 0.0117988201179882
+      },
+      "direct_weights": {
+        "cards": 0.0113,
+        "payments": 0.069,
+        "transfers": 0.805,
+        "top_up": 0.0327,
+        "cash": 0.0179,
+        "fees_fx": 0.0236,
+        "security": 0.0284,
+        "account": 0.0121
+      },
+      "max_abs_delta": 0.006018898110188964
+    },
+    {
+      "row_id": "test:209",
+      "team": "cash",
+      "text": "Are you sure when the withdrawal will show?",
+      "direct_prediction": "cash",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.037996200379962,
+        "payments": 0.31296870312968705,
+        "transfers": 0.05359464053594641,
+        "top_up": 0.0738926107389261,
+        "cash": 0.31056894310568944,
+        "fees_fx": 0.07929207079292071,
+        "security": 0.10878912108789121,
+        "account": 0.022897710228977103
+      },
+      "direct_weights": {
+        "cards": 0.0391,
+        "payments": 0.3079,
+        "transfers": 0.0537,
+        "top_up": 0.0714,
+        "cash": 0.3202,
+        "fees_fx": 0.0785,
+        "security": 0.1064,
+        "account": 0.0228
+      },
+      "max_abs_delta": 0.009631056894310541
+    },
+    {
+      "row_id": "test:461",
+      "team": "security",
+      "text": "Someone stole my wallet earlier today, not sure exactly when, probably on Piccadilly circus. Can you check if there were any attempts to use the card and obviously block it?",
+      "direct_prediction": "security",
+      "full_batch_prediction": "payments",
+      "full_batch_weights": {
+        "cards": 0.0401,
+        "payments": 0.3277,
+        "transfers": 0.0682,
+        "top_up": 0.0825,
+        "cash": 0.1148,
+        "fees_fx": 0.0205,
+        "security": 0.3277,
+        "account": 0.0185
+      },
+      "direct_weights": {
+        "cards": 0.0388038803880388,
+        "payments": 0.32003200320032005,
+        "transfers": 0.0681068106810681,
+        "top_up": 0.0819081908190819,
+        "cash": 0.11741174117411741,
+        "fees_fx": 0.019801980198019802,
+        "security": 0.3353335333533353,
+        "account": 0.0186018601860186
+      },
+      "max_abs_delta": 0.007667996799679944
+    }
+  ]
+}

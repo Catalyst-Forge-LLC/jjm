@@ -1,0 +1,109 @@
+{
+  "schema_version": "0.1",
+  "request_id": "bench-test:0",
+  "evaluated_at": "2026-10-15T18:05:18.381Z",
+  "elapsed_ms": 0.0,
+  "results": [
+    {
+      "criterion_id": "route-banking",
+      "kind": "choice",
+      "status": "evaluated",
+      "prediction": {
+        "weights": {
+          "cards": 0.8331870871229106,
+          "payments": 0.0009663883537356053,
+          "transfers": 1.4380316034236039e-05,
+          "top_up": 0.0008676206673183443,
+          "cash": 0.0012111179063896578,
+          "fees_fx": 3.341455714471818e-06,
+          "security": 0.15748521931378442,
+          "account": 0.006264844864112777
+        },
+        "semantics": "normalized_readout",
+        "selected": "cards",
+        "value": null,
+        "top_mass": 0.8331870871229106,
+        "margin": 0.6757018678091261,
+        "normalized_entropy": 0.23857157430705367
+      },
+      "acceptance": {
+        "status": "pass",
+        "reason_codes": [],
+        "checks": [
+          {
+            "id": "prediction-complete",
+            "mandatory": true,
+            "status": "pass",
+            "code": "OK"
+          },
+          {
+            "id": "method-allowed",
+            "mandatory": true,
+            "status": "pass",
+            "code": "OK"
+          }
+        ]
+      },
+      "evidence": {
+        "considered_ids": [],
+        "selected_ids": [],
+        "missing_required_ids": [],
+        "selection_method": "none",
+        "verification": "not_performed"
+      },
+      "provenance": {
+        "execution_mode": "real",
+        "engine_version": "jjm-engine 0.1.0.dev0",
+        "upstream_commit": null,
+        "adapter_id": "jjm-head",
+        "adapter_version": "jjm-head-1",
+        "profile_id": "bench",
+        "profile_generation": "experiment-1",
+        "state_id": "test:0",
+        "state_revision": "r1",
+        "state_digest": "sha256:6bbdb0a58754c4d48093c55e6171bf4e298c21d2e546e6a900c0ffe5ebae842f",
+        "criterion_digest": "sha256:29092e13867f57ba68af111ef9e3d866603e5e8bcdb7e006a3ea05eb0600e3e5",
+        "rendering_digest": "sha256:3126bbf913b4a9a530fbb23be9f01c94a99a5015e8067dcea9e9986e9a3d898d",
+        "effective_config_digest": "sha256:17cf906487a754bee7498178d809d35673814686d15d10760f09ed9e7ca5d116",
+        "policy_digest": "sha256:9317e670cc64c23dee2d0d734e1c1d940665df4474688d834e5b16a7bdb667bc",
+        "model": {
+          "id": "Qwen/Qwen3-Embedding-0.6B",
+          "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+          "revision_status": "operator_attested",
+          "tokenizer_revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3"
+        },
+        "method": "jjm:hidden-state-head",
+        "upstream_level": null,
+        "validation": {
+          "status": "fitted_unvalidated",
+          "artifact_id": "head-2df7f9c063661b690821",
+          "validation_report_id": null,
+          "scope_match": false
+        },
+        "probability_calibration": {
+          "status": "not_assessed",
+          "report_id": null
+        },
+        "runtime": {
+          "id": "transformers",
+          "version": "4.57.6",
+          "dtype": "bfloat16",
+          "numeric_path": "hidden_state_head",
+          "prompt_evaluations": 0,
+          "adapter_calls": 0,
+          "prefix_reuse": "not_used",
+          "early_exit": "not_used",
+          "elapsed_ms": 0.0
+        },
+        "diagnostics": {
+          "artifact_id": "head-2df7f9c063661b690821",
+          "feature_cache": "hit",
+          "head_method": "softmax",
+          "truncated": false,
+          "rendered_state_digest": "sha256:a86cbe4ad63ac8cfc33649d4c06d264bc35e98d5a82114fd568e50e3bec382c0"
+        }
+      },
+      "error": null
+    }
+  ]
+}

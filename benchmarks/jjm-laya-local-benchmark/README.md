@@ -26,6 +26,10 @@ The CUDA command is for a compatible NVIDIA setup. To run on CPU, install `torch
 
 Initial model downloads total roughly 2 GB. Model loading and working memory need additional space. The runner loads one neural model at a time and records versions. No Ollama is required. After initial downloads, the model cache can be used offline with `HF_HUB_OFFLINE=1`.
 
+## Local GPU results
+
+The October 15, 2026 RTX 4000 Ada run is complete. See [the combined report](results/LOCAL_GPU_REPORT.md) for accuracy, timing, label budgets, rejection policies, and numerical diagnostics. On all 3,080 test rows, JJM scored 96.69%, TF-IDF 95.65%, and Laya 55.32% with this fixed rubric.
+
 ## Run
 
 CPU wiring check, 64 supplied training labels, 16 validation rows, 32 test rows:

@@ -1,0 +1,305 @@
+{
+  "pins": {
+    "jjm_commit": "0192a6354b2ab7b5a2c4d69b4c2bfe785b775c14",
+    "laya_package": "0.4.8",
+    "laya_source_commit": "4ac226d5ee88ed6df8db288a05c766d7a34ee682",
+    "laya_model": "convaiinnovations/laya",
+    "laya_revision": "7b928d828b7b0e022f929d9bd2e44165aa270148",
+    "embedding_model": "Qwen/Qwen3-Embedding-0.6B",
+    "embedding_revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3"
+  },
+  "arguments": {
+    "device": "cuda",
+    "routes": [
+      "tfidf",
+      "jjm",
+      "laya"
+    ],
+    "train_per_team": 0,
+    "val_per_team": 50,
+    "test_per_team": 0,
+    "latency_n": 200,
+    "batch_size": 32,
+    "threads": 4,
+    "head_max_len": 384,
+    "seed": 42,
+    "target_error": 0.02,
+    "min_val_accepted": 20,
+    "out": "results\\gpu-full-20261015"
+  },
+  "run_scope": "Single-task experiment. Interpret alongside label budget and data-overlap caveats.",
+  "split_sha256": "bf026f073891813ac0df750964b28e17002f859d6f0136fb5c089c8a83042e6e",
+  "latency_sample_sha256": "950c68ddab7615918adaf56b8ad687aa4feafbd71846d074b5ad8ea1fb431914",
+  "harness_sha256": {
+    "bench.py": "48b7dcbf392506041da136092b80273d3b39a1b46ee72439c9bf922c292d1aab",
+    "task_data.py": "58e0192edf9c642f5e830f4332255c4acf20462b3e78a4e2104b31f30b1566b6",
+    "laya_adapter.py": "33a5a392d714666ee016c7ee10ca3368540476eac58b1ba23354c9cff0135a75",
+    "requirements.txt": "1913a466cf37e681b1b5d7d4f8091af51d6486aa84522481e67e4212f3284e3a"
+  },
+  "rows": {
+    "train": 9603,
+    "validation": 400,
+    "test": 3080
+  },
+  "environment": {
+    "platform": "Windows-10-10.0.19045-SP0",
+    "python": "3.12.13 (main, May 10 2026, 19:35:37) [MSC v.1944 64 bit (AMD64)]",
+    "torch": "2.14.0+cu130",
+    "cpu_count": 20,
+    "hardware": {
+      "cuda_runtime": "13.0",
+      "torch_threads": 4,
+      "cpu": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+      "cudnn_version": 92400,
+      "gpu_total_bytes": 12878086144,
+      "gpu_free_bytes_before_run": 11600396288,
+      "compute_capability": [
+        8,
+        9
+      ],
+      "bfloat16_supported": true,
+      "nvidia_smi": "name, driver_version, memory.total [MiB], memory.free [MiB], power.limit [W]\nNVIDIA RTX 4000 Ada Generation Laptop GPU, 596.58, 12282 MiB, 10254 MiB, [N/A]"
+    },
+    "device": "NVIDIA RTX 4000 Ada Generation Laptop GPU",
+    "packages": {
+      "laya": "0.4.8",
+      "transformers": "4.57.6",
+      "huggingface-hub": "0.36.2",
+      "numpy": "2.5.4",
+      "scipy": "1.18.1",
+      "scikit-learn": "1.9.1",
+      "jjm-engine": "0.1.0.dev0",
+      "anyjev": "0.2.0"
+    }
+  },
+  "routes": {
+    "tfidf": {
+      "performance": {
+        "fit_ms": 1536.404099999345,
+        "task_labels_supplied": 9603,
+        "actual_fit_rows": 7680,
+        "internal_holdout_rows": 1923,
+        "warm_batch1": {
+          "n": 200,
+          "p50_ms": 0.40055000135907903,
+          "p95_ms": 0.4794699962076264,
+          "mean_ms": 0.416935000102967
+        },
+        "test_batch_ms": 30.910000001313165,
+        "test_rows_per_second": 99644.12810964577,
+        "peak_cuda_allocated_bytes": 0
+      },
+      "validation": {
+        "n": 400,
+        "accuracy": 0.94,
+        "accuracy_wilson95": [
+          0.9122771510995447,
+          0.9593520298862748
+        ],
+        "macro_f1": 0.9398945309865658,
+        "log_loss_on_readout": 0.2818900369237384,
+        "per_team_accuracy": {
+          "cards": 1.0,
+          "payments": 0.92,
+          "transfers": 1.0,
+          "top_up": 0.9,
+          "cash": 0.88,
+          "fees_fx": 0.94,
+          "security": 0.96,
+          "account": 0.92
+        },
+        "warning": "Normalized readouts are not certified calibrated probabilities."
+      },
+      "test": {
+        "n": 3080,
+        "accuracy": 0.9564935064935065,
+        "accuracy_wilson95": [
+          0.9487026490346758,
+          0.9631470804502343
+        ],
+        "macro_f1": 0.9508364089113062,
+        "log_loss_on_readout": 0.24035928705952986,
+        "per_team_accuracy": {
+          "cards": 0.98125,
+          "payments": 0.9458333333333333,
+          "transfers": 0.935,
+          "top_up": 0.95,
+          "cash": 0.90625,
+          "fees_fx": 0.9596153846153846,
+          "security": 0.925,
+          "account": 0.9777777777777777
+        },
+        "warning": "Normalized readouts are not certified calibrated probabilities."
+      },
+      "selective_test": {
+        "threshold": 0.6123205481685039,
+        "accepted": 2685,
+        "coverage": 0.8717532467532467,
+        "errors": 35,
+        "error_rate": 0.01303538175046555,
+        "error_wilson95": [
+          0.009387767160972192,
+          0.018074416813638285
+        ]
+      },
+      "threshold_status": "selected_on_validation"
+    },
+    "jjm": {
+      "performance": {
+        "load_ms_including_any_download": 2851.5333000104874,
+        "fit_ms": 25966.13580000121,
+        "feature_ms": 23396.5487999958,
+        "task_labels_supplied": 9603,
+        "actual_fit_rows": 7680,
+        "fit_reused": false,
+        "dtype": "bfloat16",
+        "cache_policy": "no disk cache, memo cleared before each timed operation",
+        "warm_batch1": {
+          "n": 200,
+          "p50_ms": 36.35760000179289,
+          "p95_ms": 68.73885999666525,
+          "mean_ms": 40.33158699989144
+        },
+        "test_batch_ms": 9433.590100001311,
+        "test_rows_per_second": 326.49287994817286,
+        "validation_status": "fitted_unvalidated",
+        "probability_calibration": "not_assessed",
+        "peak_cuda_allocated_bytes": 2211385856
+      },
+      "validation": {
+        "n": 400,
+        "accuracy": 0.9675,
+        "accuracy_wilson95": [
+          0.945195847176234,
+          0.9809101576211993
+        ],
+        "macro_f1": 0.967475403598041,
+        "log_loss_on_readout": 0.12860851520293576,
+        "per_team_accuracy": {
+          "cards": 1.0,
+          "payments": 0.98,
+          "transfers": 0.98,
+          "top_up": 0.94,
+          "cash": 0.92,
+          "fees_fx": 0.94,
+          "security": 0.98,
+          "account": 1.0
+        },
+        "warning": "Normalized readouts are not certified calibrated probabilities."
+      },
+      "test": {
+        "n": 3080,
+        "accuracy": 0.9668831168831169,
+        "accuracy_wilson95": [
+          0.959959223511132,
+          0.9726438426334632
+        ],
+        "macro_f1": 0.9619121416161319,
+        "log_loss_on_readout": 0.12016520213917747,
+        "per_team_accuracy": {
+          "cards": 0.97125,
+          "payments": 0.975,
+          "transfers": 0.94,
+          "top_up": 0.9611111111111111,
+          "cash": 0.98125,
+          "fees_fx": 0.9673076923076923,
+          "security": 0.9458333333333333,
+          "account": 0.9944444444444445
+        },
+        "warning": "Normalized readouts are not certified calibrated probabilities."
+      },
+      "selective_test": {
+        "threshold": 0.8393730164793668,
+        "accepted": 2773,
+        "coverage": 0.9003246753246753,
+        "errors": 24,
+        "error_rate": 0.00865488640461594,
+        "error_wilson95": [
+          0.005822986459254545,
+          0.012846231639610428
+        ]
+      },
+      "threshold_status": "selected_on_validation"
+    },
+    "laya": {
+      "performance": {
+        "load_ms_including_any_download": 1746.9110999954864,
+        "task_labels_used_for_model_fit": 0,
+        "upstream_training_overlap_with_banking77": "unknown",
+        "dtype": "torch.bfloat16",
+        "warm_batch1": {
+          "n": 200,
+          "p50_ms": 38.94254999613622,
+          "p95_ms": 78.58170500403496,
+          "mean_ms": 45.12325549956586
+        },
+        "jjm_wrapper_warm_batch1": {
+          "n": 200,
+          "p50_ms": 39.572950001456775,
+          "p95_ms": 82.38048000930569,
+          "mean_ms": 46.51723049959401
+        },
+        "paired_wrapper_delta_ms_median": 0.772450010117609,
+        "adapter_max_abs_weight_delta": 0.0,
+        "adapter_parity_n": 200,
+        "test_batch_ms": 25968.095100004575,
+        "test_rows_per_second": 118.60708258109611,
+        "probability_calibration": "not_assessed_on_this_task",
+        "state_truncation_count": 0,
+        "peak_cuda_allocated_bytes": 2883303424
+      },
+      "validation": {
+        "n": 400,
+        "accuracy": 0.605,
+        "accuracy_wilson95": [
+          0.5563126557323728,
+          0.6516897624574249
+        ],
+        "macro_f1": 0.5990494926856917,
+        "log_loss_on_readout": 1.2309911794416528,
+        "per_team_accuracy": {
+          "cards": 0.4,
+          "payments": 0.92,
+          "transfers": 0.82,
+          "top_up": 0.82,
+          "cash": 0.9,
+          "fees_fx": 0.52,
+          "security": 0.16,
+          "account": 0.3
+        },
+        "warning": "Normalized readouts are not certified calibrated probabilities."
+      },
+      "test": {
+        "n": 3080,
+        "accuracy": 0.5532467532467532,
+        "accuracy_wilson95": [
+          0.5356336032865163,
+          0.5707272470943692
+        ],
+        "macro_f1": 0.5659983006093667,
+        "log_loss_on_readout": 1.367767682977016,
+        "per_team_accuracy": {
+          "cards": 0.4,
+          "payments": 0.925,
+          "transfers": 0.675,
+          "top_up": 0.8666666666666667,
+          "cash": 0.86875,
+          "fees_fx": 0.46153846153846156,
+          "security": 0.24166666666666667,
+          "account": 0.3972222222222222
+        },
+        "warning": "Normalized readouts are not certified calibrated probabilities."
+      },
+      "selective_test": null,
+      "threshold_status": "no_qualifying_validation_threshold"
+    }
+  },
+  "paired_comparison": {
+    "jjm_only_correct": 1299,
+    "laya_only_correct": 25,
+    "both_correct": 1679,
+    "both_wrong": 77,
+    "mcnemar_exact_two_sided_p": 0.0,
+    "warning": "One task and seed. Pretrained data overlap unknown. No broad superiority claim."
+  }
+}

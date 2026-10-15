@@ -1,0 +1,32 @@
+{
+  "method": "seeded proportional team sample, shuffled",
+  "seed": 45,
+  "row_ids": [
+    "test:1807",
+    "test:785",
+    "test:1158",
+    "test:1024",
+    "test:2411",
+    "test:3021",
+    "test:1516",
+    "test:1655",
+    "test:2825",
+    "test:2660",
+    "test:2271",
+    "test:881",
+    "test:1473",
+    "test:2614",
+    "test:2040",
+    "test:2109"
+  ],
+  "team_counts": {
+    "cards": 2,
+    "payments": 2,
+    "transfers": 2,
+    "top_up": 2,
+    "cash": 2,
+    "fees_fx": 2,
+    "security": 2,
+    "account": 2
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "model": "laya-rl-agent",
+  "answers": {
+    "route": {
+      "type": "choice",
+      "choice": "payments",
+      "probabilities": {
+        "cards": 0.0151,
+        "payments": 0.4169,
+        "transfers": 0.1242,
+        "top_up": 0.0779,
+        "cash": 0.1201,
+        "fees_fx": 0.0892,
+        "security": 0.1416,
+        "account": 0.0151
+      },
+      "confidence": 0.1844,
+      "answer_confidence": 0.4169,
+      "action": {
+        "act_probability": 1.0
+      }
+    }
+  },
+  "usage": {
+    "input_tokens": 348,
+    "output_tokens": 0,
+    "state_tokens": 74,
+    "state_tokens_dropped": 0,
+    "truncated": false,
+    "truncated_questions": []
+  }
+}
