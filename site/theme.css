@@ -46,6 +46,18 @@
 	--accent-wash: color-mix(in srgb, var(--accent) 11%, transparent);
 	--amber-wash: color-mix(in srgb, var(--accent-strong) 12%, transparent);
 	--radius: 10px;
+	/* One code palette for fenced blocks and labeled homepage examples.
+	 * Text colors target at least 7:1 against --code-bg, in either OS theme. */
+	--code-bg: #141311;
+	--code-fg: #f3f0e8;
+	--code-border: #38352f;
+	--code-label-bg: #1c1b18;
+	--code-muted: #b8b2a8;
+	--code-key: #dfcbb5;
+	--code-string: #c5dfa3;
+	--code-number: #9fd3f2;
+	--code-keyword: #e8b8df;
+	--code-function: #f3cc91;
 	/* Wide chrome shell; reading column is centered inside it (ingotvault). */
 	--measure: 50rem;
 	--measure-wide: 72rem;
@@ -498,6 +510,7 @@ a:hover {
 	font-weight: 700;
 }
 
+/* Shared code presentation. Inline code remains on the light page surface. */
 code,
 pre {
 	font-family: var(--font-mono);
@@ -510,38 +523,67 @@ pre {
 	border-radius: 4px;
 }
 
-.prose pre {
-	background: #141311;
-	color: #f3f0e8;
-	border: 1px solid #2a2824;
-	border-radius: 12px;
-	padding: 1.15rem 1.25rem;
-	overflow-x: auto;
-	box-shadow: 0 18px 40px rgba(16, 24, 32, 0.18);
-}
-
-.prose pre code {
-	background: transparent;
-	color: inherit;
-	padding: 0;
-}
-
+.prose pre,
 .prose .snippet {
-	margin: 1.15rem 0 0.35rem;
-	border: 1px solid #2a2824;
+	background: var(--code-bg);
+	color: var(--code-fg);
+	border: 1px solid var(--code-border);
 	border-radius: 12px;
-	overflow: hidden;
-	background: #141311;
 	box-shadow: 0 18px 40px rgba(16, 24, 32, 0.18);
 	text-align: left;
 }
 
+.prose pre {
+	padding: 1.15rem 1.25rem;
+	overflow-x: auto;
+}
+
+.prose pre code {
+	display: block;
+	background: transparent;
+	color: inherit;
+	padding: 0;
+	border-radius: 0;
+	font-size: 0.875rem;
+	line-height: 1.65;
+	white-space: pre;
+	tab-size: 4;
+}
+
+/* Scoped token rules override FilePress's light AND dark syntax palettes. */
+.prose pre :is(.hljs-comment, .hljs-quote) {
+	color: var(--code-muted);
+}
+.prose pre :is(.hljs-attr, .hljs-attribute, .hljs-selector-attr) {
+	color: var(--code-key);
+}
+.prose pre :is(.hljs-string, .hljs-template-tag, .hljs-regexp, .hljs-addition) {
+	color: var(--code-string);
+}
+.prose pre :is(.hljs-number, .hljs-type, .hljs-variable, .hljs-symbol, .hljs-bullet) {
+	color: var(--code-number);
+}
+.prose pre :is(.hljs-keyword, .hljs-selector-tag, .hljs-literal, .hljs-name, .hljs-tag, .hljs-deletion) {
+	color: var(--code-keyword);
+}
+.prose pre :is(.hljs-built_in, .hljs-title, .hljs-meta, .hljs-selector-class, .hljs-selector-id) {
+	color: var(--code-function);
+}
+.prose pre :is(.hljs-punctuation, .hljs-operator, .hljs-subst) {
+	color: var(--code-fg);
+}
+
+.prose .snippet {
+	margin: 1.15rem 0 0.35rem;
+	overflow: hidden;
+}
+
 .prose .snippet-label {
 	margin: 0;
-	padding: 0.55rem 1.15rem;
-	background: #1c1b18;
-	border-bottom: 1px solid #2a2824;
-	color: #c4bbaa;
+	padding: 0.55rem 1.25rem;
+	background: var(--code-label-bg);
+	border-bottom: 1px solid var(--code-border);
+	color: var(--code-muted);
 	font-family: var(--font-sans);
 	font-size: 0.72rem;
 	font-weight: 700;
@@ -549,26 +591,13 @@ pre {
 	text-transform: uppercase;
 }
 
-.prose .snippet pre,
-.prose .snippet code {
+/* The label wrapper owns the border; the inner block keeps shared typography. */
+.prose .snippet pre {
 	margin: 0;
 	border: 0;
 	border-radius: 0;
 	box-shadow: none;
-	background: transparent;
-	text-align: left;
-	white-space: pre-wrap;
-	font-size: 0.84rem;
-	line-height: 1.55;
 }
-
-.prose .snippet code {
-	display: block;
-}
-
-.prose .snippet .k { color: #cbbba6; }
-.prose .snippet .s { color: #f7f3ec; }
-.prose .snippet .n { color: #e0b48a; }
 
 .compare {
 	margin: 1.15rem 0 0.85rem;

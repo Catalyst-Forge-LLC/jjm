@@ -38,23 +38,23 @@ A JSON request with a snapshot and explicit criteria. A choice has two to 26 opt
 
 <div class="snippet">
   <div class="snippet-label">Request</div>
-  <pre><code>{
-  <span class="k">"state"</span>: {
-    <span class="k">"content"</span>: {
-      <span class="k">"ticket"</span>: <span class="s">"I was charged twice for the same subscription."</span>
+  <pre><code class="hljs language-json">{
+  <span class="hljs-attr">"state"</span>: {
+    <span class="hljs-attr">"content"</span>: {
+      <span class="hljs-attr">"ticket"</span>: <span class="hljs-string">"I was charged twice for the same subscription."</span>
     }
   },
-  <span class="k">"criteria"</span>: [{
-    <span class="k">"id"</span>: <span class="s">"route-ticket"</span>,
-    <span class="k">"kind"</span>: <span class="s">"choice"</span>,
-    <span class="k">"question"</span>: <span class="s">"Which team should own this ticket?"</span>,
-    <span class="k">"options"</span>: [
-      { <span class="k">"id"</span>: <span class="s">"billing"</span> },
-      { <span class="k">"id"</span>: <span class="s">"technical"</span> },
-      { <span class="k">"id"</span>: <span class="s">"other"</span> }
+  <span class="hljs-attr">"criteria"</span>: [{
+    <span class="hljs-attr">"id"</span>: <span class="hljs-string">"route-ticket"</span>,
+    <span class="hljs-attr">"kind"</span>: <span class="hljs-string">"choice"</span>,
+    <span class="hljs-attr">"question"</span>: <span class="hljs-string">"Which team should own this ticket?"</span>,
+    <span class="hljs-attr">"options"</span>: [
+      { <span class="hljs-attr">"id"</span>: <span class="hljs-string">"billing"</span> },
+      { <span class="hljs-attr">"id"</span>: <span class="hljs-string">"technical"</span> },
+      { <span class="hljs-attr">"id"</span>: <span class="hljs-string">"other"</span> }
     ]
   }],
-  <span class="k">"requirements"</span>: { <span class="k">"min_top_mass"</span>: <span class="n">0.5</span> }
+  <span class="hljs-attr">"requirements"</span>: { <span class="hljs-attr">"min_top_mass"</span>: <span class="hljs-number">0.5</span> }
 }</code></pre>
 </div>
 
@@ -70,22 +70,22 @@ Weights are a normalized readout. Accepting a held-out report records that scope
 
 <div class="snippet">
   <div class="snippet-label">Return</div>
-  <pre><code>{
-  <span class="k">"results"</span>: [{
-    <span class="k">"criterion_id"</span>: <span class="s">"route-ticket"</span>,
-    <span class="k">"prediction"</span>: {
-      <span class="k">"weights"</span>: {
-        <span class="k">"billing"</span>: <span class="n">0.892</span>,
-        <span class="k">"technical"</span>: <span class="n">0.005</span>,
-        <span class="k">"other"</span>: <span class="n">0.103</span>
+  <pre><code class="hljs language-json">{
+  <span class="hljs-attr">"results"</span>: [{
+    <span class="hljs-attr">"criterion_id"</span>: <span class="hljs-string">"route-ticket"</span>,
+    <span class="hljs-attr">"prediction"</span>: {
+      <span class="hljs-attr">"weights"</span>: {
+        <span class="hljs-attr">"billing"</span>: <span class="hljs-number">0.892</span>,
+        <span class="hljs-attr">"technical"</span>: <span class="hljs-number">0.005</span>,
+        <span class="hljs-attr">"other"</span>: <span class="hljs-number">0.103</span>
       },
-      <span class="k">"semantics"</span>: <span class="s">"normalized_readout"</span>,
-      <span class="k">"selected"</span>: <span class="s">"billing"</span>
+      <span class="hljs-attr">"semantics"</span>: <span class="hljs-string">"normalized_readout"</span>,
+      <span class="hljs-attr">"selected"</span>: <span class="hljs-string">"billing"</span>
     },
-    <span class="k">"acceptance"</span>: { <span class="k">"status"</span>: <span class="s">"pass"</span> },
-    <span class="k">"provenance"</span>: {
-      <span class="k">"method"</span>: <span class="s">"mock:normalized"</span>,
-      <span class="k">"model"</span>: { <span class="k">"id"</span>: <span class="s">"jjm/synthetic-no-model"</span> }
+    <span class="hljs-attr">"acceptance"</span>: { <span class="hljs-attr">"status"</span>: <span class="hljs-string">"pass"</span> },
+    <span class="hljs-attr">"provenance"</span>: {
+      <span class="hljs-attr">"method"</span>: <span class="hljs-string">"mock:normalized"</span>,
+      <span class="hljs-attr">"model"</span>: { <span class="hljs-attr">"id"</span>: <span class="hljs-string">"jjm/synthetic-no-model"</span> }
     }
   }]
 }</code></pre>

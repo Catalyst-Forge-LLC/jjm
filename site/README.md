@@ -34,3 +34,11 @@ This verifies the immutable benchmark's 78 manifest entries and archives an
 explicit allowlist from the tested CPU-backend commit. Update that pinned commit
 only after rerunning integration checks. Keep original baseline results separate
 from later configurations. The archive checksums are published beside the ZIPs.
+
+## Code styling
+
+All code blocks share the palette, typography, and overflow rules in theme.css.
+Keep syntax colors in the --code-* variables there; they are independent of the
+page's light palette and the operating system's theme. Hand-authored snippets
+use the same hljs-* token classes as FilePress's fenced Markdown blocks. The
+snippet wrapper adds only its label and border, not another code style.
