@@ -6,11 +6,11 @@ An open-source judgment runtime. Just judgment. Your application makes the decis
 
 ## PE:TL;DR
 
-Plain English. The payoff is a fast, solid judgment. Show JJM a few notes that are already sorted. The next note comes back in a few milliseconds, on your computer, as a weight for every bucket you use, and a receipt for how that judgment was made.
+The payoff is a fast, solid judgment. Fit it on a few cases you have already labeled, in the buckets you use. The next case comes back in a few milliseconds, on your machine: a weight over those buckets, and a record of how the judgment was made.
 
-A chat model can pick a bucket too. It also writes a paragraph. On the Banking77 comparison below, a 9B chat model took about 390 ms for each of 400 notes. The fitted head took a few milliseconds on all 3,080. Use the chat model, or a person, when you need the paragraph. Use this when you already know the buckets and you have a lot of notes to sort.
+A chat model can make the same choice. It also writes a paragraph. On the Banking77 comparison below, a 9B chat model took about 390 ms for each of 400 notes. The fitted head took a few milliseconds on all 3,080. Use a chat model when you need the writing. Use JJM when the question is closed and there are many of them.
 
-You send the options you allow. JJM does not try to talk. It makes the judgment: a weight for each option, a record of the method and the model, and a pass, hold, or reject against checks you declared. Your application decides what happens next.
+JJM does not try to talk. It makes the judgment: a weight for each option you allowed, the method and the model that produced it, and a pass, hold, or reject against checks you declared. Your application decides what happens next.
 
 ## What you might hand it
 
