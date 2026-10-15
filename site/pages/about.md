@@ -6,11 +6,11 @@ order: 1
 
 ## PE:TL;DR
 
-Plain English. The payoff is a fast answer in buckets you already trust. Show JJM a few notes that are already sorted. The next note comes back in a few milliseconds, on your computer, with a number for every bucket and a receipt for how it got there.
+Plain English. The payoff is a fast, solid judgment. Show JJM a few notes that are already sorted. The next note comes back in a few milliseconds, on your computer, as a weight for every bucket you use, and a receipt for how that judgment was made.
 
 A chat model can pick a bucket too. It also writes a paragraph. On the comparison below, a 9B chat model took about 390 ms for each of 400 notes. The fitted head took a few milliseconds on all 3,080. Use the chat model, or a person, when you need the paragraph. Use this when you already know the buckets and you have a lot of notes to sort.
 
-You send the options you allow. JJM does not try to talk. It returns a weight for each option, a record of the method and the model, and a pass, hold, or reject against checks you declared. Your application decides what happens next.
+You send the options you allow. JJM does not try to talk. It makes the judgment: a weight for each option, a record of the method and the model, and a pass, hold, or reject against checks you declared. Your application decides what happens next.
 
 <div class="cta-row">
   <a class="cta cta-primary" href="https://github.com/Catalyst-Forge-LLC/jjm">View the source</a>
