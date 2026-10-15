@@ -1,3 +1,6 @@
+<img width="254" alt="JJM" src="brand/jjm-wordmark.png#gh-light-mode-only">
+<img width="254" alt="JJM" src="brand/jjm-wordmark-on-dark.png#gh-dark-mode-only">
+
 # JJM — Just Judgment Machine
 
 An open-source judgment runtime. Just judgment. Your application makes the decision.
