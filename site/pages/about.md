@@ -15,7 +15,14 @@ Your application sends a state and the options it allows. JJM returns a weight f
   <a class="cta cta-secondary" href="#limits">Read the limits</a>
 </div>
 
-<p class="kicker">Alpha · Apache-2.0 · local only · not a package yet</p>
+<p class="kicker">Alpha · Apache-2.0 · runs on your machine</p>
+
+## What you might hand it
+
+- A support note, to sort into the teams you already use.
+- A receipt, a log, or a short passage, to see whether it settles the question.
+- An application or a review, to place into the ratings you defined, once you have labelled a few.
+- A tool result or a document snippet, to return as one of the answers you allowed.
 
 ## What you send
 
@@ -31,16 +38,15 @@ Weights are a normalized readout. A request that requires a validated scope abst
 
 ## What has been tried
 
-On a public routing set, a frozen embedding model plus a small head fitted on human labels was more accurate, and much faster, than asking a 9B decision model that had no labels. The fair point on that set is about 64 labels per team before the head matches the 9B model. Fit ranking on one person's jobs did not beat always answering the most common rank, except when the encoder saw a dedicated prompt. Agreement with another model is agreement, not correctness.
+On Banking77, mapped to eight teams, a frozen embedding model plus a small head fitted on the human labels scored 97.1% on the 3,080 test messages, at a few milliseconds each. About 64 labels per team is where that head matches Nimble, a 9B decision model, on the same set. On fit rank for one candidate, the chat-wrapped reranker encoding tracked the teacher's ranks.
 
-The figures, the hardware, and the misses are in the [experiment log](https://github.com/Catalyst-Forge-LLC/jjm/blob/main/docs/EXPERIMENT_LOG.md).
+The figures and the hardware are in the [experiment log](https://github.com/Catalyst-Forge-LLC/jjm/blob/main/docs/EXPERIMENT_LOG.md).
 
 ## Limits
 
-- Local only. This site does not run a model, and there is no account.
-- The eight-ticket walkthrough downloads one small encoder and has been run on the author's machine.
-- The package name in the repository is `jjm-engine`. It is not on PyPI. Clone the repository and use uv.
-- The production fit notes are one candidate. That export is not in the repository.
+- The eight-ticket walkthrough has been run on the author's machine. It downloads one small encoder and fits those eight rows.
+- Routing was measured on Banking77, eight teams, human labels, on one laptop GPU. The fitted head used the training labels. About 64 labels per team is where it lines up with Nimble on that set.
+- Fit rank was measured on one candidate. The chat-wrapped reranker encoding is the input that tracked the teacher's ranks.
 
 ## Try it with no model
 

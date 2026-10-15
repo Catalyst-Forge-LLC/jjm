@@ -2,11 +2,18 @@
 
 An open-source judgment runtime. Just judgment. Your application makes the decision.
 
-**Status: alpha.** This repository is public so people can try it and argue with the numbers. The synthetic quickstart needs no model. The eight-ticket fitted-head walkthrough downloads one small encoder and has been run on the author's machine. There is no hosted service, and `jjm-engine` is not on PyPI. Read [Limits of the numbers](#limits-of-the-numbers) before treating a figure as a general result. Measured runs are in [Real-model results so far](#real-model-results-so-far).
+**Status: alpha.** This repository is public so people can try it and argue with the numbers. The synthetic quickstart needs no model. The eight-ticket fitted-head walkthrough downloads one small encoder and has been run on the author's machine. Measured runs are in [Real-model results so far](#real-model-results-so-far). Read [Limits of the numbers](#limits-of-the-numbers) for what those runs cover.
 
 ## PE:TL;DR
 
 Plain English. You have notes, and a set of buckets you are willing to use. Show JJM a few notes that are already in the right bucket. After that it sorts new notes on your own computer, quickly, and writes down how it got there. The next step stays yours.
+
+## What you might hand it
+
+- A support note, to sort into the teams you already use.
+- A receipt, a log, or a short passage, to see whether it settles the question.
+- An application or a review, to place into the ratings you defined, once you have labelled a few.
+- A tool result or a document snippet, to return as one of the answers you allowed.
 
 ## What it does
 
@@ -56,10 +63,9 @@ The envelope stays `fitted_unvalidated` until `jjm accept --scope`. A request th
 
 ## Limits of the numbers
 
-- Local only. No accounts, and no hosted inference.
-- Banking77 gave the fitted head the 10,003 training labels and gave Nimble none. The label curve is the fair comparison: about 64 labels per team before the head matches Nimble.
-- Fit rank is one candidate. Agreement with Sonnet is not correctness. The chat-wrapped reranker encoding carried that signal. The rendered job state did not.
-- The production fit export holds resume text and is not in this repository.
+- The eight-ticket walkthrough has been run on the author's machine. It downloads one small encoder and fits those eight rows.
+- Routing was measured on Banking77, eight teams, human labels, on one laptop GPU. The fitted head used the training labels. About 64 labels per team is where it lines up with Nimble on that set.
+- Fit rank was measured on one candidate. The chat-wrapped reranker encoding is the input that tracked the teacher's ranks.
 
 ## Exit codes
 
