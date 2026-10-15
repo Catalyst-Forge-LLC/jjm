@@ -1,0 +1,10 @@
+JJM (Just Judgment Model)
+Copyright 2026 Catalyst Forge, LLC
+
+This product depends on AnyJev (https://github.com/nokia-applied-research/AnyJev),
+licensed under the Apache License, Version 2.0. AnyJev authors: Jiamu Zhang,
+Tianze Yang, Yucheng Shi, and Liang Wu. JJM installs AnyJev as a separate,
+unmodified package and does not redistribute its source.
+
+JJM is not affiliated with, endorsed by, or derived from TypeSafe AI or Jev,
+and is not sponsored by the AnyJev authors or their employers.

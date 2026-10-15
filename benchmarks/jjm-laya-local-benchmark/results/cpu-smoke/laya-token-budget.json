@@ -1,0 +1,21 @@
+{
+  "head_tokens": 273,
+  "head_stats": {
+    "options": 8,
+    "options_distinct": 8,
+    "tokens_per_option": null
+  },
+  "full_option_token_lengths": [
+    37,
+    32,
+    29,
+    42,
+    26,
+    34,
+    28,
+    24
+  ],
+  "per_option_upstream_cap": 48,
+  "max_len": 512,
+  "head_max_len": 384
+}

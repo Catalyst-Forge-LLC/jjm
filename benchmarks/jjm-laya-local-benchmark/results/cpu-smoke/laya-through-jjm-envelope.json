@@ -1,0 +1,126 @@
+{
+  "schema_version": "0.1",
+  "request_id": "bench-test:203",
+  "evaluated_at": "2026-10-15T15:41:06.414Z",
+  "elapsed_ms": 1979.4,
+  "results": [
+    {
+      "criterion_id": "route-banking",
+      "kind": "choice",
+      "status": "evaluated",
+      "prediction": {
+        "weights": {
+          "cards": 0.014998500149985002,
+          "payments": 0.41245875412458755,
+          "transfers": 0.12818718128187181,
+          "top_up": 0.0748925107489251,
+          "cash": 0.12388761123887611,
+          "fees_fx": 0.08809119088091191,
+          "security": 0.1426857314268573,
+          "account": 0.014798520147985203
+        },
+        "semantics": "normalized_readout",
+        "selected": "payments",
+        "value": null,
+        "top_mass": 0.41245875412458755,
+        "margin": 0.26977302269773024,
+        "normalized_entropy": 0.8168575706609756
+      },
+      "acceptance": {
+        "status": "pass",
+        "reason_codes": [],
+        "checks": [
+          {
+            "id": "prediction-complete",
+            "mandatory": true,
+            "status": "pass",
+            "code": "OK"
+          },
+          {
+            "id": "method-allowed",
+            "mandatory": true,
+            "status": "pass",
+            "code": "OK"
+          }
+        ]
+      },
+      "evidence": {
+        "considered_ids": [],
+        "selected_ids": [],
+        "missing_required_ids": [],
+        "selection_method": "none",
+        "verification": "not_performed"
+      },
+      "provenance": {
+        "execution_mode": "real",
+        "engine_version": "jjm-engine 0.1.0.dev0",
+        "upstream_commit": null,
+        "adapter_id": "jjm-laya-experiment",
+        "adapter_version": "0.1",
+        "profile_id": "bench",
+        "profile_generation": "experiment-1",
+        "state_id": "test:203",
+        "state_revision": "r1",
+        "state_digest": "sha256:a4612a84c6759ca17c6456be05a01fd32d9e3c5ef51ebc2354d5489a87d46e88",
+        "criterion_digest": "sha256:29092e13867f57ba68af111ef9e3d866603e5e8bcdb7e006a3ea05eb0600e3e5",
+        "rendering_digest": "sha256:3126bbf913b4a9a530fbb23be9f01c94a99a5015e8067dcea9e9986e9a3d898d",
+        "effective_config_digest": "sha256:3d9c2c5d677f54991a9facacf7b3a9b8bfc6d0420495b0b1e577fcaecebe6136",
+        "policy_digest": "sha256:0fe6f0556fa42741e69d3f83bbfa1f9b128c6e767a3de28792bf688f41cf6841",
+        "model": {
+          "id": "convaiinnovations/laya",
+          "revision": "7b928d828b7b0e022f929d9bd2e44165aa270148",
+          "revision_status": "operator_attested",
+          "tokenizer_revision": "7b928d828b7b0e022f929d9bd2e44165aa270148"
+        },
+        "method": "laya:rounded-choice-readout",
+        "upstream_level": null,
+        "validation": {
+          "status": "not_fitted",
+          "artifact_id": null,
+          "validation_report_id": null,
+          "scope_match": false
+        },
+        "probability_calibration": {
+          "status": "not_assessed",
+          "report_id": null
+        },
+        "runtime": {
+          "id": "laya",
+          "version": "0.4.8",
+          "dtype": "torch.float32",
+          "numeric_path": "provider_native",
+          "prompt_evaluations": 1,
+          "adapter_calls": 1,
+          "prefix_reuse": "unknown",
+          "early_exit": "not_used",
+          "elapsed_ms": 1979.191
+        },
+        "diagnostics": {
+          "raw_probabilities": {
+            "cards": 0.015,
+            "payments": 0.4125,
+            "transfers": 0.1282,
+            "top_up": 0.0749,
+            "cash": 0.1239,
+            "fees_fx": 0.0881,
+            "security": 0.1427,
+            "account": 0.0148
+          },
+          "raw_sum": 1.0001,
+          "transform": "divide_four_decimal_weights_by_sum",
+          "upstream_confidence": 0.1832,
+          "usage": {
+            "input_tokens": 348,
+            "output_tokens": 0,
+            "state_tokens": 74,
+            "state_tokens_dropped": 0,
+            "truncated": false,
+            "truncated_questions": []
+          },
+          "rendered_state_digest": "sha256:f4833c0d9e981873d83b7bda6bcbe7e83df3f8ceef5c650b79313c324c4252ae"
+        }
+      },
+      "error": null
+    }
+  ]
+}

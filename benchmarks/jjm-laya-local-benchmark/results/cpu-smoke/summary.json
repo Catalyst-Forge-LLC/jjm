@@ -1,0 +1,258 @@
+{
+  "pins": {
+    "jjm_commit": "0192a6354b2ab7b5a2c4d69b4c2bfe785b775c14",
+    "laya_package": "0.4.8",
+    "laya_source_commit": "4ac226d5ee88ed6df8db288a05c766d7a34ee682",
+    "laya_model": "convaiinnovations/laya",
+    "laya_revision": "7b928d828b7b0e022f929d9bd2e44165aa270148",
+    "embedding_model": "Qwen/Qwen3-Embedding-0.6B",
+    "embedding_revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3"
+  },
+  "arguments": {
+    "device": "cpu",
+    "routes": [
+      "tfidf",
+      "jjm",
+      "laya"
+    ],
+    "train_per_team": 8,
+    "val_per_team": 2,
+    "test_per_team": 4,
+    "latency_n": 16,
+    "batch_size": 4,
+    "threads": 4,
+    "head_max_len": 384,
+    "seed": 42,
+    "target_error": 0.02,
+    "min_val_accepted": 20,
+    "out": "results/cpu-smoke"
+  },
+  "run_scope": "Smoke experiment only. Insufficient sample to rank products.",
+  "split_sha256": "9aa00a3292664a4b3ba247ed52fe09055ac3d27b89a36d03d13744fad118f397",
+  "rows": {
+    "train": 64,
+    "validation": 16,
+    "test": 32
+  },
+  "environment": {
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "torch": "2.14.1+cpu",
+    "cpu_count": 9,
+    "device": "cpu",
+    "packages": {
+      "laya": "0.4.8",
+      "transformers": "4.57.6",
+      "numpy": "2.5.4",
+      "scikit-learn": "1.9.1",
+      "jjm-engine": "0.1.0.dev0"
+    }
+  },
+  "routes": {
+    "tfidf": {
+      "performance": {
+        "fit_ms": 34.664364000036585,
+        "task_labels_supplied": 64,
+        "actual_fit_rows": 48,
+        "internal_holdout_rows": 16,
+        "warm_batch1": {
+          "n": 16,
+          "p50_ms": 0.44771749981009634,
+          "p95_ms": 3.5500182500527444,
+          "mean_ms": 0.9915042500097115
+        },
+        "test_batch_ms": 3.959109999868815,
+        "test_rows_per_second": 8082.624630550886
+      },
+      "validation": {
+        "n": 16,
+        "accuracy": 0.5,
+        "accuracy_wilson95": [
+          0.27999563610326506,
+          0.720004363896735
+        ],
+        "macro_f1": 0.42500000000000004,
+        "log_loss_on_readout": 1.633608271144901,
+        "per_team_accuracy": {
+          "cards": 1.0,
+          "payments": 1.0,
+          "transfers": 0.0,
+          "top_up": 0.5,
+          "cash": 1.0,
+          "fees_fx": 0.0,
+          "security": 0.5,
+          "account": 0.0
+        },
+        "warning": "Normalized readouts are not certified calibrated probabilities."
+      },
+      "test": {
+        "n": 32,
+        "accuracy": 0.5,
+        "accuracy_wilson95": [
+          0.3363088286932788,
+          0.6636911713067212
+        ],
+        "macro_f1": 0.49360500610500607,
+        "log_loss_on_readout": 1.6137740810542867,
+        "per_team_accuracy": {
+          "cards": 0.75,
+          "payments": 0.25,
+          "transfers": 0.25,
+          "top_up": 0.75,
+          "cash": 0.5,
+          "fees_fx": 0.5,
+          "security": 0.5,
+          "account": 0.5
+        },
+        "warning": "Normalized readouts are not certified calibrated probabilities."
+      },
+      "selective_test": null,
+      "threshold_status": "no_qualifying_validation_threshold"
+    },
+    "jjm": {
+      "performance": {
+        "load_ms_including_any_download": 10613.891969000179,
+        "fit_ms": 18326.102276000256,
+        "feature_ms": 18143.189644999893,
+        "task_labels_supplied": 64,
+        "actual_fit_rows": 48,
+        "fit_reused": false,
+        "dtype": "float32",
+        "cache_policy": "no disk cache, memo cleared before each timed operation",
+        "warm_batch1": {
+          "n": 16,
+          "p50_ms": 318.3199309999054,
+          "p95_ms": 528.9525752499458,
+          "mean_ms": 356.41940006246386
+        },
+        "test_batch_ms": 10956.611102999886,
+        "test_rows_per_second": 2.920611099470209,
+        "validation_status": "fitted_unvalidated",
+        "probability_calibration": "not_assessed"
+      },
+      "validation": {
+        "n": 16,
+        "accuracy": 0.875,
+        "accuracy_wilson95": [
+          0.6397717273424207,
+          0.9650225122567585
+        ],
+        "macro_f1": 0.8666666666666667,
+        "log_loss_on_readout": 0.5919581062876171,
+        "per_team_accuracy": {
+          "cards": 1.0,
+          "payments": 1.0,
+          "transfers": 1.0,
+          "top_up": 1.0,
+          "cash": 1.0,
+          "fees_fx": 1.0,
+          "security": 0.5,
+          "account": 0.5
+        },
+        "warning": "Normalized readouts are not certified calibrated probabilities."
+      },
+      "test": {
+        "n": 32,
+        "accuracy": 0.78125,
+        "accuracy_wilson95": [
+          0.6124500635075697,
+          0.889761637473956
+        ],
+        "macro_f1": 0.7795634920634921,
+        "log_loss_on_readout": 0.6761182861768982,
+        "per_team_accuracy": {
+          "cards": 0.75,
+          "payments": 0.75,
+          "transfers": 0.75,
+          "top_up": 1.0,
+          "cash": 1.0,
+          "fees_fx": 0.75,
+          "security": 0.75,
+          "account": 0.5
+        },
+        "warning": "Normalized readouts are not certified calibrated probabilities."
+      },
+      "selective_test": null,
+      "threshold_status": "no_qualifying_validation_threshold"
+    },
+    "laya": {
+      "performance": {
+        "load_ms_including_any_download": 3026.8492010000045,
+        "task_labels_used_for_model_fit": 0,
+        "upstream_training_overlap_with_banking77": "unknown",
+        "dtype": "torch.float32",
+        "warm_batch1": {
+          "n": 16,
+          "p50_ms": 1740.1482610000585,
+          "p95_ms": 2066.4671722501,
+          "mean_ms": 1795.2664758750245
+        },
+        "jjm_wrapper_warm_batch1": {
+          "n": 16,
+          "p50_ms": 1779.5510179998928,
+          "p95_ms": 2282.144761500149,
+          "mean_ms": 1826.4443075624683
+        },
+        "paired_wrapper_delta_ms_median": 17.54011699995317,
+        "adapter_max_abs_weight_delta": 0.0,
+        "adapter_parity_n": 16,
+        "test_batch_ms": 47604.16573599969,
+        "test_rows_per_second": 0.6722100787872991,
+        "probability_calibration": "not_assessed_on_this_task",
+        "state_truncation_count": 0
+      },
+      "validation": {
+        "n": 16,
+        "accuracy": 0.625,
+        "accuracy_wilson95": [
+          0.386410405455033,
+          0.81518767441136
+        ],
+        "macro_f1": 0.575,
+        "log_loss_on_readout": 1.3890183705930697,
+        "per_team_accuracy": {
+          "cards": 0.5,
+          "payments": 1.0,
+          "transfers": 0.5,
+          "top_up": 1.0,
+          "cash": 1.0,
+          "fees_fx": 0.0,
+          "security": 0.5,
+          "account": 0.5
+        },
+        "warning": "Normalized readouts are not certified calibrated probabilities."
+      },
+      "test": {
+        "n": 32,
+        "accuracy": 0.6875,
+        "accuracy_wilson95": [
+          0.5143332169904506,
+          0.8204745836638998
+        ],
+        "macro_f1": 0.7080298786181138,
+        "log_loss_on_readout": 1.1600274942471016,
+        "per_team_accuracy": {
+          "cards": 0.5,
+          "payments": 1.0,
+          "transfers": 0.75,
+          "top_up": 1.0,
+          "cash": 0.75,
+          "fees_fx": 0.75,
+          "security": 0.25,
+          "account": 0.5
+        },
+        "warning": "Normalized readouts are not certified calibrated probabilities."
+      },
+      "selective_test": null,
+      "threshold_status": "no_qualifying_validation_threshold"
+    }
+  },
+  "paired_comparison": {
+    "jjm_only_correct": 4,
+    "laya_only_correct": 1,
+    "both_correct": 21,
+    "both_wrong": 6,
+    "mcnemar_exact_two_sided_p": 0.375,
+    "warning": "One task and seed. Pretrained data overlap unknown. No broad superiority claim."
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "jjm_commit": "0192a6354b2ab7b5a2c4d69b4c2bfe785b775c14",
+  "laya_package": "0.4.8",
+  "laya_source_commit": "4ac226d5ee88ed6df8db288a05c766d7a34ee682",
+  "laya_model": "convaiinnovations/laya",
+  "laya_revision": "7b928d828b7b0e022f929d9bd2e44165aa270148",
+  "embedding_model": "Qwen/Qwen3-Embedding-0.6B",
+  "embedding_revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3"
+}

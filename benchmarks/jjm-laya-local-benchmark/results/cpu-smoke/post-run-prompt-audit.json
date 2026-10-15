@@ -1,0 +1,18 @@
+{
+  "stage": "post-run exact tokenizer audit",
+  "head_tokens": 273,
+  "full_option_token_lengths_with_leading_space": [
+    37,
+    31,
+    28,
+    42,
+    26,
+    33,
+    28,
+    24
+  ],
+  "question_or_option_truncation": false,
+  "state_truncation_observed": false,
+  "max_len": 512,
+  "head_max_len": 384
+}
