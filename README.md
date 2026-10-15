@@ -6,7 +6,11 @@ An open-source judgment runtime. Just judgment. Your application makes the decis
 
 ## PE:TL;DR
 
-Plain English. The payoff is a fast answer in buckets you already trust. Show JJM a few notes that are already sorted. The next note comes back in a few milliseconds, on your computer, with a number for every bucket and a receipt for how it got there. A chat model can pick a bucket too. It writes a paragraph, and it takes longer. You still make the call.
+Plain English. The payoff is a fast answer in buckets you already trust. Show JJM a few notes that are already sorted. The next note comes back in a few milliseconds, on your computer, with a number for every bucket and a receipt for how it got there.
+
+A chat model can pick a bucket too. It also writes a paragraph. On the Banking77 comparison below, a 9B chat model took about 390 ms for each of 400 notes. The fitted head took a few milliseconds on all 3,080. Use the chat model, or a person, when you need the paragraph. Use this when you already know the buckets and you have a lot of notes to sort.
+
+You send the options you allow. JJM does not try to talk. It returns a weight for each option, a record of the method and the model, and a pass, hold, or reject against checks you declared. Your application decides what happens next.
 
 ## What you might hand it
 
@@ -23,7 +27,7 @@ Your application sends a JSON request with a state snapshot and explicit criteri
 - What produced it: method, model, runtime, and digests of the inputs.
 - Whether it meets your declared requirements (`pass`, `hold`, or `reject`), with a reason for each failed check.
 
-JJM does not write prose on the decision path and never takes an action. A `pass` means "meets the requirements you declared." It does not mean the answer is true, and it does not authorize anything.
+JJM does not write prose on the decision path and never takes an action. The request names the allowed options, so the reply is this envelope rather than text you then parse. A `pass` means "meets the requirements you declared." It does not mean the answer is true, and it does not authorize anything.
 
 Criteria in v1:
 
