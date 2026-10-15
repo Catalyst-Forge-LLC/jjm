@@ -15,6 +15,16 @@ The payoff is a fast, solid judgment an application can use. Fit it on cases you
 
 <p class="kicker">Alpha · Apache-2.0 · runs on your machine</p>
 
+## New routing benchmark
+
+On our eight-team Banking77 task, Qwen embeddings with a fitted head through JJM
+reached **96.69%**, pretrained Laya **55.32%**, and TF-IDF **95.65%**. JJM and
+TF-IDF used local labels; Laya did not. The bare TF-IDF classifier took 0.40 ms
+median on CPU.
+
+[Read the full comparison, methods, limits, and reproducible results](/routing-benchmark).
+You can also [try TF-IDF as a JJM backend](/tfidf), with the same judgment contract.
+
 ## What you might hand it
 
 - A support note, to sort into the teams you already use.

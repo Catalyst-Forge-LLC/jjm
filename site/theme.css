@@ -657,3 +657,14 @@ pre {
 		padding: 1.15rem 1.2rem;
 	}
 }
+
+/* Keep report columns readable; the named, focusable region scrolls on phones. */
+.static-page .compare table {
+    min-width: 38rem;
+}
+.static-page .prose {
+    overflow-wrap: anywhere;
+}
+.static-page .prose pre {
+    overflow-wrap: normal;
+}

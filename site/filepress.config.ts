@@ -15,6 +15,8 @@ export default defineFilepressConfig({
 	homePage: 'about',
 	nav: [
 		{ label: 'Home', href: '/' },
+		{ label: 'Benchmark', href: '/routing-benchmark' },
+		{ label: 'CPU backend', href: '/tfidf' },
 		{ label: 'GitHub', href: github, icon: 'github' }
 	],
 	footerLinks: [

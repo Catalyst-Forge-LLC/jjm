@@ -1,11 +1,17 @@
 <img width="254" alt="JJM" src="brand/jjm-wordmark.png#gh-light-mode-only">
 <img width="254" alt="JJM" src="brand/jjm-wordmark-on-dark.png#gh-dark-mode-only">
 
-# JJM â€” Just Judgment Machine
+# JJM — Just Judgment Machine
 
 An open-source judgment runtime. Just judgment. Your application makes the decision.
 
 **Status: alpha.** This repository is public so people can try it and argue with the numbers. The eight-ticket fitted-head walkthrough is the way to try a real judgment. It downloads one small encoder and has been run on the author's machine. The synthetic commands need no model and only show the envelope. Measured runs are in [Real-model results so far](#real-model-results-so-far). Read [Limits of the numbers](#limits-of-the-numbers) for what those runs cover.
+
+**New:** [Local text routing with JJM, Laya, and TF-IDF](https://jjm.dev/routing-benchmark)
+([report source](site/pages/routing-benchmark.md)). On the full eight-team Banking77
+test: Qwen + fitted head through JJM **96.69%**, TF-IDF **95.65%**, and pretrained
+Laya **55.32%**. The first two used task labels; Laya did not. The report includes
+timing boundaries, pinned evidence, limitations, and the new CPU backend.
 
 ## PE:TL;DR
 
@@ -126,7 +132,7 @@ Requests can also come on stdin: `uv run jjm evaluate < request.json`.
 ## Limits of the numbers
 
 - The eight-ticket walkthrough has been run on the author's machine. It downloads one small encoder and fits those eight rows.
-- Routing was measured on Banking77, eight teams, human labels, on one laptop GPU. The fitted head used the training labels. On those same labels it matches a plain classifier on the same embeddings, and it is about 2 points ahead of TF-IDF. About 64 labels per team is where it lines up with Nimble, which had seen no labels.
+- Routing was measured on Banking77, eight teams, human labels, on one laptop GPU. The fitted head used the training labels. In the earlier trial it matched a plain classifier on the same embeddings and was about 2 points ahead of TF-IDF. In the newer pinned Laya comparison, the full-test lead over TF-IDF was 1.04 points. About 64 labels per team is where it lines up with Nimble, which had seen no labels.
 - Fit rank was measured on one candidate. Agreement with the teacher is not correctness, and it moved with how the job was written.
 
 ## Exit codes
