@@ -9,11 +9,7 @@ An open-source judgment runtime. Just judgment. Your application makes the decis
 
 ## PE:TL;DR
 
-The payoff is a fast, solid judgment. Fit it on a few cases you have already labeled, in the buckets you use. The next case comes back in a few milliseconds, on your machine: a weight over those buckets, and a record of how the judgment was made.
-
-A chat model can make the same choice. It also writes a paragraph. On the Banking77 comparison below, a 9B chat model took about 390 ms for each of 400 notes. The fitted head took a few milliseconds on all 3,080. Use a chat model when you need the writing. Use JJM when the question is closed and there are many of them.
-
-JJM does not try to talk. It makes the judgment: a weight for each option you allowed, the method and the model that produced it, and a pass, hold, or reject against checks you declared. Your application decides what happens next.
+The payoff is a fast, solid judgment an application can use. Fit it on cases you have already labeled, in the buckets you use. JJM does not try to talk. It makes the judgment: a weight for each option you allowed, the method and the model that produced it, and a pass, hold, or reject against checks you declared. Your application decides what happens next.
 
 ## What you might hand it
 
@@ -115,7 +111,7 @@ The envelope stays `fitted_unvalidated` until `jjm accept --scope`. A request th
 
 - The eight-ticket walkthrough has been run on the author's machine. It downloads one small encoder and fits those eight rows.
 - Routing was measured on Banking77, eight teams, human labels, on one laptop GPU. The fitted head used the training labels. About 64 labels per team is where it lines up with Nimble on that set.
-- Fit rank was measured on one candidate. The chat-wrapped reranker encoding is the input that tracked the teacher's ranks.
+- Fit rank was measured on one candidate. Agreement with the teacher is not correctness, and it moved with how the job was written.
 
 ## Exit codes
 
@@ -155,7 +151,7 @@ uv run jjm --profiles p.json evaluate-batch --requests requests.jsonl
 
 - `--examples` is JSONL of `{"state": {...}, "label": "<outcome id>"}`. Or pass `--teacher <id>` to have a teacher model label the states instead, and the artifact records that the labels came from it.
 - A head is bound to the exact criterion digest, encoder identity, and head method. Fitting the same examples again returns the stored head. A head serves only after `--promote`; otherwise the criterion abstains with `ARTIFACT_MISMATCH`.
-- Results report `calibration.status: fitted_unvalidated` until you accept the held-out report. Fitting holds out about 20% of each outcome, scores it, and leaves those rows out of the penalty choice and the fit. `jjm accept --scope <scope_id>` records that the report applies to that scope. A request that sets `calibration` to `validated_in_scope` then gets `calibrated_estimate` weights when its `scope_id` matches, and abstains otherwise. The numbers are the same head output; the status says an accepted report exists for this scope.
+- Results report `calibration.status: fitted_unvalidated` until you accept the held-out report. Fitting holds out about 20% of each outcome, scores it, and leaves those rows out of the penalty choice and the fit. `jjm accept --scope <scope_id>` records that the report applies to that scope. A request that sets `calibration` to `validated_in_scope` then gets `calibrated_estimate` weights when its `scope_id` matches, and abstains otherwise. The numbers are the same head output. `calibrated_estimate` names that accepted scope. It is not a measurement that a weight of 0.95 occurs about 95% of the time.
 - Teachers are listed under `teachers` in the profiles file: a local Ollama model, or any provider [LiteLLM](https://docs.litellm.ai/) supports (`uv sync --extra providers`). Teachers label examples. They never run inside `evaluate`.
 - Speed settings live in the profile and its identity: `batch_size`, `max_tokens`, `layer` (early exit, as a layer count or depth fraction), `prefix_reuse`, and a feature `cache` directory.
 
@@ -177,11 +173,11 @@ These were run with Qwen3-1.7B at revision `70d244cc`, in bfloat16 on a 12 GB RT
 
   | | Right | Time per note |
   | --- | --- | --- |
-  | Fitted head | 97.1% of 3,080 | a few milliseconds |
+  | Fitted head | 97.1% of 3,080 | about 5 ms in bulk |
   | Nimble, a 9B decision model | 91.6% of 3,080 | 694 ms |
   | qwen3.5:9b, asked to pick | 88% of 400 | 390 ms |
 
-  The head had seen the human training labels. Nimble and the chat model had seen none. About 64 labelled messages per team is where the embedding head matches Nimble's 92.5% on the 400-message subset, and the time stays a few milliseconds. The 97.1% is the earlier fit. A refit scored 96.8%. In a batch the head is about 5 ms per message. One note at a time through `evaluate_batch` is about 11 ms. The other times are medians. The AnyJev readout on Qwen3-1.7B got 75% of that 400. The comparison is in `docs/EXPERIMENT_LOG.md`.
+  Banking77 here is 77 intents mapped to eight teams. The head had seen the human training labels. Nimble and the chat model had seen none. About 64 labelled messages per team, 512 in all, is where the embedding head matches Nimble's 92.5% on the 400-message subset. The 97.1% is the earlier fit on the full test set. A refit scored 96.8%. In bulk that run was a few milliseconds per note, about 5 ms. Through the full contract, a batch of 400 took about 11 ms each, and one request at a time with nothing cached took 97 ms median on 100 requests. The other times in the table are medians. The AnyJev readout on Qwen3-1.7B got 75% of that 400. Fit rank, on one candidate, is a different task: agreement with the teacher is not correctness. The comparison is in `docs/EXPERIMENT_LOG.md`.
 
 ## Layout
 

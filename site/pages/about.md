@@ -6,11 +6,7 @@ order: 1
 
 ## PE:TL;DR
 
-The payoff is a fast, solid judgment. Fit it on a few cases you have already labeled, in the buckets you use. The next case comes back in a few milliseconds, on your machine: a weight over those buckets, and a record of how the judgment was made.
-
-A chat model can make the same choice. It also writes a paragraph. On the comparison below, a 9B chat model took about 390 ms for each of 400 notes. The fitted head took a few milliseconds on all 3,080. Use a chat model when you need the writing. Use JJM when the question is closed and there are many of them.
-
-JJM does not try to talk. It makes the judgment: a weight for each option you allowed, the method and the model that produced it, and a pass, hold, or reject against checks you declared. Your application decides what happens next.
+The payoff is a fast, solid judgment an application can use. Fit it on cases you have already labeled, in the buckets you use. JJM does not try to talk. It makes the judgment: a weight for each option you allowed, the method and the model that produced it, and a pass, hold, or reject against checks you declared. Your application decides what happens next.
 
 <div class="cta-row">
   <a class="cta cta-primary" href="https://github.com/Catalyst-Forge-LLC/jjm">View the source</a>
@@ -89,7 +85,7 @@ Shortened from the no-model command below, with the weights rounded. They are a 
 
 ## What has been tried
 
-Banking77, mapped to eight teams, scored against the human labels, on one laptop GPU.
+Banking77, 77 intents mapped to eight teams, scored against the human labels, on one laptop GPU.
 
 <div class="compare">
 <table>
@@ -97,16 +93,16 @@ Banking77, mapped to eight teams, scored against the human labels, on one laptop
     <tr><th></th><th>Right</th><th>Time per note</th></tr>
   </thead>
   <tbody>
-    <tr><th scope="row">Fitted head</th><td>97.1% of 3,080</td><td>a few milliseconds</td></tr>
+    <tr><th scope="row">Fitted head</th><td>97.1% of 3,080</td><td>about 5 ms in bulk</td></tr>
     <tr><th scope="row">Nimble, a 9B decision model</th><td>91.6% of 3,080</td><td>694 ms</td></tr>
     <tr><th scope="row">A 9B chat model, asked to pick</th><td>88% of 400</td><td>390 ms</td></tr>
   </tbody>
 </table>
 </div>
 
-The head had seen the human training labels. The other two had seen none. About 64 labels per team is where the head matches Nimble, and it stays at a few milliseconds. The 97.1% is the earlier fit. A refit scored 96.8%. The head's time is a batch of short notes, about 5 ms each. One note at a time is about 11 ms. The other times are medians.
+The head had seen the human training labels. The other two had seen none. About 64 labels per team, 512 in all, is where the head matches Nimble. The 97.1% is the earlier fit on the full test set. A refit scored 96.8%. In bulk that run was a few milliseconds per note, about 5 ms. Through the full contract, a batch of 400 took about 11 ms each, and one request at a time with nothing cached took 97 ms median on 100 requests. The other times in the table are medians.
 
-On fit rank for one candidate, the chat-wrapped reranker encoding tracked the teacher's ranks.
+Fit rank was one candidate. Agreement with the teacher moved with how the job was written, and agreement is not correctness.
 
 The figures and the hardware are in the [experiment log](https://github.com/Catalyst-Forge-LLC/jjm/blob/main/docs/EXPERIMENT_LOG.md).
 
@@ -114,7 +110,7 @@ The figures and the hardware are in the [experiment log](https://github.com/Cata
 
 - The eight-ticket walkthrough has been run on the author's machine. It downloads one small encoder and fits those eight rows.
 - Routing was measured on Banking77, eight teams, human labels, on one laptop GPU. The fitted head used the training labels. About 64 labels per team is where it lines up with Nimble on that set.
-- Fit rank was measured on one candidate. The chat-wrapped reranker encoding is the input that tracked the teacher's ranks.
+- Fit rank was measured on one candidate. Agreement with the teacher is not correctness, and it moved with how the job was written.
 
 ## Try it with no model
 
