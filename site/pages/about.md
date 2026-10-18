@@ -4,7 +4,39 @@ description: "Give JJM the current state and the options your application allows
 order: 1
 ---
 
-<section class="value-hero" aria-label="JJM overview"><div class="value-intro"><p class="value-kind">Local judgment runtime for developers · alpha</p><h1>Turn a closed question into a result your app can use.</h1><p class="value-lede">Give JJM the current state and the options your application allows. It returns weights, provenance, and pass, hold, or reject against your declared requirements. Your application decides what happens next.</p><div class="cta-row"><a class="cta cta-primary" href="#try-a-fitted-judgment">Try the local example</a><a class="cta cta-secondary" href="#what-you-send">Inspect a request</a></div><p class="value-limit">Alpha. Fit and evaluate on your own labeled cases. Weights are not calibrated probabilities.</p></div><figure class="value-proof"><figcaption>Illustrative example</figcaption><p><strong>Starting point</strong><br>“I was charged twice.” Allowed teams: billing, technical, other.</p><div class="value-result"><p><strong>What you get</strong><br>Weights for those options, the method and model, and an acceptance status.</p></div><p>Your app can use that structured result to route the ticket or hold it for review.</p><p class="value-note">Illustrative task. The no-model example below tests the contract, not classification accuracy.</p></figure></section>
+<section class="value-hero" aria-label="JJM overview"><div class="value-intro"><div class="value-headline"><p class="value-kind">Local judgment runtime for developers · alpha</p><h1>Turn a closed question into a result your app can use.</h1></div><div class="value-pitch"><p class="value-lede">Give JJM the current state and the options your application allows. It returns weights, provenance, and pass, hold, or reject against your declared requirements. Your application decides what happens next.</p><div class="cta-row"><a class="cta cta-primary" href="#try-a-fitted-judgment">Try the local example</a><a class="cta cta-secondary" href="#judgment-example">See a response and routing decision</a></div><p class="value-limit">Alpha. Fit and evaluate on your own labeled cases. Weights are not calibrated probabilities.</p></div></div>
+<figure class="value-proof worked-example" id="judgment-example" tabindex="-1">
+<figcaption>Turn a ticket into fields your routing code can inspect</figcaption>
+<p class="example-context">Contract demonstration using the documented no-model response. These weights come from a hash, not a classifier. They must not route real tickets.</p>
+<section class="example-step" aria-labelledby="example-step-1">
+<h2 id="example-step-1"><span>1 · Request</span> Your app defines the available teams</h2>
+<blockquote><p>I was charged twice for the same subscription.</p></blockquote><p><strong>Allowed options:</strong> billing, technical, other.</p><pre><code>"requirements": {
+  "min_top_mass": 0.5
+}</code></pre><p>Your application supplies the question and the threshold.</p>
+</section>
+<section class="example-step example-report" aria-labelledby="example-step-2">
+<h2 id="example-step-2"><span>2 · Response excerpt</span> Weights, selection, and acceptance are explicit</h2>
+<pre><code>"prediction": {
+  "weights": {
+    "billing": 0.892,
+    "technical": 0.005,
+    "other": 0.103
+  },
+  "selected": "billing"
+},
+"acceptance": { "status": "pass" },
+"provenance": {
+  "method": "mock:normalized",
+  "model": { "id": "jjm/synthetic-no-model" }
+}</code></pre>
+</section>
+<section class="example-step" aria-labelledby="example-step-3">
+<h2 id="example-step-3"><span>3 · Application decision</span> Route only when your policy allows it</h2>
+<p><strong>This response:</strong> Hold it. The provenance says synthetic, even though the threshold check passed.</p><p><strong>With an evaluated, fitted backend:</strong> Your app can route a passing result to its selected team, send <code>hold</code> to human review, and refuse <code>reject</code>.</p><p class="example-payoff">Your code gets a consistent decision envelope instead of parsing an open-ended paragraph.</p>
+</section>
+<p class="value-note">Excerpt shortened and weights rounded. “Pass” means declared checks passed, not that the selected answer is correct. Weights are not calibrated probabilities.</p>
+<p class="example-links"><a href="#what-you-send">Inspect the request</a> · <a href="#try-a-fitted-judgment">Try the fitted example</a></p>
+</figure></section>
 
 ## What you might hand it
 
@@ -49,30 +81,7 @@ Shortened from [`examples/route-ticket.json`](https://github.com/Catalyst-Forge-
 
 Weights are a normalized readout. Accepting a held-out report records that scope. It does not change the weights, and it is not a check that a weight of 0.95 occurs about 95% of the time.
 
-<div class="snippet">
-  <div class="snippet-label">Return</div>
-  <pre><code class="hljs language-json">{
-  <span class="hljs-attr">"results"</span>: [{
-    <span class="hljs-attr">"criterion_id"</span>: <span class="hljs-string">"route-ticket"</span>,
-    <span class="hljs-attr">"prediction"</span>: {
-      <span class="hljs-attr">"weights"</span>: {
-        <span class="hljs-attr">"billing"</span>: <span class="hljs-number">0.892</span>,
-        <span class="hljs-attr">"technical"</span>: <span class="hljs-number">0.005</span>,
-        <span class="hljs-attr">"other"</span>: <span class="hljs-number">0.103</span>
-      },
-      <span class="hljs-attr">"semantics"</span>: <span class="hljs-string">"normalized_readout"</span>,
-      <span class="hljs-attr">"selected"</span>: <span class="hljs-string">"billing"</span>
-    },
-    <span class="hljs-attr">"acceptance"</span>: { <span class="hljs-attr">"status"</span>: <span class="hljs-string">"pass"</span> },
-    <span class="hljs-attr">"provenance"</span>: {
-      <span class="hljs-attr">"method"</span>: <span class="hljs-string">"mock:normalized"</span>,
-      <span class="hljs-attr">"model"</span>: { <span class="hljs-attr">"id"</span>: <span class="hljs-string">"jjm/synthetic-no-model"</span> }
-    }
-  }]
-}</code></pre>
-</div>
-
-Shortened from the no-model command below, with the weights rounded. They are a hash of the input, so this pass is not a judgment that the ticket is billing. The full envelope also includes the digests, the checks, and that notice.
+The opening example shows the no-model response once. Its full envelope also includes input digests and checks. [Run the contract example without a model](#check-the-contract-with-no-model).
 
 ## New routing benchmark
 
