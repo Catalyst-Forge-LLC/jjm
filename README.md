@@ -3,7 +3,7 @@
 
 # JJM — Just Judgment Machine
 
-An open-source judgment runtime. Just judgment. Your application makes the decision.
+A local judgment runtime for developers. Give JJM the current state and the options your application allows. It returns weights, provenance, and acceptance against your declared requirements, so your application can decide what to do next.
 
 **Status: alpha.** This repository is public so people can try it and argue with the numbers. The eight-ticket fitted-head walkthrough is the way to try a real judgment. It downloads one small encoder and has been run on the author's machine. The synthetic commands need no model and only show the envelope. Measured runs are in [Real-model results so far](#real-model-results-so-far). Read [Limits of the numbers](#limits-of-the-numbers) for what those runs cover.
 

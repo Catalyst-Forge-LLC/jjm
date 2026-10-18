@@ -1,29 +1,10 @@
 ---
-title: Just Judgment Machine
-description: An open-source local judgment runtime. Alpha. Your application sends the state and the options, and keeps the decision.
+title: "Turn a closed question into a result your app can use."
+description: "Give JJM the current state and the options your application allows. It returns weights, provenance, and pass, hold, or reject against your declared requirements. Your application decides what happens next."
 order: 1
 ---
 
-## PE:TL;DR
-
-The payoff is a fast, solid judgment an application can use. Fit it on cases you have already labeled, in the buckets you use. JJM does not try to talk. It makes the judgment: a weight for each option you allowed, the method and the model that produced it, and a pass, hold, or reject against checks you declared. Your application decides what happens next.
-
-<div class="cta-row">
-  <a class="cta cta-primary" href="https://github.com/Catalyst-Forge-LLC/jjm">View the source</a>
-  <a class="cta cta-secondary" href="#limits">Read the limits</a>
-</div>
-
-<p class="kicker">Alpha · Apache-2.0 · runs on your machine</p>
-
-## New routing benchmark
-
-On our eight-team Banking77 task, Qwen embeddings with a fitted head through JJM
-reached **96.69%**, pretrained Laya **55.32%**, and TF-IDF **95.65%**. JJM and
-TF-IDF used local labels; Laya did not. The bare TF-IDF classifier took 0.40 ms
-median on CPU.
-
-[Read the full comparison, methods, limits, and reproducible results](/routing-benchmark).
-You can also [try TF-IDF as a JJM backend](/tfidf), with the same judgment contract.
+<section class="value-hero" aria-label="JJM overview"><div class="value-intro"><p class="value-kind">Local judgment runtime for developers · alpha</p><h1>Turn a closed question into a result your app can use.</h1><p class="value-lede">Give JJM the current state and the options your application allows. It returns weights, provenance, and pass, hold, or reject against your declared requirements. Your application decides what happens next.</p><div class="cta-row"><a class="cta cta-primary" href="#try-a-fitted-judgment">Try the local example</a><a class="cta cta-secondary" href="#what-you-send">Inspect a request</a></div><p class="value-limit">Alpha. Fit and evaluate on your own labeled cases. Weights are not calibrated probabilities.</p></div><figure class="value-proof"><figcaption>Illustrative example</figcaption><p><strong>Starting point</strong><br>“I was charged twice.” Allowed teams: billing, technical, other.</p><div class="value-result"><p><strong>What you get</strong><br>Weights for those options, the method and model, and an acceptance status.</p></div><p>Your app can use that structured result to route the ticket or hold it for review.</p><p class="value-note">Illustrative task. The no-model example below tests the contract, not classification accuracy.</p></figure></section>
 
 ## What you might hand it
 
@@ -34,7 +15,7 @@ You can also [try TF-IDF as a JJM backend](/tfidf), with the same judgment contr
 
 ## What you send
 
-A JSON request with a snapshot and explicit criteria. A choice has two to 26 options you define. An assertion has three outcomes: the supplied evidence supports the claim, contradicts it, or does not settle it.
+A JSON request with a snapshot and explicit criteria. A choice has two to 26 options, or buckets, you define. An assertion has three outcomes: the supplied evidence supports the claim, contradicts it, or does not settle it.
 
 <div class="snippet">
   <div class="snippet-label">Request</div>
@@ -92,6 +73,16 @@ Weights are a normalized readout. Accepting a held-out report records that scope
 </div>
 
 Shortened from the no-model command below, with the weights rounded. They are a hash of the input, so this pass is not a judgment that the ticket is billing. The full envelope also includes the digests, the checks, and that notice.
+
+## New routing benchmark
+
+On our eight-team Banking77 task, Qwen embeddings with a fitted head through JJM
+reached **96.69%**, pretrained Laya **55.32%**, and TF-IDF **95.65%**. JJM and
+TF-IDF used local labels; Laya did not. The bare TF-IDF classifier took 0.40 ms
+median on CPU.
+
+[Read the full comparison, methods, limits, and reproducible results](/routing-benchmark).
+You can also [try TF-IDF as a JJM backend](/tfidf), with the same judgment contract.
 
 ## What has been tried
 
