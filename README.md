@@ -7,15 +7,26 @@ A local judgment runtime for developers. Give JJM the current state and the opti
 
 **Status: alpha.** This repository is public so people can try it and argue with the numbers. The eight-ticket fitted-head walkthrough is the way to try a real judgment. It downloads one small encoder and has been run on the author's machine. The synthetic commands need no model and only show the envelope. Measured runs are in [Real-model results so far](#real-model-results-so-far). Read [Limits of the numbers](#limits-of-the-numbers) for what those runs cover.
 
-**New:** [Local text routing with JJM, Laya, and TF-IDF](https://jjm.dev/routing-benchmark)
-([report source](site/pages/routing-benchmark.md)). On the full eight-team Banking77
-test: Qwen + fitted head through JJM **96.69%**, TF-IDF **95.65%**, and pretrained
-Laya **55.32%**. The first two used task labels; Laya did not. The report includes
-timing boundaries, pinned evidence, limitations, and the new CPU backend.
+## A response your application can act on
 
-## PE:TL;DR
+**Input:** “I was charged twice for the same subscription.” Your application allows `billing`, `technical`, or `other` and requires a top weight of at least 0.5.
 
-The payoff is a fast, solid judgment an application can use. Fit it on cases you have already labeled, in the buckets you use. JJM does not try to talk. It makes the judgment: a weight for each option you allowed, the method and the model that produced it, and a pass, hold, or reject against checks you declared. Your application decides what happens next.
+The documented no-model example returns this shortened response:
+
+```json
+{
+  "prediction": {
+    "weights": { "billing": 0.892, "technical": 0.005, "other": 0.103 },
+    "selected": "billing"
+  },
+  "acceptance": { "status": "pass" },
+  "provenance": { "method": "mock:normalized", "model": { "id": "jjm/synthetic-no-model" } }
+}
+```
+
+**Application decision:** hold this response. The provenance says synthetic; its weights come from a hash, even though the threshold passed. With an evaluated fitted backend, your code can route a passing result, send `hold` to review, and refuse `reject` according to your policy.
+
+Your application gets explicit fields instead of parsing an open-ended paragraph. This is a contract demonstration with rounded weights, not a classifier result or calibrated probabilities. [Try a fitted judgment](#try-a-fitted-judgment) for a model-backed run.
 
 ## What you might hand it
 
@@ -54,6 +65,12 @@ uv run jjm --profiles examples/try/profile.json evaluate --request examples/try/
 ```
 
 The envelope stays `fitted_unvalidated` until `jjm accept --scope`. A request that requires `accepted_in_scope` abstains until that scope is accepted. Acceptance records the held-out report. The weights stay `normalized_readout`.
+
+**New:** [Local text routing with JJM, Laya, and TF-IDF](https://jjm.dev/routing-benchmark)
+([report source](site/pages/routing-benchmark.md)). On the full eight-team Banking77
+test: Qwen + fitted head through JJM **96.69%**, TF-IDF **95.65%**, and pretrained
+Laya **55.32%**. The first two used task labels; Laya did not. The report includes
+timing boundaries, pinned evidence, limitations, and the new CPU backend.
 
 ## Try TF-IDF on CPU
 
