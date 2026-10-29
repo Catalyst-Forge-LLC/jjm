@@ -4,7 +4,7 @@ const github = 'https://github.com/Catalyst-Forge-LLC/jjm';
 
 export default defineFilepressConfig({
 	title: 'JJM',
-	description: "Give JJM the current state and the options your application allows. It returns weights, provenance, and pass, hold, or reject against your declared requirements. Your application decides what happens next.",
+	description: "Use JJM when an application must choose among fixed options, such as assigning support messages to teams. Fit a local decision model on labeled examples, then receive a selected option, weights, provenance, and acceptance checks your application can use to route or request review.",
 	tagline: 'Just judgment.',
 	lede: "Local judgment runtime for developers · alpha",
 	url: 'https://jjm.dev',

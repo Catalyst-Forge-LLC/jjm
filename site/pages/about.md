@@ -1,42 +1,32 @@
 ---
-title: "Turn a closed question into a result your app can use."
-description: "Give JJM the current state and the options your application allows. It returns weights, provenance, and pass, hold, or reject against your declared requirements. Your application decides what happens next."
+title: "Turn fixed-choice questions into decisions your app can use."
+description: "Use JJM when an application must choose among fixed options, such as assigning support messages to teams. Fit a local decision model on labeled examples, then receive a selected option, weights, provenance, and acceptance checks your application can use to route or request review."
 order: 1
 ---
 
-<section class="value-hero" aria-label="JJM overview"><div class="value-intro"><div class="value-headline"><p class="value-kind">Local judgment runtime for developers · alpha</p><h1>Turn a closed question into a result your app can use.</h1></div><div class="value-pitch"><p class="value-lede">Give JJM the current state and the options your application allows. It returns weights, provenance, and pass, hold, or reject against your declared requirements. Your application decides what happens next.</p><div class="cta-row"><a class="cta cta-primary" href="#try-a-fitted-judgment">Try the local example</a><a class="cta cta-secondary" href="#judgment-example">See a response and routing decision</a></div><p class="value-limit">Alpha. Fit and evaluate on your own labeled cases. Weights are not calibrated probabilities.</p></div></div>
+<section class="value-hero" aria-label="JJM overview"><div class="value-intro"><div class="value-headline"><p class="value-kind">Local judgment runtime for developers · alpha</p><h1>Turn fixed-choice questions into decisions your app can use.</h1></div><div class="value-pitch"><p class="value-lede">Use JJM when an application must choose among fixed options, such as assigning support messages to teams. Fit a local decision model on labeled examples, then receive a selected option, weights, provenance, and acceptance checks your application can use to route or request review.</p><div class="cta-row"><a class="cta cta-primary" href="#try-a-fitted-judgment">Try the local example</a><a class="cta cta-secondary" href="#judgment-example">See a response and routing decision</a></div><p class="value-limit">Alpha. Fit and evaluate on your own labeled cases. Weights are not calibrated probabilities.</p></div></div>
 <figure class="value-proof worked-example" id="judgment-example" tabindex="-1">
-<figcaption>Turn a ticket into fields your routing code can inspect</figcaption>
-<p class="example-context">Contract demonstration using the documented no-model response. These weights come from a hash, not a classifier. They must not route real tickets.</p>
-<section class="example-step" aria-labelledby="example-step-1">
-<h2 id="example-step-1"><span>1 · Request</span> Your app defines the available teams</h2>
-<blockquote><p>I was charged twice for the same subscription.</p></blockquote><p><strong>Allowed options:</strong> billing, technical, other.</p><pre><code>"requirements": {
-  "min_top_mass": 0.5
-}</code></pre><p>Your application supplies the question and the threshold.</p>
-</section>
-<section class="example-step example-report" aria-labelledby="example-step-2">
-<h2 id="example-step-2"><span>2 · Response excerpt</span> Weights, selection, and acceptance are explicit</h2>
-<pre><code>"prediction": {
-  "weights": {
-    "billing": 0.892,
-    "technical": 0.005,
-    "other": 0.103
-  },
-  "selected": "billing"
-},
-"acceptance": { "status": "pass" },
-"provenance": {
-  "method": "mock:normalized",
-  "model": { "id": "jjm/synthetic-no-model" }
-}</code></pre>
-</section>
-<section class="example-step" aria-labelledby="example-step-3">
-<h2 id="example-step-3"><span>3 · Application decision</span> Route only when your policy allows it</h2>
-<p><strong>This response:</strong> Hold it. The provenance says synthetic, even though the threshold check passed.</p><p><strong>With an evaluated, fitted backend:</strong> Your app can route a passing result to its selected team, send <code>hold</code> to human review, and refuse <code>reject</code>.</p><p class="example-payoff">Your code gets a consistent decision envelope instead of parsing an open-ended paragraph.</p>
-</section>
-<p class="value-note">Excerpt shortened and weights rounded. “Pass” means declared checks passed, not that the selected answer is correct. Weights are not calibrated probabilities.</p>
-<p class="example-links"><a href="#what-you-send">Inspect the request</a> · <a href="#try-a-fitted-judgment">Try the fitted example</a></p>
+<figcaption>Teach a local model your support categories</figcaption>
+<p class="example-context">The runnable eight-ticket walkthrough uses invented training examples and two teams. It demonstrates fitting and evaluation, not production routing accuracy.</p>
+<section class="example-step" aria-labelledby="example-step-1"><h2 id="example-step-1"><span>1 · Your task</span> Choose billing or technical support</h2><blockquote><p>The settings screen closes itself as soon as it opens.</p></blockquote><p>The application defines two categories: <strong>billing</strong> for charges and refunds, and <strong>technical</strong> for defects and failed operations.</p></section>
+<section class="example-step example-report" aria-labelledby="example-step-2"><h2 id="example-step-2"><span>2 · Fit and evaluate</span> Learn from labeled tickets</h2><p><code>jjm fit</code> fits a small head on eight example tickets. <code>jjm evaluate</code> applies it to the new message and returns the selected team, a weight for each team, and the method and model used.</p><p><a href="#try-a-fitted-judgment">Run the exact commands below</a>.</p></section>
+<section class="example-step" aria-labelledby="example-step-3"><h2 id="example-step-3"><span>3 · Your application decides</span> Route a result or ask for review</h2><p>Your code reads the selection alongside <code>acceptance</code> and provenance. With a backend evaluated for your task, route results your policy accepts, send held results for review, and refuse rejected results.</p><p class="example-payoff">The app gets explicit fields for a defined decision instead of parsing an open-ended paragraph.</p></section>
+<p class="value-note">The tutorial model remains <code>fitted_unvalidated</code> until scope acceptance. Eight rows are enough to demonstrate the commands, not to establish reliable routing. Weights are not calibrated probabilities.</p>
 </figure></section>
+
+## Try a fitted judgment
+
+Eight invented tickets, two teams. The first run downloads one small encoder and fits on CPU. Eight rows show the command. They are not a benchmark.
+
+```bash
+uv sync --extra hf
+uv run jjm --profiles examples/try/profile.json fit \
+    --profile try-embed --criterion examples/try/team.criterion.json \
+    --examples examples/try/examples.jsonl --promote
+uv run jjm --profiles examples/try/profile.json evaluate --request examples/try/request.json
+```
+
+The first run downloads `Qwen/Qwen3-Embedding-0.6B`. It requires Python 3.10+ and uv, and writes the head and feature cache under `runs/try/`. The envelope remains `fitted_unvalidated` until scope acceptance; the tutorial request deliberately does not require that acceptance. [Full walkthrough and validation rules](https://github.com/Catalyst-Forge-LLC/jjm#try-a-fitted-judgment).
 
 ## What you might hand it
 
@@ -81,7 +71,7 @@ Shortened from [`examples/route-ticket.json`](https://github.com/Catalyst-Forge-
 
 Weights are a normalized readout. Accepting a held-out report records that scope. It does not change the weights, and it is not a check that a weight of 0.95 occurs about 95% of the time.
 
-The opening example shows the no-model response once. Its full envelope also includes input digests and checks. [Run the contract example without a model](#check-the-contract-with-no-model).
+For a download-free view of the envelope, use the separate [contract demonstration](#check-the-contract-with-no-model). Its synthetic weights do not classify tickets.
 
 ## New routing benchmark
 
@@ -126,21 +116,41 @@ The figures and the hardware are in the [experiment log](https://github.com/Cata
 - Routing was measured on Banking77, eight teams, human labels, on one laptop GPU. The fitted head used the training labels. On those same labels it matches a plain classifier on the same embeddings, and it is about 2 points ahead of TF-IDF. About 64 labels per team is where it lines up with Nimble, which had seen no labels.
 - Fit rank was measured on one candidate. Agreement with the teacher is not correctness, and it moved with how the job was written.
 
-## Try a fitted judgment
-
-Eight invented tickets, two teams. The first run downloads one small encoder and fits on CPU. Eight rows show the command. They are not a benchmark.
-
-```bash
-uv sync --extra hf
-uv run jjm --profiles examples/try/profile.json fit \
-    --profile try-embed --criterion examples/try/team.criterion.json \
-    --examples examples/try/examples.jsonl --promote
-uv run jjm --profiles examples/try/profile.json evaluate --request examples/try/request.json
-```
-
-The same walkthrough is in the repository README.
-
 ## Check the contract, with no model
+
+<figure class="value-proof worked-example" id="contract-response" tabindex="-1">
+<figcaption>Optional contract demonstration: inspect the response without a model</figcaption>
+<p class="example-context">Contract demonstration using the documented no-model response. These weights come from a hash, not a classifier. They must not route real tickets.</p>
+<section class="example-step" aria-labelledby="contract-step-1">
+<h2 id="contract-step-1"><span>1 · Request</span> Your app defines the available teams</h2>
+<blockquote><p>I was charged twice for the same subscription.</p></blockquote><p><strong>Allowed options:</strong> billing, technical, other.</p><pre><code>"requirements": {
+  "min_top_mass": 0.5
+}</code></pre><p>Your application supplies the question and the threshold.</p>
+</section>
+<section class="example-step example-report" aria-labelledby="contract-step-2">
+<h2 id="contract-step-2"><span>2 · Response excerpt</span> Weights, selection, and acceptance are explicit</h2>
+<pre><code>"prediction": {
+  "weights": {
+    "billing": 0.892,
+    "technical": 0.005,
+    "other": 0.103
+  },
+  "selected": "billing"
+},
+"acceptance": { "status": "pass" },
+"provenance": {
+  "method": "mock:normalized",
+  "model": { "id": "jjm/synthetic-no-model" }
+}</code></pre>
+</section>
+<section class="example-step" aria-labelledby="contract-step-3">
+<h2 id="contract-step-3"><span>3 · Application decision</span> Route only when your policy allows it</h2>
+<p><strong>This response:</strong> Hold it. The provenance says synthetic, even though the threshold check passed.</p><p><strong>With an evaluated, fitted backend:</strong> Your app can route a passing result to its selected team, send <code>hold</code> to human review, and refuse <code>reject</code>.</p><p class="example-payoff">Your code gets a consistent decision envelope instead of parsing an open-ended paragraph.</p>
+</section>
+<p class="value-note">Excerpt shortened and weights rounded. “Pass” means declared checks passed, not that the selected answer is correct. Weights are not calibrated probabilities.</p>
+<p class="example-links"><a href="#what-you-send">Inspect the request</a> · <a href="#try-a-fitted-judgment">Try the fitted example</a></p>
+</figure>
+
 
 The synthetic path needs no download. Its weights are a hash of the input, so they carry no meaning. They show the envelope.
 

@@ -3,30 +3,29 @@
 
 # JJM — Just Judgment Machine
 
-A local judgment runtime for developers. Give JJM the current state and the options your application allows. It returns weights, provenance, and acceptance against your declared requirements, so your application can decide what to do next.
+**Turn fixed-choice questions into decisions your app can use.**
+
+Use JJM when an application must choose among fixed options, such as assigning support messages to teams. Fit a local decision model on labeled examples, then receive a selected option, weights, provenance, and acceptance checks your application can use to route or request review.
 
 **Status: alpha.** This repository is public so people can try it and argue with the numbers. The eight-ticket fitted-head walkthrough is the way to try a real judgment. It downloads one small encoder and has been run on the author's machine. The synthetic commands need no model and only show the envelope. Measured runs are in [Real-model results so far](#real-model-results-so-far). Read [Limits of the numbers](#limits-of-the-numbers) for what those runs cover.
 
-## A response your application can act on
+## Try a fitted judgment
 
-**Input:** “I was charged twice for the same subscription.” Your application allows `billing`, `technical`, or `other` and requires a top weight of at least 0.5.
+**Task:** assign “The settings screen closes itself as soon as it opens” to `billing` or `technical`, the two teams defined in the request.
 
-The documented no-model example returns this shortened response:
+This exercises `jjm fit` without the Banking77 download or any private export. Eight invented tickets, two teams. The first run downloads `Qwen/Qwen3-Embedding-0.6B` (the profile sets `allow_download: true`) and fits on CPU. Heads and the feature cache go under `runs/try/`, which git ignores. Eight rows show the command. They are not a benchmark.
 
-```json
-{
-  "prediction": {
-    "weights": { "billing": 0.892, "technical": 0.005, "other": 0.103 },
-    "selected": "billing"
-  },
-  "acceptance": { "status": "pass" },
-  "provenance": { "method": "mock:normalized", "model": { "id": "jjm/synthetic-no-model" } }
-}
+```bash
+uv sync --extra hf
+uv run jjm --profiles examples/try/profile.json fit \
+    --profile try-embed --criterion examples/try/team.criterion.json \
+    --examples examples/try/examples.jsonl --promote
+uv run jjm --profiles examples/try/profile.json evaluate --request examples/try/request.json
 ```
 
-**Application decision:** hold this response. The provenance says synthetic; its weights come from a hash, even though the threshold passed. With an evaluated fitted backend, your code can route a passing result, send `hold` to review, and refuse `reject` according to your policy.
+The envelope stays `fitted_unvalidated` until `jjm accept --scope`. A request that requires `accepted_in_scope` abstains until that scope is accepted. Acceptance records the held-out report. The weights stay `normalized_readout`.
 
-Your application gets explicit fields instead of parsing an open-ended paragraph. This is a contract demonstration with rounded weights, not a classifier result or calibrated probabilities. [Try a fitted judgment](#try-a-fitted-judgment) for a model-backed run.
+Inspect the selected team, both weights, provenance, and acceptance in the returned envelope. With a backend evaluated for your task, application policy can route an accepted result or send it for review. The tutorial demonstrates those fields; it does not establish that a model trained on eight tickets is ready to route customer messages.
 
 ## What you might hand it
 
@@ -52,21 +51,9 @@ Criteria in v1:
 
 Weights are labeled `normalized_readout`: normalized model output, not calibrated probabilities. Accepting a held-out report does not change that label. A request that requires assessed probability calibration abstains, because JJM does not measure that yet.
 
-## Try a fitted judgment
+## Separate routing benchmark
 
-This exercises `jjm fit` without the Banking77 download or any private export. Eight invented tickets, two teams. The first run downloads `Qwen/Qwen3-Embedding-0.6B` (the profile sets `allow_download: true`) and fits on CPU. Heads and the feature cache go under `runs/try/`, which git ignores. Eight rows show the command. They are not a benchmark.
-
-```bash
-uv sync --extra hf
-uv run jjm --profiles examples/try/profile.json fit \
-    --profile try-embed --criterion examples/try/team.criterion.json \
-    --examples examples/try/examples.jsonl --promote
-uv run jjm --profiles examples/try/profile.json evaluate --request examples/try/request.json
-```
-
-The envelope stays `fitted_unvalidated` until `jjm accept --scope`. A request that requires `accepted_in_scope` abstains until that scope is accepted. Acceptance records the held-out report. The weights stay `normalized_readout`.
-
-**New:** [Local text routing with JJM, Laya, and TF-IDF](https://jjm.dev/routing-benchmark)
+[Local text routing with JJM, Laya, and TF-IDF](https://jjm.dev/routing-benchmark)
 ([report source](site/pages/routing-benchmark.md)). On the full eight-team Banking77
 test: Qwen + fitted head through JJM **96.69%**, TF-IDF **95.65%**, and pretrained
 Laya **55.32%**. The first two used task labels; Laya did not. The report includes
@@ -89,6 +76,27 @@ does not interpret new rubrics zero-shot. See the [TF-IDF guide](examples/tfidf/
 for configuration, data requirements, limitations, and measured contract latency.
 
 ## Contract check (no model)
+
+### Synthetic response and application decision
+
+**Input:** “I was charged twice for the same subscription.” Your application allows `billing`, `technical`, or `other` and requires a top weight of at least 0.5.
+
+The documented no-model example returns this shortened response:
+
+```json
+{
+  "prediction": {
+    "weights": { "billing": 0.892, "technical": 0.005, "other": 0.103 },
+    "selected": "billing"
+  },
+  "acceptance": { "status": "pass" },
+  "provenance": { "method": "mock:normalized", "model": { "id": "jjm/synthetic-no-model" } }
+}
+```
+
+**Application decision:** hold this response. The provenance says synthetic; its weights come from a hash, even though the threshold passed. With an evaluated fitted backend, your code can route a passing result, send `hold` to review, and refuse `reject` according to your policy.
+
+Your application gets explicit fields instead of parsing an open-ended paragraph. This is a contract demonstration with rounded weights, not a classifier result or calibrated probabilities. [Try a fitted judgment](#try-a-fitted-judgment) for a model-backed run.
 
 Needs Python 3.10+ and [uv](https://docs.astral.sh/uv/). The fitted commands above need the same, plus the `hf` extra.
 
